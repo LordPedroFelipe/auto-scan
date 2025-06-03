@@ -48,3 +48,22 @@ $autoscan-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($autoscan-theme);
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  app-root {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
