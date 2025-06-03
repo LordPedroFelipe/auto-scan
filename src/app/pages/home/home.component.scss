@@ -1,27 +1,55 @@
-.home-container {
-    text-align: center;
-    padding: 2rem;
+.home-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background-color: #f9f9f9;
-    border-radius: 8px;
-    margin: 13rem auto;
-    max-width: 800px;
   }
   
-  .cta-container {
-    margin-top: 2rem;
-  }
-  
-  .cta-button {
-    padding: 1rem 2rem;
-    background-color: #003366;
+  /* Seção principal */
+  .hero-section {
+    background-color: #005073;
     color: white;
-    font-size: 18px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+    padding: 60px 20px;
+    text-align: center;
   }
   
-  .cta-button:hover {
-    background-color: #002244;
+  .hero-content {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .hero-content h1 {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .hero-content p {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+  
+  /* Cards informativos */
+  .cards-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .info-card {
+    padding: 16px;
+  }
+  
+  /* Chamada para ação final */
+  .cta-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #ffffff;
+  }
+  
+  .cta-section h2 {
+    margin-bottom: 20px;
   }
   
