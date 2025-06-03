@@ -9,29 +9,40 @@ export class IaChatService {
 
   gerarRespostaAutomatica(pergunta: string): string {
     const p = pergunta.toLowerCase();
-
+  
+    // Marca ou modelo mencionado
+    const marcas = ['corolla', 'gla', 'hb20', 'onix', 't-cross', 'hilux', 'civic', 'crv', 'tracker', 'nissan kicks', 'fiat toro', 'jeep compass'];
+    // const modelos = ['toyota corolla', 'mercedes gla', 'hyundai hb20', 'chevrolet onix', 'volkswagen t-cross', 'toyota hilux', 'honda civic', 'honda cr-v', 'chevrolet tracker', 'nissan kicks', 'fiat toro', 'jeep compass'];
+    const marcaMencionada = marcas.find(m => p.includes(m));
+  
+    if (marcaMencionada) {
+      return `Excelente escolha! O ${marcaMencionada.toUpperCase()} é um dos modelos mais procurados da nossa loja. 
+        Posso verificar as versões disponíveis e valores. Deseja financiar ou comprar à vista?`;
+    }
+  
     if (p.includes('preço') || p.includes('valor')) {
-      return 'Esse modelo está saindo por R$ 120.000,00. Podemos negociar ou simular financiamento!';
+      return 'Esse modelo está disponível a partir de R$ 120.000,00. Podemos negociar ou simular um financiamento agora mesmo.';
     }
-
+  
     if (p.includes('financiamento') || p.includes('parcelar')) {
-      return 'Sim, temos ótimas condições de financiamento, com ou sem entrada. Quer que eu simule?';
+      return 'Sim, temos opções com e sem entrada, e parcelamentos em até 60x. Deseja simular com base em sua renda?';
     }
-
+  
     if (p.includes('disponível') || p.includes('estoque')) {
-      return 'Sim, ele está disponível para test drive ou reserva. Deseja agendar uma visita?';
+      return 'Temos este veículo disponível no estoque com todas as revisões em dia. Você gostaria de ver fotos ou agendar uma visita?';
     }
-
+  
     if (p.includes('entrada') || p.includes('parcelas')) {
-      return 'Com uma entrada de 20%, é possível financiar em até 60x. Quer ver um exemplo real?';
+      return 'Com entrada de 20%, conseguimos simular parcelas acessíveis. Me diga o valor da entrada desejada e já calculo pra você!';
     }
-
+  
     if (p.includes('garantia')) {
-      return 'Esse veículo possui garantia de fábrica e todas as revisões feitas na concessionária.';
+      return 'Esse carro vem com garantia de fábrica e também oferecemos garantia estendida por 12 ou 24 meses. Deseja saber os detalhes?';
     }
-
-    return 'Essa é uma ótima pergunta! Vou verificar essa informação e te responder em instantes.';
+  
+    return 'Entendi. Só um instante, estou analisando sua pergunta para te dar a melhor resposta 😉';
   }
+  
 
   gerarMensagemVendaFake(): string {
     const carro = {

@@ -20,13 +20,13 @@
 
 /* Logo */
 .logo-scan {
-  width: 220px;
+  width: 320px;
   height: auto;
   margin-bottom: 20px;
   animation: fadeIn 1s ease-in-out;
 
   @media (max-width: 600px) {
-    width: 80px;
+    width: 220px;
   }
 }
 
