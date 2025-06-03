@@ -1,27 +1,68 @@
-.login-container {
-    width: 100%;
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #005073, #107dac);
+  }
+  
+  .login-card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    text-align: center;
     max-width: 400px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #f4f4f4;
-    border-radius: 8px;
+    width: 100%;
   }
   
-  input {
-    width: 100%;
-    padding: 0.8rem;
-    margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  .login-logo {
+    width: 100px;
+    margin-bottom: 24px;
+    border-radius: 50%;
   }
   
-  button {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #003366; /* Cor da identidade visual */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
+  h2 {
+    margin-bottom: 24px;
+    color: #005073;
+    font-weight: 600;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  
+    mat-form-field {
+      width: 100%;
+    }
+  
+    button {
+      margin-top: 12px;
+      font-weight: bold;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .login-card {
+      padding: 24px;
+    }
+  
+    .login-logo {
+      width: 80px;
+    }
+  }
+  .cadastro-wrapper {
+    margin-top: 24px;
+  
+    span {
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+    }
+  
+    button {
+      font-weight: 500;
+    }
   }
   

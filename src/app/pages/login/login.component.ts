@@ -1,24 +1,28 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  email: string = '';
-  password: string = '';
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
 
-  constructor(private router: Router) {}
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
 
   onSubmit(): void {
-    // Verifique a lógica de autenticação aqui, pode ser via serviço
-    if (this.email === 'usuario@exemplo.com' && this.password === 'senha') {
-      // Redireciona para a página principal (ou onde você quiser)
-      this.router.navigate(['/home']);
-    } else {
-      alert('Credenciais inválidas');
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      console.log('Login:', email, password);
+      // Redirecionar ou autenticar
     }
   }
 }
