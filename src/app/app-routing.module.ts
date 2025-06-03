@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'planos', component: PlanosComponent },
   { path: 'atendimento', component: ChatAtendimentoComponent },
-  { path: 'atendimento/:id', component: ChatAtendimentoComponent },
+  { path: 'atendimento/:placa', component: ChatAtendimentoComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
