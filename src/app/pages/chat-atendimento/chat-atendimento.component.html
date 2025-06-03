@@ -7,6 +7,14 @@
     <p>Seu assistente inteligente para venda de veículos</p>
   </div>
 
+  <!-- Carrossel de imagens -->
+  <div class="carrossel-veiculo" *ngIf="placa && imagensVeiculo.length">
+    <h3>Fotos do veículo</h3>
+    <div class="carousel-wrapper">
+      <img *ngFor="let img of imagensVeiculo" [src]="img" alt="Imagem do veículo" />
+    </div>
+  </div>
+
   <!-- Mensagens do chat -->
   <div class="mensagens">
     <div *ngFor="let msg of mensagens" [ngClass]="{ 'cliente': msg.autor === 'Cliente', 'ia': msg.autor === 'IA' }">
