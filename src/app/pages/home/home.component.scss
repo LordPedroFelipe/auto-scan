@@ -1,55 +1,106 @@
 .home-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+/* Seção principal */
+.hero-section {
+  background-color: #005073;
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Logo */
+.logo-scan {
+  width: 220px;
+  height: auto;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in-out;
+
+  @media (max-width: 600px) {
+    width: 80px;
+  }
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+
+  @media (max-width: 600px) {
+    font-size: 32px;
+  }
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 24px;
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
+}
+
+/* Cards informativos */
+.cards-section {
+  padding: 40px 20px;
+  overflow-x: auto;
+}
+
+.cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.info-card {
+  padding: 16px;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+  .cards-wrapper {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f9f9f9;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 16px;
+    padding-bottom: 8px;
   }
-  
-  /* Seção principal */
-  .hero-section {
-    background-color: #005073;
-    color: white;
-    padding: 60px 20px;
-    text-align: center;
-  }
-  
-  .hero-content {
-    max-width: 800px;
-    margin: auto;
-  }
-  
-  .hero-content h1 {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
-  
-  .hero-content p {
-    font-size: 18px;
-    margin-bottom: 24px;
-  }
-  
-  /* Cards informativos */
-  .cards-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: auto;
-  }
-  
+
   .info-card {
-    padding: 16px;
+    max-width: 280px;
+    flex: 0 0 auto;
   }
-  
-  /* Chamada para ação final */
-  .cta-section {
-    text-align: center;
-    padding: 60px 20px;
-    background-color: #ffffff;
+}
+
+/* Chamada para ação final */
+.cta-section {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #ffffff;
+}
+
+.cta-section h2 {
+  margin-bottom: 20px;
+}
+
+/* Animação opcional da logo */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .cta-section h2 {
-    margin-bottom: 20px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
+}
