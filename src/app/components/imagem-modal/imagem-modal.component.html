@@ -1,0 +1,7 @@
+<div class="imagem-modal-container">
+  <button class="nav-button left" (click)="imagemAnterior()" [disabled]="indiceAtual === 0">⟨</button>
+
+  <img [src]="imagemAtual()" alt="Imagem ampliada" />
+
+  <button class="nav-button right" (click)="proximaImagem()" [disabled]="indiceAtual === imagens.length - 1">⟩</button>
+</div>

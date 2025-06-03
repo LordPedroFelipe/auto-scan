@@ -1,0 +1,13 @@
+<div class="dashboard-container">
+  <h1>Bem-vindo à sua Central</h1>
+  <p class="subtitulo">Aqui estão os principais indicadores da sua operação:</p>
+
+  <div class="cards-grid">
+    <mat-card class="info-card" *ngFor="let indicador of indicadores" [ngStyle]="{ 'border-top': '5px solid ' + indicador.cor }">
+      <mat-card-title>{{ indicador.icone }} {{ indicador.titulo }}</mat-card-title>
+      <mat-card-content>
+        <h2>{{ indicador.valor }}</h2>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
