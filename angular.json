@@ -37,6 +37,8 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/auto-scan/",
+              "outputPath": "docs",
               "budgets": [
                 {
                   "type": "initial",
