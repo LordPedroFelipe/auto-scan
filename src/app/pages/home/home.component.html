@@ -1,42 +1,46 @@
 <div class="home-wrapper">
     <!-- Seção 1: Boas-vindas -->
     <section class="hero-section">
-      <div class="hero-content">
-        <h1>ScanDrive</h1>
-        <p>Simplificando a gestão de veículos para lojas e revendas.</p>
-        <button mat-raised-button color="primary" routerLink="/planos">Ver Planos</button>
-      </div>
+        <div class="hero-content">
+          <h1>ScanDrive</h1>
+          <p>Simplificando a gestão de veículos para lojas e revendas.</p>
+          <button mat-raised-button color="primary" routerLink="/planos">Ver Planos</button>
+        </div>
     </section>
+      
   
     <!-- Seção 2: Benefícios em Cards -->
     <section class="cards-section">
-      <mat-card class="info-card">
-        <mat-card-title>Visualização via QR Code</mat-card-title>
-        <mat-card-content>
-          <p>Permita que seus clientes acessem os dados dos veículos rapidamente através de QR Code personalizado para cada carro.</p>
-          <button mat-stroked-button color="accent" routerLink="/atendimento">Gerar QR Code</button>
-        </mat-card-content>
-      </mat-card>
-  
-      <mat-card class="info-card">
-        <mat-card-title>Assistente Virtual Integrado</mat-card-title>
-        <mat-card-content>
-          <p>Use IA para responder dúvidas dos clientes diretamente no celular, como se fosse um vendedor real.</p>
-          <button mat-stroked-button color="accent" routerLink="/atendimento">Simular Atendimento</button>
-        </mat-card-content>
-      </mat-card>
-  
-      <mat-card class="info-card">
-        <mat-card-title>Gestão de Estoque Inteligente</mat-card-title>
-        <mat-card-content>
-          <p>Gerencie todos os seus veículos, histórico e status de forma centralizada, com controle por usuário e plano.</p>
-          <button mat-stroked-button color="accent" routerLink="/atendimento">Gerir Estoque</button>
-        </mat-card-content>
-      </mat-card>
+        <div class="cards-wrapper">
+            <mat-card class="info-card">
+                <mat-card-title>Visualização via QR Code</mat-card-title>
+                <mat-card-content>
+                <p>Permita que seus clientes acessem os dados dos veículos rapidamente através de QR Code personalizado para cada carro.</p>
+                <button mat-stroked-button color="accent" routerLink="/atendimento">Gerar QR Code</button>
+                </mat-card-content>
+            </mat-card>
+        
+            <mat-card class="info-card">
+                <mat-card-title>Assistente Virtual Integrado</mat-card-title>
+                <mat-card-content>
+                <p>Use IA para responder dúvidas dos clientes diretamente no celular, como se fosse um vendedor real.</p>
+                <button mat-stroked-button color="accent" routerLink="/atendimento">Simular Atendimento</button>
+                </mat-card-content>
+            </mat-card>
+        
+            <mat-card class="info-card">
+                <mat-card-title>Gestão de Estoque Inteligente</mat-card-title>
+                <mat-card-content>
+                <p>Gerencie todos os seus veículos, histórico e status de forma centralizada, com controle por usuário e plano.</p>
+                <button mat-stroked-button color="accent" routerLink="/atendimento">Gerir Estoque</button>
+                </mat-card-content>
+            </mat-card>
+        </div>
     </section>
   
     <!-- Seção 3: Chamada para ação -->
     <section class="cta-section">
+        <img src="assets/img/autoscan-logo-white.PNG" alt="Logo ScanDrive" class="logo-scan" />
       <h2>Pronto para evoluir sua loja?</h2>
       <button mat-stroked-button color="accent" routerLink="/cadastro">Crie sua conta gratuita</button>
     </section>
