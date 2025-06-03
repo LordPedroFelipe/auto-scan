@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>{{ data ? 'Editar' : 'Cadastrar' }} Veículo</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Modelo</mat-label>
+      <input matInput formControlName="modelo">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Marca</mat-label>
+      <input matInput formControlName="marca">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Ano</mat-label>
+      <input matInput type="number" formControlName="ano">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Preço</mat-label>
+      <input matInput type="number" formControlName="preco">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="disponível">Disponível</mat-option>
+        <mat-option value="vendido">Vendido</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="salvar()">Salvar</button>
+</mat-dialog-actions>

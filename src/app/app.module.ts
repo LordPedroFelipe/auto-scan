@@ -21,6 +21,14 @@ import { ChatAtendimentoComponent } from './pages/chat-atendimento/chat-atendime
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { PlanosComponent } from './pages/planos/planos.component';
+import { ImagemModalComponent } from './components/imagem-modal/imagem-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EstoqueComponent } from './pages/estoque/estoque.component';
+import { CadastroVeiculoModalComponent } from './components/cadastro-veiculo-modal/cadastro-veiculo-modal.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
+import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
@@ -33,7 +41,11 @@ import { PlanosComponent } from './pages/planos/planos.component';
     HomeComponent,
     PlanosComponent,
     ChatAtendimentoComponent,
-    CadastroLojaComponent
+    CadastroLojaComponent,
+    ImagemModalComponent,
+    DashboardComponent,
+    EstoqueComponent,
+    CadastroVeiculoModalComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +60,10 @@ import { PlanosComponent } from './pages/planos/planos.component';
     MatInputModule,
     MatGridListModule,
     MatFormFieldModule,
+    MatDialogModule,
+    MatIconModule,
+    MatOptionModule,
+    MatTableModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy }

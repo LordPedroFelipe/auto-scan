@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ImagemModalComponent } from 'src/app/components/imagem-modal/imagem-modal.component';
 import { IaChatService } from 'src/app/services/ia-chat.service';
 
 interface Mensagem {
@@ -21,7 +23,8 @@ export class ChatAtendimentoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private iaChatService: IaChatService
+    private iaChatService: IaChatService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -62,5 +65,17 @@ export class ChatAtendimentoComponent implements OnInit {
       `assets/img/veiculos/${placa}-3.jpeg`,
       `assets/img/veiculos/${placa}-4.jpeg`
     ];
+  }
+
+  abrirImagem(imgUrl: string): void {
+    const index = this.imagensVeiculo.indexOf(imgUrl);
+
+    this.dialog.open(ImagemModalComponent, {
+      data: {
+        imagens: this.imagensVeiculo,
+        indice: index
+      },
+      panelClass: 'imagem-fullscreen-dialog'
+    });
   }
 }

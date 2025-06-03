@@ -11,7 +11,7 @@
   <div class="carrossel-veiculo" *ngIf="placa && imagensVeiculo.length">
     <h3>Fotos do veículo</h3>
     <div class="carousel-wrapper">
-      <img *ngFor="let img of imagensVeiculo" [src]="img" alt="Imagem do veículo" />
+      <img *ngFor="let img of imagensVeiculo" [src]="img" alt="Imagem do veículo" (click)="abrirImagem(img)"/>
     </div>
   </div>
 
