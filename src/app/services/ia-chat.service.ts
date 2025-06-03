@@ -79,6 +79,39 @@ export class IaChatService {
 
   gerarMensagemVendaFake(): string {
     const carro = {
+      marca: 'Peugeot',
+      modelo: '2008',
+      ano: 2023,
+      motor: '1.6 Flex AT',
+      km: 31000,
+      valor: '77.000,00',
+      caracteristicas: [
+        'Câmbio automático de 6 marchas',
+        'Central multimídia com espelhamento',
+        'Rodas de liga leve aro 16',
+        'Faróis com luz diurna (DRL)',
+        'Ar-condicionado digital',
+        'Controle de tração e estabilidade',
+        'Piloto automático com limitador de velocidade'
+      ]
+    };
+
+    return `🚗 Esse veículo é um ${carro.marca} ${carro.modelo} ${carro.ano}, motor ${carro.motor}, com ${carro.km.toLocaleString()} km rodados.
+    💰 Está disponível por R$ ${carro.valor}, com possibilidade de financiamento em até 60x!
+    
+    Características principais:
+    👉 ${carro.caracteristicas.join('\n👉 ')}
+    
+    ✅ Garantia de fábrica  
+    ✅ Revisões em dia  
+    ✅ Transferência grátis
+    
+    Deseja simular uma proposta ou agendar um Test Drive?`;
+
+  }
+
+  gerarMensagemVendaFakeMercedes(): string {
+    const carro = {
       marca: 'Mercedes-Benz',
       modelo: 'GLA 200',
       ano: 2018,
@@ -97,15 +130,15 @@ export class IaChatService {
     };
 
     return `🚗 Esse veículo é um ${carro.marca} ${carro.modelo} ${carro.ano}, motor ${carro.motor}, com ${carro.km.toLocaleString()} km rodados.
-        💰 Está disponível por R$ ${carro.valor}, com possibilidade de financiamento em até 60x!
+        \n💰 Está disponível por R$ ${carro.valor}, com possibilidade de financiamento em até 60x!
 
-        Características principais:
+        \nCaracterísticas principais:
         👉 ${carro.caracteristicas.join('\n👉 ')}
 
-        ✅ Garantia de fábrica  
-        ✅ Revisões em dia  
-        ✅ Transferência grátis
+        \n✅ Garantia de fábrica  
+        \n✅ Revisões em dia  
+        \n✅ Transferência grátis
 
-        Deseja simular uma proposta ou agendar uma visita?`;
+        \nDeseja simular uma proposta ou agendar uma visita?`;
   }
 }

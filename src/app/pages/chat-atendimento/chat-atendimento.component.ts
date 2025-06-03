@@ -17,6 +17,7 @@ export class ChatAtendimentoComponent implements OnInit {
   mensagens: Mensagem[] = [];
   novaMensagem: string = '';
   placa: string | null = null;
+  imagensVeiculo: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +29,7 @@ export class ChatAtendimentoComponent implements OnInit {
 
     if (this.placa) {
       const msg = this.iaChatService.gerarMensagemVendaFake(); // substituir por API real futuramente
+      this.buscarImagensDoVeiculo(this.placa).forEach(img => this.imagensVeiculo.push(img));
       this.enviarMensagemIA(msg);
     } else {
       this.enviarMensagemIA('Olá! Sou o assistente ScanDrive 🤖. Que tipo de carro você está buscando hoje?');
@@ -50,5 +52,15 @@ export class ChatAtendimentoComponent implements OnInit {
 
   enviarMensagemIA(texto: string): void {
     this.mensagens.push({ autor: 'IA', texto, data: new Date() });
+  }
+
+  buscarImagensDoVeiculo(placa: string): string[] {
+    // Simulação estática (poderá ser substituído por uma chamada de serviço)
+    return [
+      `assets/img/veiculos/${placa}-1.jpeg`,
+      `assets/img/veiculos/${placa}-2.jpeg`,
+      `assets/img/veiculos/${placa}-3.jpeg`,
+      `assets/img/veiculos/${placa}-4.jpeg`
+    ];
   }
 }
