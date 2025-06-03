@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,9 +14,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlansComponent } from './components/plans/plans.component';
+import { ChatAtendimentoComponent } from './pages/chat-atendimento/chat-atendimento.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlanosComponent } from './pages/planos/planos.component';
-import { ChatAtendimentoComponent } from './pages/chat-atendimento/chat-atendimento.component';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { ChatAtendimentoComponent } from './pages/chat-atendimento/chat-atendime
     MatCardModule,
     MatGridListModule,
   ],
-  providers: [],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
