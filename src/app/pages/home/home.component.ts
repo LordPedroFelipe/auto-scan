@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  welcomeMessage: string = 'Bem-vindo ao AutoScan - A plataforma para lojas de carros!';
+  welcomeMessage: string = 'Bem-vindo ao ScanDrive - A plataforma para lojas de carros!';
 
   constructor() {}
 

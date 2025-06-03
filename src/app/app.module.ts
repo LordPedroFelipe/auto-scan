@@ -15,6 +15,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlansComponent } from './components/plans/plans.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlanosComponent } from './pages/planos/planos.component';
+import { ChatAtendimentoComponent } from './pages/chat-atendimento/chat-atendimento.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PlanosComponent } from './pages/planos/planos.component';
     PlansComponent,
     FooterComponent,
     HomeComponent,
-    PlanosComponent
+    PlanosComponent,
+    ChatAtendimentoComponent
   ],
   imports: [
     BrowserModule,
