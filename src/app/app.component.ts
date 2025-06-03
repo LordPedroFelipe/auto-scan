@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'AutoScan - Plataforma para Lojas de Carros';
+  title = 'ScanDrive - Plataforma para Lojas de Carros';
 }
