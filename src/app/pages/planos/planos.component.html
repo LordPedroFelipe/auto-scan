@@ -1,1 +1,23 @@
-<p>planos works!</p>
+<div class="planos-wrapper">
+    <h1>Escolha o plano ideal para sua loja</h1>
+    <p class="sub">Tenha acesso às ferramentas que vão revolucionar sua gestão automotiva 🚗</p>
+  
+    <div class="cards">
+      <mat-card *ngFor="let plano of planos" [ngClass]="{ destaque: plano.destaque }">
+        <mat-card-header>
+          <mat-card-title>{{ plano.nome }}</mat-card-title>
+          <mat-card-subtitle>{{ plano.descricao }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <h2>R$ {{ plano.preco }},00 <small>/ mês</small></h2>
+          <ul>
+            <li *ngFor="let beneficio of plano.beneficios">✔️ {{ beneficio }}</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary">Escolher Plano</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  

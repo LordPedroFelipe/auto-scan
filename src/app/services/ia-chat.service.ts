@@ -10,39 +10,72 @@ export class IaChatService {
   gerarRespostaAutomatica(pergunta: string): string {
     const p = pergunta.toLowerCase();
   
-    // Marca ou modelo mencionado
-    const marcas = ['corolla', 'gla', 'hb20', 'onix', 't-cross', 'hilux', 'civic', 'crv', 'tracker', 'nissan kicks', 'fiat toro', 'jeep compass'];
-    // const modelos = ['toyota corolla', 'mercedes gla', 'hyundai hb20', 'chevrolet onix', 'volkswagen t-cross', 'toyota hilux', 'honda civic', 'honda cr-v', 'chevrolet tracker', 'nissan kicks', 'fiat toro', 'jeep compass'];
+    const marcas = [
+      'corolla', 'gla', 'hb20', 'onix', 't-cross', 'hilux', 'civic', 'crv', 'tracker',
+      'nissan kicks', 'fiat toro', 'jeep compass', 'jeep renegade', 'jeep wrangler',
+      'ecosport', 'ranger', 'fiat strada', 'fiat mobi', 'polo', 'up', 'gol',
+      'spin', 'prisma', 'etios', 'yaris', 'city', 'fit'
+    ];
+  
     const marcaMencionada = marcas.find(m => p.includes(m));
   
     if (marcaMencionada) {
-      return `Excelente escolha! O ${marcaMencionada.toUpperCase()} é um dos modelos mais procurados da nossa loja. 
-        Posso verificar as versões disponíveis e valores. Deseja financiar ou comprar à vista?`;
+      return `Excelente escolha! O ${marcaMencionada.toUpperCase()} é um dos carros mais desejados atualmente.
+        ✅ Temos unidades no estoque, revisadas e com garantia, quer agendar um TestDrive?
+        Quer simular um Financiamento ou seria á vista??`;
     }
   
     if (p.includes('preço') || p.includes('valor')) {
-      return 'Esse modelo está disponível a partir de R$ 120.000,00. Podemos negociar ou simular um financiamento agora mesmo.';
+      return `Esse modelo está disponível a partir de R$ 120.000,00. 
+        💬 Podemos montar propostas sob medida, seja à vista ou financiado.
+        Como você pretende realizar a compra?`;
+    }
+  
+    if (p.includes('a vista') || p.includes('à vista')) {
+      return `Ótimo! Pagamentos à vista têm **condições especiais** e descontos exclusivos. 
+        💰 Posso te enviar agora a melhor proposta com bônus para pagamento imediato. Deseja?`;
     }
   
     if (p.includes('financiamento') || p.includes('parcelar')) {
-      return 'Sim, temos opções com e sem entrada, e parcelamentos em até 60x. Deseja simular com base em sua renda?';
+      return `Temos financiamento com entrada a partir de 20% e parcelamento em até 60x. 
+        Trabalhamos com diversos bancos para garantir a melhor taxa. 
+        Quer simular com ou sem entrada?`;
+    }
+  
+    if (p.includes('troca')) {
+      return `Sim, aceitamos seu veículo na troca! 
+        📷 Me envie fotos do seu carro atual ou informe os dados (modelo, ano, km) que avaliamos em instantes.`;
+    }
+  
+    if (p.includes('test drive')) {
+      return `Excelente! Fazer um test drive é essencial. 
+        🚗 Tenho horários disponíveis essa semana para você conhecer o carro de perto.
+        Quando seria melhor pra você? Posso agendar agora mesmo.`;
+    }
+  
+    if (p.includes('visita') || p.includes('agendar')) {
+      return `Sim! Podemos agendar uma visita à loja ou uma videochamada para apresentar o veículo ao vivo.
+        📅 Qual o melhor dia e horário pra você? Eu reservo o atendimento personalizado.`;
     }
   
     if (p.includes('disponível') || p.includes('estoque')) {
-      return 'Temos este veículo disponível no estoque com todas as revisões em dia. Você gostaria de ver fotos ou agendar uma visita?';
+      return `Temos esse modelo disponível no estoque, com entrega rápida e documentação em dia. 
+        Deseja reservar agora ou prefere agendar uma visita?`;
     }
   
     if (p.includes('entrada') || p.includes('parcelas')) {
-      return 'Com entrada de 20%, conseguimos simular parcelas acessíveis. Me diga o valor da entrada desejada e já calculo pra você!';
+      return `Com uma entrada de 20%, conseguimos montar planos bem acessíveis. 
+        Me diga o valor da entrada que você pensa em dar e eu já te mostro simulações em até 60x.`;
     }
   
     if (p.includes('garantia')) {
-      return 'Esse carro vem com garantia de fábrica e também oferecemos garantia estendida por 12 ou 24 meses. Deseja saber os detalhes?';
+      return `Esse veículo tem garantia de fábrica, e também oferecemos **garantia estendida** por até 24 meses.
+        Quer saber o que está incluso na cobertura? Posso te enviar agora.`;
     }
   
-    return 'Entendi. Só um instante, estou analisando sua pergunta para te dar a melhor resposta 😉';
+    return `Ótima pergunta! 😊 Estou aqui pra te ajudar a encontrar o melhor carro e negócio. 
+        Me diga mais detalhes e já te passo uma proposta completa.`;
   }
-  
 
   gerarMensagemVendaFake(): string {
     const carro = {

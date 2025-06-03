@@ -1,0 +1,41 @@
+[
+    {
+      "nome": "Básico",
+      "preco": 99,
+      "descricao": "Para lojas que estão começando",
+      "beneficios": [
+        "Cadastro de até 10 veículos",
+        "Visualização via QR Code",
+        "Atendimento IA básico"
+      ]
+    },
+    {
+      "nome": "Medium",
+      "preco": 199,
+      "descricao": "Para lojas com operação média",
+      "beneficios": [
+        "Cadastro de até 100 veículos",
+        "Visualização via QR Code",
+        "IA com atendimento ao cliente",
+        "Atendimento IA com histórico",
+        "Painel de gestão de estoque",
+        "Suporte por e-mail"
+      ]
+    },
+    {
+      "nome": "Premium",
+      "preco": 299,
+      "descricao": "Para lojas com alto volume de vendas",
+      "beneficios": [
+        "Cadastro ilimitado de veículos",
+        "QR Codes personalizados",
+        "IA com atendimento ao cliente",
+        "IA com análise de perfil do cliente",
+        "Painel avançado + relatórios",
+        "Importação por planilha/API",
+        "Suporte por WhatsApp prioritário"
+      ],
+      "destaque": true
+    }
+  ]
+  
