@@ -1,13 +1,50 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-  }
-  
-  h1, h2, h3 {
-    color: #003366; /* Cor principal */
-  }
-  
-  button {
-    background-color: #003366;
-  }
-  
+@use '@angular/material' as mat;
+
+// Azul escuro (cor principal do AutoScan)
+$autoscan-primary: mat.define-palette((
+  100: #b3cbd7, // tom claro obrigatório para evitar erro
+  500: #005073,
+  600: #007aa2,
+  700: #007099,
+  800: #006790,
+  900: #00435A,
+  contrast: (
+    100: black,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white
+  )
+));
+
+// Azul claro (cor secundária da marca)
+$autoscan-accent: mat.define-palette((
+  100: #b3e6f9,
+  500: #00A0D2,
+  600: #0092bf,
+  700: #0080a6,
+  800: #006f8c,
+  900: #005973,
+  contrast: (
+    100: black,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white
+  )
+));
+
+// Cor de erro (default do Angular Material)
+$autoscan-warn: mat.define-palette(mat.$red-palette);
+
+$autoscan-theme: mat.define-light-theme((
+  color: (
+    primary: $autoscan-primary,
+    accent: $autoscan-accent,
+    warn: $autoscan-warn,
+  )
+));
+
+@include mat.all-component-themes($autoscan-theme);

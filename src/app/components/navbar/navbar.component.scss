@@ -1,26 +1,10 @@
-.navbar {
-    background-color: #003366;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-  }
-  
-  .nav-links li {
-    margin: 0 1rem;
-  }
-  
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-  }
+
   
   .logo {
-    max-width: 10rem;
+    max-width: 4rem;
   }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
