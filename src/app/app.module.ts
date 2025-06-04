@@ -35,6 +35,9 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MicRecordingSnackComponent } from './components/mic-recording-snack/mic-recording-snack.component';
+import { LojaListaComponent } from './pages/loja-lista/loja-lista.component';
+import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.component';
+import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import { MicRecordingSnackComponent } from './components/mic-recording-snack/mic
     EstoqueComponent,
     CadastroVeiculoModalComponent,
     LoadingComponent,
-    MicRecordingSnackComponent
+    MicRecordingSnackComponent,
+    LojaListaComponent,
+    UsuariosListaComponent,
+    LeadListaComponent
   ],
   imports: [
     BrowserModule,

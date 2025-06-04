@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Lista de Lojas Ativas</h2>
+
+  <mat-progress-spinner *ngIf="carregando" mode="indeterminate"></mat-progress-spinner>
+
+  <mat-table *ngIf="!carregando && lojas.length > 0" [dataSource]="lojas" class="mat-elevation-z2">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+      <mat-cell *matCellDef="let loja"> {{ loja.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Descrição </mat-header-cell>
+      <mat-cell *matCellDef="let loja"> {{ loja.description }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email do Dono </mat-header-cell>
+      <mat-cell *matCellDef="let loja"> {{ loja.owner?.email }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['name', 'description', 'email']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name', 'description', 'email'];"></mat-row>
+  </mat-table>
+
+  <p *ngIf="!carregando && lojas.length === 0">Nenhuma loja encontrada.</p>
+</div>
