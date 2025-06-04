@@ -67,13 +67,14 @@ export class ChatAtendimentoComponent implements OnInit {
 
     const payload: SendMessageRequest = {
       sessionId: this.sessionId,
-      mensagem: pergunta
+      message: pergunta
     };
 
     this.isLoading = true;
     this.chatService.sendMessage(payload).subscribe({
-      next: (resposta: string) => {
-        this.mensagens.push({ autor: 'IA', texto: resposta, data: new Date() });
+      next: (resposta: any) => {
+        const mensagem = resposta.message;
+        this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date() });
         this.isLoading = false;
       },
       error: () => {

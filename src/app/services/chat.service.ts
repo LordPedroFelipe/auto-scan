@@ -11,7 +11,6 @@ import { SendMessageRequest } from '../models/send-message.model';
 export class ChatService {
   private readonly apiUrl = `${environment.apiUrl}/Chat`;
 
-  // Cache e estado de loading
   private _sessionsCache: any[] | null = null;
   private _messagesCache: { [sessionId: string]: any[] } = {};
 
@@ -21,22 +20,20 @@ export class ChatService {
   constructor(private http: HttpClient) {}
 
   /** Envia mensagem para o chatbot */
-  sendMessage(data: SendMessageRequest): Observable<string> {
-    return this.http.post(`${this.apiUrl}/send`, data, { responseType: 'text' }).pipe(
-      tap(() => console.log('[ChatService] Mensagem enviada com sucesso')),
-      catchError((error) => {
-        console.error('[ChatService] Erro ao enviar mensagem', error);
-        return throwError(() => error);
-      })
-    );
-  }
+sendMessage(data: SendMessageRequest): Observable<string> {
+  return this.http.post<string>(`${this.apiUrl}/send`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'text/plain'
+    }
+  });
+}
 
   /** Reseta uma sessão */
   reset(sessionId: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/reset`, sessionId).pipe(
+    return this.http.post<void>(`${this.apiUrl}/reset`, { sessionId }).pipe(
       tap(() => {
         console.log(`[ChatService] Sessão ${sessionId} resetada`);
-        // Limpa cache dessa sessão
         delete this._messagesCache[sessionId];
         this._sessionsCache = null;
       }),
@@ -71,7 +68,6 @@ export class ChatService {
     );
   }
 
-  /** Loading das sessões (observável) */
   isLoadingSessions(): Observable<boolean> {
     return this._loadingSessions.asObservable();
   }
@@ -100,12 +96,10 @@ export class ChatService {
     );
   }
 
-  /** Loading das mensagens (observável) */
   isLoadingMessages(): Observable<boolean> {
     return this._loadingMessages.asObservable();
   }
 
-  /** Invalida o cache manualmente */
   clearCache(): void {
     console.log('[ChatService] Cache limpo manualmente');
     this._sessionsCache = null;
