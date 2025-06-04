@@ -1,31 +1,34 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Veiculo } from '../models/veiculo';
+import { Observable } from 'rxjs';
+import { VeiculoResumoModel } from '../models/veiculo.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstoqueService {
-  private veiculosMock: Veiculo[] = [
-    { id: 1, modelo: 'Onix', marca: 'Chevrolet', ano: 2020, preco: 52000, status: 'disponível' },
-    { id: 2, modelo: 'Corolla', marca: 'Toyota', ano: 2019, preco: 78000, status: 'vendido' },
-  ];
+  private readonly apiUrl = `${environment.apiUrl}/Vehicles`;
 
-  private veiculosSubject = new BehaviorSubject<Veiculo[]>(this.veiculosMock);
-  veiculos$ = this.veiculosSubject.asObservable();
+  constructor(private http: HttpClient) {}
 
-  adicionar(veiculo: Veiculo) {
-    const atual = this.veiculosSubject.value;
-    this.veiculosSubject.next([...atual, { ...veiculo, id: Date.now() }]);
+  listarAtivos(): Observable<VeiculoResumoModel[]> {
+    return this.http.get<VeiculoResumoModel[]>(this.apiUrl);
   }
 
-  excluir(id: number) {
-    const atualizado = this.veiculosSubject.value.filter(v => v.id !== id);
-    this.veiculosSubject.next(atualizado);
+  adicionar(veiculo: Partial<VeiculoResumoModel>): Observable<VeiculoResumoModel> {
+    return this.http.post<VeiculoResumoModel>(this.apiUrl, veiculo);
   }
 
-  editar(veiculo: Veiculo) {
-    const atualizado = this.veiculosSubject.value.map(v => v.id === veiculo.id ? veiculo : v);
-    this.veiculosSubject.next(atualizado);
+  editar(veiculo: Partial<VeiculoResumoModel>): Observable<VeiculoResumoModel> {
+    return this.http.put<VeiculoResumoModel>(`${this.apiUrl}/${veiculo.id}`, veiculo);
+  }
+
+  excluir(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  buscarPorId(id: string): Observable<VeiculoResumoModel> {
+    return this.http.get<VeiculoResumoModel>(`${this.apiUrl}/${id}`);
   }
 }

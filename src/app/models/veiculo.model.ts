@@ -40,3 +40,15 @@ export interface VeiculoModel {
   reservations: ReservaModel[];
   testDrives: TestDriveModel[];
 }
+
+export interface VeiculoResumoModel {
+  id: string;
+  brand: string;
+  model: string;
+  year: number;
+  mileage: number;
+  color: string;
+  price: number;
+  mainPhotoUrl: string;
+  shopName: string;
+}

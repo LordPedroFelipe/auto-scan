@@ -1,47 +1,53 @@
-<div class="estoque-container">
+<div class="container">
   <h2>Estoque da Loja</h2>
-  <button mat-raised-button color="primary" (click)="abrirCadastro()">Cadastrar Veículo</button>
 
-  <table mat-table [dataSource]="veiculos" class="mat-elevation-z4">
+  <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Veículo</button>
 
-    <ng-container matColumnDef="modelo">
-      <th mat-header-cell *matHeaderCellDef>Modelo</th>
-      <td mat-cell *matCellDef="let v">{{ v.modelo }}</td>
+  <mat-table [dataSource]="veiculos" class="mat-elevation-z4">
+
+    <ng-container matColumnDef="brand">
+      <mat-header-cell *matHeaderCellDef>Marca</mat-header-cell>
+      <mat-cell *matCellDef="let v">{{ v.brand }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="marca">
-      <th mat-header-cell *matHeaderCellDef>Marca</th>
-      <td mat-cell *matCellDef="let v">{{ v.marca }}</td>
+    <ng-container matColumnDef="model">
+      <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+      <mat-cell *matCellDef="let v">{{ v.model }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="ano">
-      <th mat-header-cell *matHeaderCellDef>Ano</th>
-      <td mat-cell *matCellDef="let v">{{ v.ano }}</td>
+    <ng-container matColumnDef="year">
+      <mat-header-cell *matHeaderCellDef>Ano</mat-header-cell>
+      <mat-cell *matCellDef="let v">{{ v.year }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="preco">
-      <th mat-header-cell *matHeaderCellDef>Preço</th>
-      <td mat-cell *matCellDef="let v">R$ {{ v.preco | number:'1.0-0' }}</td>
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef>Preço</mat-header-cell>
+      <mat-cell *matCellDef="let v">R$ {{ v.price | number: '1.0-0' }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let v">{{ v.status }}</td>
+    <ng-container matColumnDef="mileage">
+      <mat-header-cell *matHeaderCellDef>KM</mat-header-cell>
+      <mat-cell *matCellDef="let v">{{ v.mileage | number }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="color">
+      <mat-header-cell *matHeaderCellDef>Cor</mat-header-cell>
+      <mat-cell *matCellDef="let v">{{ v.color }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="acoes">
-      <th mat-header-cell *matHeaderCellDef>Ações</th>
-      <td mat-cell *matCellDef="let v">
+      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+      <mat-cell *matCellDef="let v">
         <button mat-icon-button color="accent" (click)="abrirCadastro(v)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button color="warn" (click)="excluir(v.id)">
           <mat-icon>delete</mat-icon>
         </button>
-      </td>
+      </mat-cell>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </div>

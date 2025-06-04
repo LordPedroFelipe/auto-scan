@@ -3,6 +3,7 @@ import { Veiculo } from '../../models/veiculo';
 import { EstoqueService } from '../../services/estoque.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CadastroVeiculoModalComponent } from '../../components/cadastro-veiculo-modal/cadastro-veiculo-modal.component';
+import { VeiculoResumoModel } from 'src/app/models/veiculo.model';
 
 @Component({
   selector: 'app-estoque',
@@ -10,9 +11,11 @@ import { CadastroVeiculoModalComponent } from '../../components/cadastro-veiculo
   styleUrls: ['./estoque.component.scss']
 })
 export class EstoqueComponent implements OnInit {
-  veiculos: Veiculo[] = [];
+  veiculos: VeiculoResumoModel[] = [];
+  carregando = false;
 
-  displayedColumns = ['modelo', 'marca', 'ano', 'preco', 'status', 'acoes'];
+  displayedColumns: string[] = ['brand', 'model', 'year', 'price', 'mileage', 'color', 'acoes'];
+
 
   constructor(
     private estoqueService: EstoqueService,
@@ -20,8 +23,16 @@ export class EstoqueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.estoqueService.veiculos$.subscribe(data => {
-      this.veiculos = data;
+    this.carregando = true;
+    this.estoqueService.listarAtivos().subscribe({
+      next: (res) => {
+        this.veiculos = res;
+        this.carregando = false;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar veículos', err);
+        this.carregando = false;
+      }
     });
   }
 
@@ -38,7 +49,7 @@ export class EstoqueComponent implements OnInit {
     });
   }
 
-  excluir(id: number) {
+  excluir(id: string) {
     if (confirm('Tem certeza que deseja excluir este veículo?')) {
       this.estoqueService.excluir(id);
     }

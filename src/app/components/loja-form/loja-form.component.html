@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Editar Loja' : 'Cadastrar Loja' }}</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Descrição</mat-label>
+    <input matInput formControlName="description" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>ID do Dono</mat-label>
+    <input matInput formControlName="ownerId" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="salvar()">Salvar</button>
+</mat-dialog-actions>
