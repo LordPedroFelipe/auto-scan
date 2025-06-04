@@ -102,7 +102,7 @@ export class IaChatService {
     Características principais:
     👉 ${carro.caracteristicas.join('\n👉 ')}
     
-    ✅ Garantia de fábrica  
+    ✅ Garantia de 90 dias
     ✅ Revisões em dia  
     ✅ Transferência grátis
     

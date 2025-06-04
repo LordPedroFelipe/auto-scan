@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './mic-recording-snack.component.html',
   styleUrls: ['./mic-recording-snack.component.scss']
 })
-export class MicRecordingSnackComponent {
-
-}
+export class MicRecordingSnackComponent {}
