@@ -10,19 +10,6 @@
       ]
     },
     {
-      "nome": "Medium",
-      "preco": 199,
-      "descricao": "Para lojas com operação média",
-      "beneficios": [
-        "Cadastro de até 100 veículos",
-        "Visualização via QR Code",
-        "IA com atendimento ao cliente",
-        "Atendimento IA com histórico",
-        "Painel de gestão de estoque",
-        "Suporte por e-mail"
-      ]
-    },
-    {
       "nome": "Premium",
       "preco": 299,
       "descricao": "Para lojas com alto volume de vendas",
@@ -36,6 +23,19 @@
         "Suporte por WhatsApp prioritário"
       ],
       "destaque": true
+    },
+    {
+      "nome": "Medium",
+      "preco": 199,
+      "descricao": "Para lojas com operação média",
+      "beneficios": [
+        "Cadastro de até 100 veículos",
+        "Visualização via QR Code",
+        "IA com atendimento ao cliente",
+        "Atendimento IA com histórico",
+        "Painel de gestão de estoque",
+        "Suporte por e-mail"
+      ]
     }
   ]
   
