@@ -11,21 +11,55 @@
   <div class="carrossel-veiculo" *ngIf="placa && imagensVeiculo.length">
     <h3>Fotos do veículo</h3>
     <div class="carousel-wrapper">
-      <img *ngFor="let img of imagensVeiculo" [src]="img" alt="Imagem do veículo" (click)="abrirImagem(img)"/>
+      <img
+        *ngFor="let img of imagensVeiculo"
+        [src]="img"
+        alt="Imagem do veículo"
+        (click)="abrirImagem(img)"
+      />
     </div>
   </div>
 
   <!-- Mensagens do chat -->
-  <div class="mensagens">
-    <div *ngFor="let msg of mensagens" [ngClass]="{ 'cliente': msg.autor === 'Cliente', 'ia': msg.autor === 'IA' }">
+  <div class="mensagens" #mensagensDiv>
+    <div
+      *ngFor="let msg of mensagens"
+      [ngClass]="{ 'cliente': msg.autor === 'Cliente', 'ia': msg.autor === 'IA' }"
+      class="mensagem-bolha"
+    >
       <strong>{{ msg.autor }}:</strong> {{ msg.texto }}
     </div>
   </div>
 
   <!-- Campo de entrada -->
   <div class="entrada">
-    <input type="text" [(ngModel)]="novaMensagem" placeholder="Digite sua pergunta..." (keyup.enter)="enviar()" />
-    <button (click)="enviar()">Enviar</button>
+    <input
+      type="text"
+      [(ngModel)]="novaMensagem"
+      placeholder="Digite sua pergunta..."
+      (keyup.enter)="enviar()"
+      [disabled]="isLoading"
+    />
+
+    <button
+      mat-icon-button
+      (click)="iniciarGravacao()"
+      [disabled]="isRecording"
+      color="accent"
+      matTooltip="Falar"
+    >
+      <mat-icon>mic</mat-icon>
+    </button>
+
+    <button (click)="enviar()" [disabled]="!novaMensagem.trim() || isLoading">
+      <mat-icon *ngIf="!isLoading">send</mat-icon>
+      <mat-progress-spinner
+        *ngIf="isLoading"
+        diameter="20"
+        mode="indeterminate"
+        color="primary"
+      ></mat-progress-spinner>
+    </button>
   </div>
 
 </div>

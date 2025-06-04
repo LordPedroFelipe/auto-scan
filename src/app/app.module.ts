@@ -34,6 +34,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MicRecordingSnackComponent } from './components/mic-recording-snack/mic-recording-snack.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     DashboardComponent,
     EstoqueComponent,
     CadastroVeiculoModalComponent,
-    LoadingComponent
+    LoadingComponent,
+    MicRecordingSnackComponent
   ],
   imports: [
     BrowserModule,
