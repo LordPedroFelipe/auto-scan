@@ -14,6 +14,14 @@
     <button
       *ngIf="isInRole(role)"
       mat-button
+      routerLink="/loja-lista"
+    >
+      Lojas
+    </button>
+
+    <button
+      *ngIf="isInRole(role)"
+      mat-button
       routerLink="/estoque"
     >
       Estoque
@@ -25,14 +33,6 @@
       routerLink="/lead-lista"
     >
       LEADs
-    </button>
-
-    <button
-      *ngIf="isInRole(role)"
-      mat-button
-      routerLink="/loja-lista"
-    >
-      Lojas
     </button>
 
     <button

@@ -1,18 +1,22 @@
 <div class="container">
-  <h2>Lista de Lojas Ativas</h2>
+  <h2>Lista de Lojas</h2>
+  <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Loja</button>
 
-  <mat-progress-spinner *ngIf="carregando" mode="indeterminate"></mat-progress-spinner>
-
-  <mat-table *ngIf="!carregando && lojas.length > 0" [dataSource]="lojas" class="mat-elevation-z2">
+  <mat-table [dataSource]="lojas" class="mat-elevation-z2">
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
-      <mat-cell *matCellDef="let loja"> {{ loja.name }} </mat-cell>
+      <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+      <mat-cell *matCellDef="let loja">{{ loja.name }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef> Descrição </mat-header-cell>
-      <mat-cell *matCellDef="let loja"> {{ loja.description }} </mat-cell>
+      <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+      <mat-cell *matCellDef="let loja">{{ loja.description }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="userName">
+      <mat-header-cell *matHeaderCellDef> Nome do Dono </mat-header-cell>
+      <mat-cell *matCellDef="let loja"> {{ loja.owner?.userName }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">
@@ -20,9 +24,19 @@
       <mat-cell *matCellDef="let loja"> {{ loja.owner?.email }} </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="['name', 'description', 'email']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['name', 'description', 'email'];"></mat-row>
-  </mat-table>
+    <ng-container matColumnDef="acoes">
+      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+      <mat-cell *matCellDef="let loja">
+        <button mat-icon-button color="primary" (click)="editar(loja)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="excluir(loja.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
 
-  <p *ngIf="!carregando && lojas.length === 0">Nenhuma loja encontrada.</p>
+    <mat-header-row *matHeaderRowDef="['name', 'description', 'userName', 'email', 'acoes']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name', 'description', 'userName', 'email', 'acoes']"></mat-row>
+  </mat-table>
 </div>

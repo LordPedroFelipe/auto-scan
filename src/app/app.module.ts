@@ -38,6 +38,7 @@ import { MicRecordingSnackComponent } from './components/mic-recording-snack/mic
 import { LojaListaComponent } from './pages/loja-lista/loja-lista.component';
 import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.component';
 import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
+import { LojaFormComponent } from './components/loja-form/loja-form.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
     MicRecordingSnackComponent,
     LojaListaComponent,
     UsuariosListaComponent,
-    LeadListaComponent
+    LeadListaComponent,
+    LojaFormComponent
   ],
   imports: [
     BrowserModule,

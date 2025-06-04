@@ -24,11 +24,12 @@ export class LojaService {
   criar(loja: LojaCreateDto): Observable<LojaModel> {
     return this.http.post<LojaModel>(this.apiUrl, loja);
   }
-  atualizar(id: number, loja: LojaModel): Observable<LojaModel> {
+
+  atualizar(id: string, loja: LojaModel): Observable<LojaModel> {
     return this.http.put<LojaModel>(`${this.apiUrl}/${id}`, loja);
   }
 
-  excluir(id: number): Observable<void> {
+  excluir(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

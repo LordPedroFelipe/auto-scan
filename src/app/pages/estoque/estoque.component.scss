@@ -1,0 +1,24 @@
+.container {
+  padding: 16px;
+
+  h2 {
+    margin-bottom: 16px;
+  }
+
+  button {
+    margin-bottom: 16px;
+  }
+
+  mat-table {
+    width: 100%;
+  }
+
+  mat-cell,
+  mat-header-cell {
+    padding: 8px;
+  }
+
+  mat-icon-button {
+    margin-left: 4px;
+  }
+}
