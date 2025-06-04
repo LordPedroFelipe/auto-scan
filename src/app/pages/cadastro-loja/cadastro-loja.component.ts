@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LojaCreateDto } from 'src/app/models/loja-create.dto';
 import { LojaService } from 'src/app/services/loja.service';
 
 @Component({
@@ -25,15 +26,27 @@ export class CadastroLojaComponent implements OnInit {
       qtde_carros_estoque: [0, [Validators.required, Validators.min(0)]]
     });
   }
-  
+
   salvar(): void {
-    if (this.form.valid) {
-      this.lojaService.criar(this.form.value).subscribe(() => {
-        alert('Loja cadastrada com sucesso!');
-        this.form.reset();
-      }, () => {
-        alert('Erro ao cadastrar loja');
-      });
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
+
+    const novaLoja: LojaCreateDto = this.form.value;
+
+    this.lojaService.criar(novaLoja).subscribe({
+      next: (loja) => {
+        console.log('[Loja criada]', loja);
+        alert(`Loja "${loja.name}" cadastrada com sucesso!`);
+        this.form.reset();
+      },
+      error: (err) => {
+        console.error('[Erro ao cadastrar loja]', err);
+        alert('Erro ao cadastrar loja');
+      }
+    });
   }
 }
+
+

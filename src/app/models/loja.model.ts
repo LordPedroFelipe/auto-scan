@@ -1,15 +1,20 @@
-export interface Loja {
-    id?: number;
-    nome: string;
-    cnpj: string;
-    telefone: string;
-    email: string;
-    endereco: string;
-    cidade: string;
-    estado: string;
-    cep: string;
-    qtde_carros_estoque: number;
-    data_cadastro?: Date;
-    data_atualizacao?: Date;
+import { UsuarioModel } from './usuario.model';
+import { VeiculoModel } from './veiculo.model';
+import { ReservaModel } from './reserva.model';
+import { TestDriveModel } from './test-drive.model';
+
+export interface LojaModel {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  isDeleted: boolean;
+  name: string;
+  description: string;
+  ownerId: string;
+  owner: UsuarioModel;
+  sellers: UsuarioModel[];
+  vehicles: VeiculoModel[];
+  reservations: ReservaModel[];
+  testDrives: TestDriveModel[];
+  isActive: boolean;
 }
-  
