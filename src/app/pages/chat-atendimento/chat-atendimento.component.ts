@@ -35,6 +35,14 @@ export class ChatAtendimentoComponent implements OnInit {
   isRecording = false;
   snackBarRef: any; // Referência ao Snackbar
 
+  private mensagensBoasVindas: string[] = [
+    '🚗 Olá! Seja bem-vindo à ScanDrive, sua nova experiência inteligente na busca pelo carro ideal! 🤖 Me diga, qual modelo ou estilo de carro você procura hoje?',
+    '👋 Bem-vindo à ScanDrive! Eu sou seu assistente virtual. Vamos encontrar o carro dos seus sonhos de forma rápida e sem complicação?',
+    '🔍 Olá! Sou o assistente inteligente da ScanDrive 🤖. Com tecnologia de ponta, vou te ajudar a encontrar o carro perfeito. O que você está buscando hoje?',
+    '🎯 Olá! Pronto para achar o carro ideal? Me diga o que você procura e eu te mostro as melhores opções com ótimas condições.',
+    '✨ Seja muito bem-vindo à ScanDrive! 🚗 Conte comigo para encontrar o veículo ideal com confiança e praticidade. Vamos começar?'
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private dialog: MatDialog,
@@ -50,7 +58,7 @@ export class ChatAtendimentoComponent implements OnInit {
       this.imagensVeiculo = this.buscarImagensDoVeiculo(this.placa);
       this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
     } else {
-      this.enviarMensagemIA('Olá! Sou o assistente ScanDrive 🤖. Que tipo de carro você está buscando hoje?');
+      this.enviarMensagemBoasVindas();
     }
 
     // Opcional: carregar mensagens de uma sessão anterior
@@ -193,5 +201,11 @@ export class ChatAtendimentoComponent implements OnInit {
     if (this.speechRecognition) {
       this.speechRecognition.stop();
     }
+  }
+
+  enviarMensagemBoasVindas(): void {
+    const index = Math.floor(Math.random() * this.mensagensBoasVindas.length);
+    const mensagem = this.mensagensBoasVindas[index];
+    this.enviarMensagemIA(mensagem); // sua função já existente
   }
 }
