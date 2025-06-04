@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://api-hml.scandrive.com/api'
+  apiUrl: 'http://108.181.223.196:8080/api'
 };

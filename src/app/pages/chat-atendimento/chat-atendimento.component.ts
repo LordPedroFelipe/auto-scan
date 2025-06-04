@@ -180,4 +180,17 @@ export class ChatAtendimentoComponent implements OnInit {
     this.speechRecognition.start();
   }
 
+  alternarGravacao(): void {
+    if (this.isRecording) {
+      this.pararGravacao();
+    } else {
+      this.iniciarGravacao();
+    }
+  }
+
+  pararGravacao(): void {
+    if (this.speechRecognition) {
+      this.speechRecognition.stop();
+    }
+  }
 }
