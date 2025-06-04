@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LojaModel } from '../models/loja.model';
 import { LojaCreateDto } from '../models/loja-create.dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LojaService {
-  private apiUrl = 'https://api.meusite.com/lojas'; // substitua pela sua API real
+  private readonly apiUrl = `${environment.apiUrl}/Auth`;
 
   constructor(private http: HttpClient) {}
 

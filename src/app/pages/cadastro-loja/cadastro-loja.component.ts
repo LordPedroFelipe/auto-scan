@@ -33,7 +33,26 @@ export class CadastroLojaComponent implements OnInit {
       return;
     }
 
-    const novaLoja: LojaCreateDto = this.form.value;
+    // Suponha que estes valores venham do login, por exemplo
+    const userName = 'pedro.souza';
+    const email = 'pedro@autoscan.com';
+    const phoneNumber = '(47) 99999-9999';
+
+    const novaLoja: LojaCreateDto = {
+      name: this.form.get('name')?.value,
+      description: this.form.get('description')?.value,
+      ownerId: '1234567890', // ID real do usuário logado
+      owner: {
+        userName: userName,
+        normalizedUserName: userName.toUpperCase(),
+        email: email,
+        normalizedEmail: email.toUpperCase(),
+        emailConfirmed: true,
+        passwordHash: 'senha_criptografada_aqui',
+        phoneNumber: phoneNumber,
+        phoneNumberConfirmed: true
+      }
+    };
 
     this.lojaService.criar(novaLoja).subscribe({
       next: (loja) => {
