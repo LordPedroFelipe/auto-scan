@@ -3,20 +3,34 @@
     <img src="assets/img/ScanDrive-White/1.png" alt="Logo ScanDrive" class="login-logo" />
     <h2>Bem-vindo ao ScanDrive</h2>
 
-    <form (submit)="onSubmit()" [formGroup]="loginForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
-      </mat-form-field>
+    <!-- COMPONENTE DE LOADING -->
+    <app-loading [isLoading]="isLoading" [text]="'Entrando no sistema...'">
 
-      <mat-form-field appearance="fill">
-        <mat-label>Senha</mat-label>
-        <input matInput type="password" formControlName="password" required />
-      </mat-form-field>
+      <!-- FORMULÁRIO DE LOGIN -->
+      <form (submit)="submit()" [formGroup]="form">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required />
+          <mat-error *ngIf="form.get('email')?.hasError('required')">Email obrigatório</mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
+        </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Entrar</button>
-    </form>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="password" required />
+          <mat-error *ngIf="form.get('password')?.hasError('required')">Senha obrigatória</mat-error>
+        </mat-form-field>
 
+        <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+          Entrar
+        </button>
+      </form>
+
+    </app-loading>
+
+    <!-- LINK PARA CADASTRO -->
     <div class="cadastro-wrapper">
       <span>Ainda não tem uma conta?</span>
       <button mat-stroked-button color="accent" routerLink="/cadastro-loja">Criar Cadastro de Loja</button>
