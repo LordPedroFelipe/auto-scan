@@ -10,9 +10,55 @@
 
   <ng-template #menuPrivado>
     <button mat-button routerLink="/dashboard">Dashboard</button>
-    <button mat-button routerLink="/estoque">Estoque</button>
-    <button mat-button routerLink="/relatorios">Relatórios</button>
-    <button mat-button routerLink="/configuracoes">Configurações</button>
+
+    <button
+      *ngIf="isInRole(role)"
+      mat-button
+      routerLink="/estoque"
+    >
+      Estoque
+    </button>
+    
+    <button
+      *ngIf="isInRole(role)"
+      mat-button
+      routerLink="/leads"
+    >
+      LEADs
+    </button>
+
+    <button
+      *ngIf="isInRole(role)"
+      mat-button
+      routerLink="/lojas"
+    >
+      Lojas
+    </button>
+
+    <button
+      *ngIf="isInRole(role)"
+      mat-button
+      routerLink="/usuarios"
+    >
+      Usuários
+    </button>
+
+    <button
+      *ngIf="isInRole(role)"
+      mat-button
+      routerLink="/relatorios"
+    >
+      Relatórios
+    </button>
+
+    <button
+      *ngIf="isInRole(role)"
+      mat-button
+      routerLink="/configuracoes"
+    >
+      Configurações
+    </button>
+
     <button mat-button (click)="logout()">Logout</button>
   </ng-template>
 </mat-toolbar>

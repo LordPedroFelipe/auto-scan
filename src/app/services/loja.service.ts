@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Loja } from '../models/loja.model';
+import { LojaModel } from '../models/loja.model';
+import { LojaCreateDto } from '../models/loja-create.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,19 @@ export class LojaService {
 
   constructor(private http: HttpClient) {}
 
-  listar(): Observable<Loja[]> {
-    return this.http.get<Loja[]>(this.apiUrl);
+  listar(): Observable<LojaModel[]> {
+    return this.http.get<LojaModel[]>(this.apiUrl);
   }
 
-  buscarPorId(id: number): Observable<Loja> {
-    return this.http.get<Loja>(`${this.apiUrl}/${id}`);
+  buscarPorId(id: number): Observable<LojaModel> {
+    return this.http.get<LojaModel>(`${this.apiUrl}/${id}`);
   }
 
-  criar(loja: Loja): Observable<Loja> {
-    return this.http.post<Loja>(this.apiUrl, loja);
+  criar(loja: LojaCreateDto): Observable<LojaModel> {
+    return this.http.post<LojaModel>(this.apiUrl, loja);
   }
-
-  atualizar(id: number, loja: Loja): Observable<Loja> {
-    return this.http.put<Loja>(`${this.apiUrl}/${id}`, loja);
+  atualizar(id: number, loja: LojaModel): Observable<LojaModel> {
+    return this.http.put<LojaModel>(`${this.apiUrl}/${id}`, loja);
   }
 
   excluir(id: number): Observable<void> {
