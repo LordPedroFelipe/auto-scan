@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>{{ data ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()" class="form-container">
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="userName" required>
+    <mat-error *ngIf="form.get('userName')?.hasError('required')">
+      Nome é obrigatório
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="email" required>
+    <mat-error *ngIf="form.get('email')?.hasError('required')">
+      Email é obrigatório
+    </mat-error>
+    <mat-error *ngIf="form.get('email')?.hasError('email')">
+      Email inválido
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Telefone</mat-label>
+    <input matInput formControlName="phoneNumber">
+  </mat-form-field>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="fechar()">Cancelar</button>
+    <button mat-flat-button color="primary" [disabled]="form.invalid">Salvar</button>
+  </div>
+</form>

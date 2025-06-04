@@ -13,6 +13,8 @@ export class NavbarComponent implements OnInit {
   isLogado = false;
   UserRole = UserRole;
   role: UserRole | null = null;
+  menuAberto = false;
+  modoMenu: 'over' | 'side' = 'side';
 
   constructor(
     private router: Router,
@@ -65,6 +67,7 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.atualizarEstado();
+    this.menuAberto = false;
     this.router.navigate(['/login']);
   }
 }

@@ -39,7 +39,9 @@ import { LojaListaComponent } from './pages/loja-lista/loja-lista.component';
 import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.component';
 import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
 import { LojaFormComponent } from './components/loja-form/loja-form.component';
-
+import { UsuarioFormComponent } from './components/usuario-form/usuario-form.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +62,8 @@ import { LojaFormComponent } from './components/loja-form/loja-form.component';
     LojaListaComponent,
     UsuariosListaComponent,
     LeadListaComponent,
-    LojaFormComponent
+    LojaFormComponent,
+    UsuarioFormComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +84,8 @@ import { LojaFormComponent } from './components/loja-form/loja-form.component';
     MatTableModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatSidenavModule,
+    MatListModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
