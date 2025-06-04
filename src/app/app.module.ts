@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -29,7 +29,11 @@ import { CadastroVeiculoModalComponent } from './components/cadastro-veiculo-mod
 import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
-
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { LoadingComponent } from './components/loading/loading.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,8 @@ import { MatTableModule } from '@angular/material/table';
     ImagemModalComponent,
     DashboardComponent,
     EstoqueComponent,
-    CadastroVeiculoModalComponent
+    CadastroVeiculoModalComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -64,9 +69,13 @@ import { MatTableModule } from '@angular/material/table';
     MatIconModule,
     MatOptionModule,
     MatTableModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

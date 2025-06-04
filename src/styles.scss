@@ -51,19 +51,38 @@ $autoscan-theme: mat.define-light-theme((
 
 
 html, body {
-    height: 100%;
-    margin: 0;
-  }
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
   
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  app-root {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-  
+.success-snackbar {
+  background-color: #43a047;
+  color: #fff;
+}
+
+.error-snackbar {
+  background-color: #e53935;
+  color: #fff;
+}
+
+.info-snackbar {
+  background-color: #1e88e5;
+  color: #fff;
+}
+
+.warning-snackbar {
+  background-color: #fbc02d;
+  color: #000;
+}
