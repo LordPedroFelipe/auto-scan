@@ -43,12 +43,11 @@
 
     <button
       mat-icon-button
-      (click)="iniciarGravacao()"
-      [disabled]="isRecording"
-      color="accent"
-      matTooltip="Falar"
+      (click)="alternarGravacao()"
+      [color]="isRecording ? 'warn' : 'accent'"
+      matTooltip="Fale com o assistente"
     >
-      <mat-icon>mic</mat-icon>
+      <mat-icon>{{ isRecording ? 'stop' : 'mic' }}</mat-icon>
     </button>
 
     <button (click)="enviar()" [disabled]="!novaMensagem.trim() || isLoading">

@@ -20,7 +20,7 @@ export class AuthService {
   login(data: LoginModel): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
       tap((res: any) => {
-      localStorage.setItem('access_token', res.token);
+        localStorage.setItem('access_token', res.token);
       })
     );
   }
