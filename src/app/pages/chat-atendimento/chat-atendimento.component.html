@@ -28,6 +28,20 @@
       class="mensagem-bolha"
     >
       <strong>{{ msg.autor }}:</strong> {{ msg.texto }}
+
+          <!-- Se a mensagem for do tipo com opções -->
+      <div *ngIf="msg.opcoes">
+        <div class="botoes-sugestoes">
+          <button
+            mat-stroked-button
+            color="primary"
+            *ngFor="let op of msg.opcoes"
+            (click)="selecionarOpcao(op)"
+          >
+            {{ op }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -63,13 +77,13 @@
   
 
   <!-- Sugestões rápidas de busca -->
-  <div class="sugestoes-chat" *ngIf="sugestoesVisiveis.length">
+  <!--div class="sugestoes-chat" *ngIf="sugestoesVisiveis.length">
     <h4>Buscas populares:</h4>
     <div class="botoes-sugestoes">
       <button mat-stroked-button color="accent" *ngFor="let sugestao of sugestoesVisiveis" (click)="novaMensagem = sugestao; enviar()">
         {{ sugestao }}
       </button>
     </div>
-  </div>
+  </div-->
 
 </div>

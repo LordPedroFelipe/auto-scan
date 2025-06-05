@@ -169,14 +169,34 @@
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
-.sugestoes-chat {
-  margin: 12px 0;
-  text-align: center;
-}
 
 .botoes-sugestoes {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 8px;
+  margin-top: 12px;
+}
+
+.botoes-sugestoes button {
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 14px;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #1a237e;
+  border: 1px solid #bbdefb;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 10px 16px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.botoes-sugestoes button:hover {
+  background-color: #e3f2fd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.mensagens .ia .botoes-sugestoes {
+  margin-top: 8px;
 }

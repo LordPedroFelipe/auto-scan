@@ -13,6 +13,7 @@ interface Mensagem {
   autor: 'IA' | 'Cliente';
   texto: string;
   data: Date;
+  opcoes?: string[] | null;
 }
 
 @Component({
@@ -55,7 +56,7 @@ export class ChatAtendimentoComponent implements OnInit {
     'Sedan premium',
     'Modelos populares para Uber',
     // 'Carros para PCD com isenção',
-    'Modelos com baixa manutenção',
+    'Baixa manutenção',
     // 'Carros para jovens motoristas',
     // 'Carros para viajar com pets'
   ];
@@ -81,7 +82,8 @@ export class ChatAtendimentoComponent implements OnInit {
 
     if (this.placa) {
       this.imagensVeiculo = this.buscarImagensDoVeiculo(this.placa);
-      this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
+      // this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
+      this.enviarMensagemPlacaCarro();
     } else {
       this.enviarMensagemBoasVindas();
     }
@@ -116,16 +118,15 @@ export class ChatAtendimentoComponent implements OnInit {
     });
   }
 
-  enviarMensagemIA(texto: string): void {
-    this.mensagens.push({ autor: 'IA', texto, data: new Date() });
+  enviarMensagemIA(texto: string, sugestoesVisiveis: string[] | null): void {
+    this.mensagens.push({ autor: 'IA', texto, data: new Date(), opcoes: sugestoesVisiveis });
   }
 
   buscarImagensDoVeiculo(placa: string): string[] {
     return [
       `assets/img/veiculos/${placa}-1.jpeg`,
       `assets/img/veiculos/${placa}-2.jpeg`,
-      `assets/img/veiculos/${placa}-3.jpeg`,
-      `assets/img/veiculos/${placa}-4.jpeg`
+      `assets/img/veiculos/${placa}-3.jpeg`
     ];
   }
 
@@ -229,7 +230,20 @@ export class ChatAtendimentoComponent implements OnInit {
   enviarMensagemBoasVindas(): void {
     const index = Math.floor(Math.random() * this.mensagensBoasVindas.length);
     const mensagem = this.mensagensBoasVindas[index];
-    this.enviarMensagemIA(mensagem);
+    
+    const sugestoesVisiveis = this.shuffle(this.sugestoesBusca).slice(0, 3);
+    this.enviarMensagemIA(mensagem, sugestoesVisiveis);
+  }
+
+  enviarMensagemPlacaCarro(): void {
+    const mensagem = `🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`;
+    
+    const sugestoesVisiveis = [
+      'Agendar TestDrive',
+      'Simular Financiamento',
+      'Detalhes Tecnicos do Carro'
+    ]
+    this.enviarMensagemIA(mensagem, sugestoesVisiveis);
   }
 
   shuffle(array: string[]): string[] {
@@ -238,6 +252,11 @@ export class ChatAtendimentoComponent implements OnInit {
 
   enviarSugestao(sugestao: string): void {
     this.novaMensagem = sugestao;
+    this.enviar();
+  }
+
+  selecionarOpcao(opcao: string): void {
+    this.novaMensagem = opcao;
     this.enviar();
   }
 }
