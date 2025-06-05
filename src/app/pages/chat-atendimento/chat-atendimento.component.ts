@@ -8,6 +8,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { interval, Subscription, switchMap } from 'rxjs';
 import { MicRecordingSnackComponent } from 'src/app/components/mic-recording-snack/mic-recording-snack.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { IaChatService } from 'src/app/services/ia-chat.service';
 
 interface Mensagem {
   autor: 'IA' | 'Cliente';
@@ -74,7 +75,8 @@ export class ChatAtendimentoComponent implements OnInit {
     private dialog: MatDialog,
     private chatService: ChatService,
     private alert: AlertService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private iaChatService: IaChatService,
   ) {}
 
   ngOnInit(): void {
@@ -236,7 +238,8 @@ export class ChatAtendimentoComponent implements OnInit {
   }
 
   enviarMensagemPlacaCarro(): void {
-    const mensagem = `🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`;
+    const mensagem = this.iaChatService.gerarMensagemVendaFake();
+    // const mensagem = `🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`;
     
     const sugestoesVisiveis = [
       'Agendar TestDrive',
