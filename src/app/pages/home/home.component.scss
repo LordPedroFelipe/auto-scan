@@ -105,14 +105,13 @@
   }
 }
 
-
 .logo-scan-cars {
-  width: 400px;
+  width: 700px;
   height: auto;
   margin-bottom: 10px;
   animation: fadeIn 1s ease-in-out;
 
   @media (max-width: 600px) {
-    width: 220px;
+    width: 300px;
   }
 }

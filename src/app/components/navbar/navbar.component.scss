@@ -1,14 +1,29 @@
 .sidenav {
-  width: 250px;
+  // width: 250px;
   transition: transform 0.3s ease-in-out;
 }
 
 .navbar {
   height: 60px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   padding: 0 16px;
   font-size: 18px;
+
+  button {
+    height: 60px;
+    line-height: 60px;
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
+
+mat-sidenav-content {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .logo {
