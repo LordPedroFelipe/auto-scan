@@ -19,7 +19,6 @@
       <a mat-list-item (click)="logout()">Logout</a>
     </mat-nav-list>
   </mat-sidenav>
-
   <mat-sidenav-content>
     <mat-toolbar color="primary" class="navbar">
       <button
@@ -32,6 +31,7 @@
         <mat-icon>menu</mat-icon>
       </button>
 
+      <p class="logo-loja" *ngIf="isLogado">Kafka Veiculos</p>
       <img *ngIf="!isLogado" src="assets/img/ScanDriveLogo.png" alt="ScanDrive IA" class="logo" routerLink="/" />
       <span class="spacer"></span>
 
