@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Precisamos de alguns dados para iniciar</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Nome completo</mat-label>
+    <input matInput formControlName="nome" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="email" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Telefone</mat-label>
+    <input matInput formControlName="telefone" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Data de nascimento</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dataNascimento" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onSubmit()">Continuar</button>
+</mat-dialog-actions>

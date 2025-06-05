@@ -27,7 +27,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EstoqueComponent } from './pages/estoque/estoque.component';
 import { CadastroVeiculoModalComponent } from './components/cadastro-veiculo-modal/cadastro-veiculo-modal.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
@@ -42,6 +42,9 @@ import { LojaFormComponent } from './components/loja-form/loja-form.component';
 import { UsuarioFormComponent } from './components/usuario-form/usuario-form.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { LeadFormModalComponent } from './components/lead-form-modal/lead-form-modal.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,7 +66,8 @@ import { MatListModule } from '@angular/material/list';
     UsuariosListaComponent,
     LeadListaComponent,
     LojaFormComponent,
-    UsuarioFormComponent
+    UsuarioFormComponent,
+    LeadFormModalComponent
   ],
   imports: [
     BrowserModule,
@@ -86,6 +90,8 @@ import { MatListModule } from '@angular/material/list';
     MatSnackBarModule,
     MatSidenavModule,
     MatListModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

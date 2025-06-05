@@ -9,6 +9,9 @@ import { interval, Subscription, switchMap } from 'rxjs';
 import { MicRecordingSnackComponent } from 'src/app/components/mic-recording-snack/mic-recording-snack.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IaChatService } from 'src/app/services/ia-chat.service';
+import { LeadFormModalComponent } from 'src/app/components/lead-form-modal/lead-form-modal.component';
+import { LeadService } from 'src/app/services/lead.service';
+import { LocationService } from 'src/app/services/location.service';
 
 interface Mensagem {
   autor: 'IA' | 'Cliente';
@@ -37,6 +40,8 @@ export class ChatAtendimentoComponent implements OnInit {
   isRecording = false;
   snackBarRef: any;
   isPrimeiraInteracao = true;
+  leadCapturado = false;
+  leadData: any = null;
 
   sugestoesVisiveis: string[] = [];
   sugestoesBusca = [
@@ -77,6 +82,8 @@ export class ChatAtendimentoComponent implements OnInit {
     private alert: AlertService,
     private snackBar: MatSnackBar,
     private iaChatService: IaChatService,
+    private leadService: LeadService,
+    private localizacaoService: LocationService,
   ) {}
 
   ngOnInit(): void {
@@ -93,10 +100,73 @@ export class ChatAtendimentoComponent implements OnInit {
     this.iniciarPollingMensagens();
     this.sugestoesVisiveis = this.shuffle(this.sugestoesBusca).slice(0, 6);
   }
-
+  /*
   enviar(): void {
     if (!this.novaMensagem.trim()) return;
 
+    const pergunta = this.novaMensagem;
+    this.mensagens.push({ autor: 'Cliente', texto: pergunta, data: new Date() });
+    this.novaMensagem = '';
+
+    const payload: SendMessageRequest = {
+      sessionId: this.sessionId,
+      message: pergunta
+    };
+
+    this.isLoading = true;
+    this.chatService.sendMessage(payload).subscribe({
+      next: (resposta: any) => {
+        const mensagem = resposta?.message || 'Resposta recebida.';
+        this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date() });
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+        this.alert.showError('Erro ao enviar mensagem para o assistente.');
+      }
+    });
+  }
+  */
+
+  async enviar(): Promise<void> {
+    if (!this.novaMensagem.trim()) return;
+
+    // Se ainda não capturou o lead, abre o modal
+    if (!this.leadCapturado) {
+      const dialogRef = this.dialog.open(LeadFormModalComponent, {
+        width: '400px',
+        disableClose: true
+      });
+
+      const result = await dialogRef.afterClosed().toPromise();
+      if (!result) return;
+
+      const localizacao = await this.localizacaoService.obterCoordenadas();
+      const cidade = localizacao
+        ? await this.localizacaoService.obterCidadePorCoordenadas(localizacao.latitude, localizacao.longitude)
+        : null;
+
+      // Aqui você prepara o objeto esperado pela API
+      const novoLead = {
+        name: result.nome,
+        email: result.email,
+        phone: result.telefone,
+        notes: (localizacao && `Localização: ${localizacao.latitude}, ${localizacao.longitude}, Cidade: ${cidade}`) || '',
+        shopId: '', // se você tiver esse ID disponível no contexto
+        vehicleId: this.placa ?? '' // se a placa for equivalente ao veículoId
+      };
+
+      try {
+        await this.leadService.criar(novoLead).toPromise();
+        this.leadData = result;
+        this.leadCapturado = true;
+      } catch (error) {
+        this.alert.showError('Erro ao salvar o LEAD.');
+        return;
+      }
+    }
+
+    // Continua com o envio da mensagem
     const pergunta = this.novaMensagem;
     this.mensagens.push({ autor: 'Cliente', texto: pergunta, data: new Date() });
     this.novaMensagem = '';
@@ -264,4 +334,5 @@ export class ChatAtendimentoComponent implements OnInit {
     this.novaMensagem = opcao;
     this.enviar();
   }
+
 }
