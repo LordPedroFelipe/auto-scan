@@ -1,4 +1,5 @@
 <mat-sidenav-container class="sidenav-container" autosize>
+  <!-- Menu lateral -->
   <mat-sidenav
     #sidenav
     class="sidenav"
@@ -7,7 +8,12 @@
     [fixedInViewport]="modoMenu === 'over'"
     [disableClose]="modoMenu === 'side'"
   >
-    <img src="assets/img/ScanDriveLogo.png" alt="ScanDrive IA" class="logo-menu" routerLink="/dashboard"/>
+    <img
+      src="assets/img/ScanDriveLogo.png"
+      alt="ScanDrive IA"
+      class="logo-menu"
+      routerLink="/dashboard"
+    />
     <mat-nav-list>
       <a mat-list-item routerLink="/dashboard">Dashboard</a>
       <a *ngIf="isInRole(role)" mat-list-item routerLink="/loja-lista">Lojas</a>
@@ -19,7 +25,10 @@
       <a mat-list-item (click)="logout()">Logout</a>
     </mat-nav-list>
   </mat-sidenav>
+
+  <!-- Conteúdo principal -->
   <mat-sidenav-content>
+    <!-- Toolbar superior -->
     <mat-toolbar color="primary" class="navbar">
       <button
         type="button"
@@ -32,16 +41,30 @@
       </button>
 
       <p class="logo-loja" *ngIf="isLogado">Kafka Veiculos</p>
-      <img *ngIf="!isLogado" src="assets/img/ScanDriveLogo.png" alt="ScanDrive IA" class="logo" routerLink="/" />
+
+      <img
+        *ngIf="!isLogado"
+        src="assets/img/ScanDriveLogo.png"
+        alt="ScanDrive IA"
+        class="logo"
+        routerLink="/"
+      />
+
       <span class="spacer"></span>
 
-      <ng-container *ngIf="!isLogado">
+      <!--ng-container *ngIf="chatAtendimento">
+        <button mat-button routerLink="/">Estoque</button>
+        <button mat-button routerLink="/planos">Lojas</button>
+      </ng-container-->
+
+      <ng-container *ngIf="!isLogado && !chatAtendimento">
         <button mat-button routerLink="/">Home</button>
         <button mat-button routerLink="/planos">Planos</button>
         <button mat-button routerLink="/login">Login</button>
       </ng-container>
     </mat-toolbar>
 
+    <!-- Saída das rotas -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

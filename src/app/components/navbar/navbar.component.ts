@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserRole } from 'src/app/models/user-role.enum';
 import { filter } from 'rxjs/operators';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +11,13 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  // @ViewChild('sidenav') sidenav!: MatSidenav;
   isLogado = false;
   UserRole = UserRole;
   role: UserRole | null = null;
   menuAberto = false;
   modoMenu: 'over' | 'side' = 'side';
+  chatAtendimento = false;
 
   constructor(
     private router: Router,
@@ -35,7 +38,10 @@ export class NavbarComponent implements OnInit {
 
   atualizarEstado(): void {
     console.log('atualizarEstado:');
+    const urlAtual = this.router.url;
+    this.chatAtendimento = urlAtual.includes('atendimento'); 
     this.isLogado = this.authService.isAuthenticated();
+    
 
     if (this.isLogado) {
       const roles = this.authService.getRoles();

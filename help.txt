@@ -1,2 +1,9 @@
 admin@scandrive.com
 Admin@123456
+
+
+    comprei o dominio scandrive.com.br na registro.br
+
+    como fazer meu projeto do git https://lordpedrofelipe.github.io/auto-scan/
+    redirecionar tambem para esse novo dominio
+

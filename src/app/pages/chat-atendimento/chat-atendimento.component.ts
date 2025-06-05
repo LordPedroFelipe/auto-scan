@@ -128,7 +128,9 @@ export class ChatAtendimentoComponent implements OnInit {
     return [
       `assets/img/veiculos/${placa}-1.jpeg`,
       `assets/img/veiculos/${placa}-2.jpeg`,
-      `assets/img/veiculos/${placa}-3.jpeg`
+      `assets/img/veiculos/${placa}-3.jpeg`,
+      `assets/img/veiculos/${placa}-4.jpeg`,
+      `assets/img/veiculos/${placa}-5.jpeg`
     ];
   }
 
