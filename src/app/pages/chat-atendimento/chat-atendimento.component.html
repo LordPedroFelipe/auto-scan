@@ -60,5 +60,16 @@
       ></mat-progress-spinner>
     </button>
   </div>
+  
+
+  <!-- Sugestões rápidas de busca -->
+  <div class="sugestoes-chat" *ngIf="sugestoesVisiveis.length">
+    <h4>Buscas populares:</h4>
+    <div class="botoes-sugestoes">
+      <button mat-stroked-button color="accent" *ngFor="let sugestao of sugestoesVisiveis" (click)="novaMensagem = sugestao; enviar()">
+        {{ sugestao }}
+      </button>
+    </div>
+  </div>
 
 </div>

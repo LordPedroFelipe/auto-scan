@@ -11,4 +11,30 @@
     </mat-card>
   </div>
   
+  <h2>Palavras Mais Buscadas no Chat</h2>
+
+    <mat-table [dataSource]="palavrasMaisBuscadas" class="mat-elevation-z2">
+    <ng-container matColumnDef="palavra">
+        <mat-header-cell *matHeaderCellDef>Palavra</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.palavra }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quantidade">
+        <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.quantidade }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['palavra', 'quantidade']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['palavra', 'quantidade']"></mat-row>
+    </mat-table>
+
+    <!--canvas baseChart
+        [data]="{
+            labels: palavrasMaisBuscadas.map(p => p.palavra),
+            datasets: [{ data: palavrasMaisBuscadas.map(p => p.quantidade), label: 'Buscas' }]
+        }"
+        [type]="'bar'">
+    </canvas-->
+
+
 </div>

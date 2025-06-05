@@ -169,3 +169,14 @@
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
+.sugestoes-chat {
+  margin: 12px 0;
+  text-align: center;
+}
+
+.botoes-sugestoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}

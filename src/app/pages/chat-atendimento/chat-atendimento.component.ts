@@ -23,17 +23,42 @@ interface Mensagem {
 export class ChatAtendimentoComponent implements OnInit {
   @ViewChild('mensagensDiv') mensagensDiv!: ElementRef;
   mensagens: Mensagem[] = [];
-  mensagensMap = new Map<string, boolean>(); // para evitar duplicatas
+  mensagensMap = new Map<string, boolean>();
   mensagemPollingSub?: Subscription;
   novaMensagem = '';
   placa: string | null = null;
   imagensVeiculo: string[] = [];
-  sessionId: string = crypto.randomUUID(); // ou use um ID real da API se disponível
+  sessionId: string = crypto.randomUUID();
   isLoading = false;
 
   speechRecognition: any;
   isRecording = false;
-  snackBarRef: any; // Referência ao Snackbar
+  snackBarRef: any;
+  isPrimeiraInteracao = true;
+
+  sugestoesVisiveis: string[] = [];
+  sugestoesBusca = [
+    'SUV automático até 100 mil',
+    'Carro econômico para cidade',
+    'Sedan confortável',
+    'Pick-up 4x4',
+    'Hatch até 50 mil',
+    'Veículo com baixo KM',
+    'Financiamento sem entrada',
+    'Veículo com garantia de fábrica',
+    'Câmbio automático',
+    'Carros com teto solar',
+    'Carro com banco de couro',
+    // 'Modelos com consumo abaixo de 10km/l',
+    'Veículos 0km',
+    'SUV compacto',
+    'Sedan premium',
+    'Modelos populares para Uber',
+    // 'Carros para PCD com isenção',
+    'Modelos com baixa manutenção',
+    // 'Carros para jovens motoristas',
+    // 'Carros para viajar com pets'
+  ];
 
   private mensagensBoasVindas: string[] = [
     '🚗 Olá! Seja bem-vindo à ScanDrive, sua nova experiência inteligente na busca pelo carro ideal! 🤖 Me diga, qual modelo ou estilo de carro você procura hoje?',
@@ -61,9 +86,8 @@ export class ChatAtendimentoComponent implements OnInit {
       this.enviarMensagemBoasVindas();
     }
 
-    // Opcional: carregar mensagens de uma sessão anterior
-    // this.carregarMensagens();
     this.iniciarPollingMensagens();
+    this.sugestoesVisiveis = this.shuffle(this.sugestoesBusca).slice(0, 6);
   }
 
   enviar(): void {
@@ -81,7 +105,7 @@ export class ChatAtendimentoComponent implements OnInit {
     this.isLoading = true;
     this.chatService.sendMessage(payload).subscribe({
       next: (resposta: any) => {
-        const mensagem = resposta.message;
+        const mensagem = resposta?.message || 'Resposta recebida.';
         this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date() });
         this.isLoading = false;
       },
@@ -125,7 +149,7 @@ export class ChatAtendimentoComponent implements OnInit {
   }
 
   iniciarPollingMensagens(): void {
-    this.mensagemPollingSub = interval(3000).pipe( // a cada 3s
+    this.mensagemPollingSub = interval(3000).pipe(
       switchMap(() => this.chatService.getMessages(this.sessionId))
     ).subscribe({
       next: (res: any[]) => {
@@ -169,9 +193,8 @@ export class ChatAtendimentoComponent implements OnInit {
 
     this.speechRecognition.onresult = (event: any) => {
       const resultado = event.results[0][0].transcript;
-      console.log('🗣 Texto reconhecido:', resultado);
       this.novaMensagem = resultado;
-      this.enviar(); // envia automaticamente
+      this.enviar();
     };
 
     this.speechRecognition.onerror = (event: any) => {
@@ -206,6 +229,15 @@ export class ChatAtendimentoComponent implements OnInit {
   enviarMensagemBoasVindas(): void {
     const index = Math.floor(Math.random() * this.mensagensBoasVindas.length);
     const mensagem = this.mensagensBoasVindas[index];
-    this.enviarMensagemIA(mensagem); // sua função já existente
+    this.enviarMensagemIA(mensagem);
+  }
+
+  shuffle(array: string[]): string[] {
+    return array.sort(() => 0.5 - Math.random());
+  }
+
+  enviarSugestao(sugestao: string): void {
+    this.novaMensagem = sugestao;
+    this.enviar();
   }
 }

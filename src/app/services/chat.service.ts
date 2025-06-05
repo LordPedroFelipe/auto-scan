@@ -105,4 +105,9 @@ sendMessage(data: SendMessageRequest): Observable<string> {
     this._sessionsCache = null;
     this._messagesCache = {};
   }
+
+  getPalavrasMaisBuscadas(): Observable<{ palavra: string; quantidade: number }[]> {
+    return this.http.get<{ palavra: string; quantidade: number }[]>(`${this.apiUrl}/mais-buscadas`);
+  }
+
 }
