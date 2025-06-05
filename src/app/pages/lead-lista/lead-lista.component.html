@@ -1,1 +1,38 @@
-<p>lead-lista works!</p>
+<div class="container">
+  <h2>Lista de Leads</h2>
+
+  <mat-table [dataSource]="leads" class="mat-elevation-z2">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+      <mat-cell *matCellDef="let lead"> {{ lead.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let lead"> {{ lead.email }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef> Telefone </mat-header-cell>
+      <mat-cell *matCellDef="let lead"> {{ lead.phone }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="notes">
+      <mat-header-cell *matHeaderCellDef> Cidade / Observações </mat-header-cell>
+      <mat-cell *matCellDef="let lead"> {{ lead.notes || '-' }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="acoes">
+      <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+      <mat-cell *matCellDef="let lead">
+        <button mat-icon-button color="warn" (click)="excluir(lead.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['name', 'email', 'phone', 'notes', 'acoes']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name', 'email', 'phone', 'notes', 'acoes']"></mat-row>
+  </mat-table>
+</div>
