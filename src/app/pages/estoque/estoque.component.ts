@@ -26,7 +26,7 @@ export class EstoqueComponent implements OnInit {
     this.carregando = true;
     this.estoqueService.listarAtivos().subscribe({
       next: (res) => {
-        this.veiculos = res;
+        this.veiculos = res.items;
         this.carregando = false;
       },
       error: (err) => {

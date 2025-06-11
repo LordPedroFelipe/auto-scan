@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { VeiculoResumoModel } from '../models/veiculo.model';
+import { VeiculoResponse, VeiculoResumoModel } from '../models/veiculo.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -12,8 +12,8 @@ export class EstoqueService {
 
   constructor(private http: HttpClient) {}
 
-  listarAtivos(): Observable<VeiculoResumoModel[]> {
-    return this.http.get<VeiculoResumoModel[]>(this.apiUrl);
+  listarAtivos(): Observable<VeiculoResponse> {
+    return this.http.get<VeiculoResponse>(this.apiUrl);
   }
 
   adicionar(veiculo: Partial<VeiculoResumoModel>): Observable<VeiculoResumoModel> {

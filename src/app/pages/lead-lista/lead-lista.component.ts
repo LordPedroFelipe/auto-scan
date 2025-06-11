@@ -22,7 +22,7 @@ export class LeadListaComponent implements OnInit {
 
   carregarLeads(): void {
     this.leadService.listar().subscribe({
-      next: (res) => this.leads = res,
+      next: (res) => this.leads = res.items,
       error: (err) => console.error('Erro ao carregar leads', err)
     });
   }

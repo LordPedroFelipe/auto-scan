@@ -6,3 +6,7 @@ export interface LeadModel {
   shopId: string;
   vehicleId?: string;
 }
+
+export interface LeadModelResponse {
+  items: any;
+}

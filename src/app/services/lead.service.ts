@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { LeadModel } from '../models/lead.model';
+import { LeadModel, LeadModelResponse } from '../models/lead.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,8 @@ export class LeadService {
 
   constructor(private http: HttpClient) {}
 
-  listar(): Observable<LeadModel[]> {
-    return this.http.get<LeadModel[]>(this.apiUrl);
+  listar(): Observable<LeadModelResponse> {
+    return this.http.get<LeadModelResponse>(this.apiUrl);
   }
 
   buscarPorId(id: string): Observable<LeadModel> {

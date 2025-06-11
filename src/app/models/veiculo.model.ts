@@ -52,3 +52,6 @@ export interface VeiculoResumoModel {
   mainPhotoUrl: string;
   shopName: string;
 }
+export interface VeiculoResponse {
+  items: any;
+}
