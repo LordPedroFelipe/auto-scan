@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-git": "ng build --output-path docs --base-href /auto-scan/",
+    "build-git": "ng build --output-path docs --base-href=/auto-scan/",
+    "build:pages": "ng build --output-path docs --base-href=/ && cp CNAME docs/CNAME",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -22,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "jwt-decode": "^4.0.0",
+    "ngx-mask": "^15.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

@@ -44,6 +44,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { LeadFormModalComponent } from './components/lead-form-modal/lead-form-modal.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -91,12 +92,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatSidenavModule,
     MatListModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgxMaskDirective
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    provideNgxMask(),
   ],
   bootstrap: [AppComponent]
 })

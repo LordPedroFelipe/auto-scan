@@ -13,12 +13,22 @@
 
   <mat-form-field appearance="outline" class="full">
     <mat-label>Telefone</mat-label>
-    <input matInput formControlName="telefone" required />
+    <input
+        matInput
+        formControlName="telefone"
+        required
+        mask="(00) 00000-0000"
+        placeholder="(00) 00000-0000"
+    />
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full">
     <mat-label>Data de nascimento</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="dataNascimento" />
+    <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="dataNascimento"
+    />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>

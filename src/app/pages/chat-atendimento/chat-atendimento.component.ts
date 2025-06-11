@@ -43,9 +43,11 @@ export class ChatAtendimentoComponent implements OnInit {
   leadCapturado = false;
   leadData: any = null;
 
+  humor: string | null = null;
+
   sugestoesVisiveis: string[] = [];
   sugestoesBusca = [
-    'SUV automático até 100 mil',
+    'SUV até 100 mil',
     'Carro econômico para cidade',
     'Sedan confortável',
     'Pick-up 4x4',
@@ -63,8 +65,10 @@ export class ChatAtendimentoComponent implements OnInit {
     'Modelos populares para Uber',
     // 'Carros para PCD com isenção',
     'Baixa manutenção',
-    // 'Carros para jovens motoristas',
-    // 'Carros para viajar com pets'
+    'Carros até 30 mil',
+    'Carros até 50 mil',
+    'Carros até 70 mil',
+    'Carros até 100 mil'
   ];
 
   private mensagensBoasVindas: string[] = [
@@ -152,8 +156,8 @@ export class ChatAtendimentoComponent implements OnInit {
         email: result.email,
         phone: result.telefone,
         notes: (localizacao && `Localização: ${localizacao.latitude}, ${localizacao.longitude}, Cidade: ${cidade}`) || '',
-        shopId: '', // se você tiver esse ID disponível no contexto
-        vehicleId: this.placa ?? '' // se a placa for equivalente ao veículoId
+        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // se você tiver esse ID disponível no contexto
+        // vehicleId: this.placa ?? '' // se a placa for equivalente ao veículoId
       };
 
       try {
@@ -180,6 +184,7 @@ export class ChatAtendimentoComponent implements OnInit {
     this.chatService.sendMessage(payload).subscribe({
       next: (resposta: any) => {
         const mensagem = resposta?.message || 'Resposta recebida.';
+        this.humor = resposta?.humor || 'happy';
         this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date() });
         this.isLoading = false;
       },

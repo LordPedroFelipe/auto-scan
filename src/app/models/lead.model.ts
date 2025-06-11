@@ -4,5 +4,5 @@ export interface LeadModel {
   email: string;
   notes: string;
   shopId: string;
-  vehicleId: string;
+  vehicleId?: string;
 }
