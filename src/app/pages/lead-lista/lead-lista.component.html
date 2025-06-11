@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container"> 
   <h2>Lista de Leads</h2>
 
   <mat-table [dataSource]="leads" class="mat-elevation-z2">
@@ -26,7 +26,32 @@
     <ng-container matColumnDef="acoes">
       <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
       <mat-cell *matCellDef="let lead">
-        <button mat-icon-button color="warn" (click)="excluir(lead.id)">
+        <!-- Ligar -->
+        <a mat-icon-button [href]="'tel:' + lead.phone" matTooltip="Ligar">
+          <mat-icon>phone</mat-icon>
+        </a>
+
+        <!-- WhatsApp -->
+        <a mat-icon-button [href]="'https://wa.me/' + lead.phone" target="_blank" matTooltip="WhatsApp">
+          <mat-icon svgIcon="whatsapp"></mat-icon>
+        </a>
+
+        <!-- E-mail -->
+        <a mat-icon-button [href]="'mailto:' + lead.email" matTooltip="Enviar Email">
+          <mat-icon>email</mat-icon>
+        </a>
+
+        <!-- Ver Localização (Google Maps com base na cidade/notes) -->
+        <a *ngIf="lead.notes" 
+           mat-icon-button 
+           [href]="'https://www.google.com/maps/search/' + lead.notes" 
+           target="_blank" 
+           matTooltip="Ver Localização">
+          <mat-icon>location_on</mat-icon>
+        </a>
+
+        <!-- Excluir -->
+        <button mat-icon-button color="warn" (click)="excluir(lead.id)" matTooltip="Excluir">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-cell>
@@ -36,3 +61,4 @@
     <mat-row *matRowDef="let row; columns: ['name', 'email', 'phone', 'notes', 'acoes']"></mat-row>
   </mat-table>
 </div>
+    
