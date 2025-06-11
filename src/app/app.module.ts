@@ -56,6 +56,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 // NGX-MASK
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { LeadDetalheModalComponent } from './components/lead-detalhe-modal/lead-detalhe-modal.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     LeadListaComponent,
     LojaFormComponent,
     UsuarioFormComponent,
-    LeadFormModalComponent
+    LeadFormModalComponent,
+    LeadDetalheModalComponent
   ],
   imports: [
     BrowserModule,

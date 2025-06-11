@@ -5,6 +5,8 @@ export interface LeadModel {
   notes: string;
   shopId: string;
   vehicleId?: string;
+  city?: string;
+  comments?: { texto: string; data: string }[];
 }
 
 export interface LeadModelResponse {

@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-title>Detalhes do Lead</mat-card-title>
+  <mat-card-content>
+    <p><strong>Nome:</strong> {{ lead.name }}</p>
+    <p><strong>Email:</strong> {{ lead.email }}</p>
+    <p><strong>Telefone:</strong> {{ lead.phone }}</p>
+    <p><strong>Observações:</strong> {{ lead.notes || '-' }}</p>
+    <p><strong>Cidade:</strong> {{ lead.city || '-' }}</p>
+  </mat-card-content>
+
+  <mat-divider></mat-divider>
+
+  <div class="acoes">
+    <button mat-icon-button color="primary" (click)="abrirWhatsApp()"><mat-icon>chat</mat-icon></button>
+    <button mat-icon-button color="accent" (click)="enviarEmail()"><mat-icon>email</mat-icon></button>
+    <button mat-icon-button color="warn" (click)="ligar()"><mat-icon>call</mat-icon></button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="comentarios">
+    <h4>Comentários</h4>
+    <div *ngFor="let c of lead.comments">
+      <p><small>{{ c.data | date:'short' }}</small><br/>{{ c.texto }}</p>
+    </div>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Adicionar comentário</mat-label>
+      <textarea matInput [(ngModel)]="novoComentario"></textarea>
+    </mat-form-field>
+    <button mat-stroked-button color="primary" (click)="adicionarComentario()" [disabled]="!novoComentario.trim()">Salvar</button>
+  </div>
+</mat-card>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LeadService } from 'src/app/services/lead.service';
 import { LeadModel } from 'src/app/models/lead.model';
+import { LeadDetalheModalComponent } from 'src/app/components/lead-detalhe-modal/lead-detalhe-modal.component';
 
 @Component({
   selector: 'app-lead-lista',
@@ -31,5 +32,12 @@ export class LeadListaComponent implements OnInit {
     if (confirm('Deseja realmente excluir este lead?')) {
       this.leadService.excluir(id).subscribe(() => this.carregarLeads());
     }
+  }
+  
+  abrirDetalhes(lead: LeadModel): void {
+    this.dialog.open(LeadDetalheModalComponent, {
+      width: '620px',
+      data: lead
+    });
   }
 }
