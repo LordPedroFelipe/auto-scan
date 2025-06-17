@@ -1,7 +1,5 @@
-<h2 mat-dialog-title>{{ data.brand }} {{ data.model }} {{ data.year }}</h2>
-
 <mat-tab-group>
-  <!-- Aba de Detalhes -->
+  <!-- Aba de Informações -->
   <mat-tab label="Informações">
     <div class="info-container">
       <mat-card class="info-card">
@@ -20,15 +18,25 @@
           <p><strong>Condição:</strong> {{ data.condition }}</p>
         </mat-card-content>
       </mat-card>
+    </div>
+  </mat-tab>
 
+  <!-- Aba de Descrição -->
+  <mat-tab label="Descrição">
+    <div class="info-container">
       <mat-card class="desc-card">
-        <mat-card-title>Descrição</mat-card-title>
+        <mat-card-title>Descrição do Veículo</mat-card-title>
         <mat-card-content>
           <p>{{ data.description }}</p>
         </mat-card-content>
       </mat-card>
+    </div>
+  </mat-tab>
 
-      <mat-card class="obs-card" *ngIf="data.siteObservations">
+  <!-- Aba de Observações -->
+  <mat-tab label="Observações" *ngIf="data.siteObservations">
+    <div class="info-container">
+      <mat-card class="obs-card">
         <mat-card-title>Observações do Site</mat-card-title>
         <mat-card-content>
           <p>{{ data.siteObservations }}</p>
@@ -37,14 +45,39 @@
     </div>
   </mat-tab>
 
-  <!-- Aba de Fotos -->
-  <mat-tab label="Fotos">
-    <div class="carousel-container">
-      <div class="carousel-wrapper">
-        <img *ngFor="let foto of data.photoUrls" [src]="foto" class="carousel-image" />
-      </div>
-    </div>
-  </mat-tab>
+    <!-- Aba de Fotos -->
+    <mat-tab label="Fotos">
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+            <img
+                *ngFor="let foto of data.photoUrls; let i = index"
+                [src]="foto"
+                class="carousel-image"
+                (click)="abrirFotoFullscreen(i)"
+                alt="Foto {{ i + 1 }}"
+            />
+            </div>
+        </div>
+
+        <!-- Tela cheia -->
+        <div class="fullscreen-overlay" *ngIf="fotoSelecionadaIndex !== null">
+            <div class="fullscreen-content">
+            <button mat-icon-button class="close-btn" (click)="fecharFullscreen()">
+                <mat-icon>close</mat-icon>
+            </button>
+
+            <button mat-icon-button class="nav-btn prev-btn" (click)="fotoAnterior()" [disabled]="fotoSelecionadaIndex === 0">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <img [src]="data.photoUrls[fotoSelecionadaIndex]" class="fullscreen-image" />
+
+            <button mat-icon-button class="nav-btn next-btn" (click)="proximaFoto()" [disabled]="fotoSelecionadaIndex === data.photoUrls.length - 1">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            </div>
+        </div>
+    </mat-tab>
 </mat-tab-group>
 
 <div mat-dialog-actions align="end">
