@@ -16,6 +16,15 @@ export class EstoqueService {
     return this.http.get<VeiculoResponse>(this.apiUrl);
   }
 
+  listarPaginado(pageNumber: number = 1, pageSize: number = 10) {
+    return this.http.get<any>(this.apiUrl, {
+      params: {
+        pageNumber,
+        pageSize
+      }
+    });
+  }
+
   adicionar(veiculo: Partial<VeiculoResumoModel>): Observable<VeiculoResumoModel> {
     return this.http.post<VeiculoResumoModel>(this.apiUrl, veiculo);
   }

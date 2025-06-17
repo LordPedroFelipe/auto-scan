@@ -1,0 +1,11 @@
+<div class="pagination">
+  <button mat-icon-button (click)="mudarPagina(currentPage - 1)" [disabled]="currentPage === 1">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+
+  <button mat-icon-button (click)="mudarPagina(currentPage + 1)" [disabled]="currentPage === totalPages">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

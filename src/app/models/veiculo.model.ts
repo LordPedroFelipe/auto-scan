@@ -1,5 +1,5 @@
 import { ReservaModel } from './reserva.model';
-import { TestDriveModel } from './test-drive.model';
+import { TestDrive } from './test-drive.model';
 import { UsuarioModel } from './usuario.model';
 
 export interface FotoModel {
@@ -38,7 +38,7 @@ export interface VeiculoModel {
   isSold: boolean;
   photos: FotoModel[];
   reservations: ReservaModel[];
-  testDrives: TestDriveModel[];
+  testDrives: TestDrive[];
 }
 
 export interface VeiculoResumoModel {

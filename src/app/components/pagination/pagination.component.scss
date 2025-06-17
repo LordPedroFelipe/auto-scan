@@ -1,0 +1,37 @@
+.paginacao-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 0;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .info-pagina {
+        font-size: 0.875rem;
+        color: #666;
+    }
+
+    .mat-paginator {
+        ::ng-deep .mat-paginator-range-label {
+            font-size: 0.875rem;
+        }
+
+        ::ng-deep .mat-paginator-icon {
+            font-size: 20px;
+        }
+
+        ::ng-deep .mat-select {
+            margin: 0 0.5rem;
+        }
+
+        ::ng-deep .mat-paginator-navigation-previous,
+        ::ng-deep .mat-paginator-navigation-next {
+            background-color: #fff;
+            border-radius: 6px;
+
+            &:hover {
+                background-color: #e3f2fd;
+            }
+        }
+    }
+}

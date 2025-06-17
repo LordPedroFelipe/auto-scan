@@ -1,0 +1,100 @@
+<div class="container">
+  <h2>Test Drives</h2>
+
+  <form [formGroup]="filtrosForm" (ngSubmit)="buscar()">
+    <div class="filtros-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome do Cliente</mat-label>
+        <input matInput formControlName="customerName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="customerEmail" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input matInput formControlName="customerPhone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Marca do Veículo</mat-label>
+        <input matInput formControlName="vehicleBrand" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Modelo</mat-label>
+        <input matInput formControlName="vehicleModel" />
+      </mat-form-field>
+
+      <!--mat-form-field appearance="outline">
+        <mat-label>Data Inicial</mat-label>
+        <input matInput [matDatepicker]="start" formControlName="preferredDateStart" />
+        <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+        <mat-datepicker #start></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data Final</mat-label>
+        <input matInput [matDatepicker]="end" formControlName="preferredDateEnd" />
+        <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+        <mat-datepicker #end></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cancelado</mat-label>
+        <mat-checkbox formControlName="isCancelled">Cancelado</mat-checkbox>
+        </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Concluído</mat-label>
+        <mat-checkbox formControlName="isCompleted">Concluído</mat-checkbox>
+        </mat-form-field-->
+    </div>
+
+    <div class="botoes-acoes">
+      <button mat-raised-button color="primary" type="submit">Filtrar</button>
+      <button mat-button type="button" (click)="resetar()">Limpar</button>
+    </div>
+  </form>
+
+  <mat-table [dataSource]="testDrives" class="mat-elevation-z2">
+    <ng-container matColumnDef="customerName">
+      <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+      <mat-cell *matCellDef="let td">{{ td.customerName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="vehicleModel">
+      <mat-header-cell *matHeaderCellDef>Veículo</mat-header-cell>
+      <mat-cell *matCellDef="let td">{{ td.vehicleBrand }} {{ td.vehicleModel }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="preferredDate">
+      <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+      <mat-cell *matCellDef="let td">{{ td.preferredDate | date:'short' }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="acoes">
+      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+      <mat-cell *matCellDef="let loja">
+        <button mat-icon-button color="primary" (click)="editar(loja)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="excluir(loja.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['customerName', 'vehicleModel', 'preferredDate', 'acoes']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['customerName', 'vehicleModel', 'preferredDate', 'acoes']"></mat-row>
+  </mat-table>
+
+  <app-pagination
+    [total]="totalCount"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>

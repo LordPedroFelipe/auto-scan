@@ -1,16 +1,5 @@
-import { UsuarioModel } from './usuario.model';
-
-export interface TestDriveModel {
+export interface TestDrive {
   id: string;
-  createdAt: string;
-  updatedAt: string;
-  isDeleted: boolean;
-  vehicleId: string;
-  vehicle: string;
-  shopId: string;
-  shop: string;
-  customerId: string;
-  customer: UsuarioModel;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -23,4 +12,25 @@ export interface TestDriveModel {
   completionNotes: string;
   cancellationDate: string;
   cancellationReason: string;
+  vehicleId: string;
+  vehicleBrand: string;
+  vehicleModel: string;
+  vehicleYear: number;
+  vehicleMainPhotoUrl: string;
+  vehicleTransmission: string;
+  vehicleFuelType: string;
+  vehicleHasAuction: boolean;
+  vehicleHasAccident: boolean;
+  vehicleIsFirstOwner: boolean;
+  vehicleOwnersCount: number;
+  shopId: string;
+  shopName: string;
+}
+
+export interface TestDriveResponse {
+  items: TestDrive[];
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
 }

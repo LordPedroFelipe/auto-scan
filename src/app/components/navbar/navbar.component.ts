@@ -39,9 +39,23 @@ export class NavbarComponent implements OnInit {
   atualizarEstado(): void {
     console.log('atualizarEstado:');
     const urlAtual = this.router.url;
-    this.chatAtendimento = urlAtual.includes('atendimento'); 
-    this.isLogado = this.authService.isAuthenticated();
+    this.chatAtendimento = urlAtual.includes('atendimento');
+
+    // Lista de rotas públicas
+    const rotasPublicas = ['/', '/login', '/cadastro', '/planos', '/home'];
+
+    // Verifica se está em rota pública
+    const emRotaPublica = rotasPublicas.includes(urlAtual);
+
+    if (emRotaPublica) {
+      this.authService.logout(); // Faz logout
+      this.isLogado = false;
+      this.role = null;
+      this.menuAberto = false;
+      return;
+    }
     
+    this.isLogado = this.authService.isAuthenticated();
 
     if (this.isLogado) {
       const roles = this.authService.getRoles();

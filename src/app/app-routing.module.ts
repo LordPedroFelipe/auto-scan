@@ -10,6 +10,8 @@ import { EstoqueComponent } from './pages/estoque/estoque.component';
 import { LojaListaComponent } from './pages/loja-lista/loja-lista.component';
 import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.component';
 import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
+import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -18,11 +20,14 @@ const routes: Routes = [
   { path: 'atendimento', component: ChatAtendimentoComponent },
   { path: 'atendimento/:placa', component: ChatAtendimentoComponent },
   { path: 'cadastro-loja', component: CadastroLojaComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'estoque', component: EstoqueComponent },
-  { path: 'loja-lista', component: LojaListaComponent },
-  { path: 'usuarios-lista', component: UsuariosListaComponent },
-  { path: 'lead-lista', component: LeadListaComponent },
+  
+  // Rotas privadas
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
+  { path: 'estoque', component: EstoqueComponent, canActivate: [AuthGuard]  },
+  { path: 'loja-lista', component: LojaListaComponent, canActivate: [AuthGuard]  },
+  { path: 'usuarios-lista', component: UsuariosListaComponent, canActivate: [AuthGuard]  },
+  { path: 'lead-lista', component: LeadListaComponent, canActivate: [AuthGuard]  },
+  { path: 'test-drive-list', component: TestDriveListComponent, canActivate: [AuthGuard]  },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 

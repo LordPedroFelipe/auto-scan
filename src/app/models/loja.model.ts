@@ -1,7 +1,7 @@
 import { UsuarioModel } from './usuario.model';
 import { VeiculoModel } from './veiculo.model';
 import { ReservaModel } from './reserva.model';
-import { TestDriveModel } from './test-drive.model';
+import { TestDrive } from './test-drive.model';
 
 export interface LojaModel {
   id: string;
@@ -15,6 +15,6 @@ export interface LojaModel {
   sellers: UsuarioModel[];
   vehicles: VeiculoModel[];
   reservations: ReservaModel[];
-  testDrives: TestDriveModel[];
+  testDrives: TestDrive[];
   isActive: boolean;
 }

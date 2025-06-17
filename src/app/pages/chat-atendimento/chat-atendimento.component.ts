@@ -43,7 +43,7 @@ export class ChatAtendimentoComponent implements OnInit {
   leadCapturado = false;
   leadData: any = null;
 
-  humor: string | null = null;
+  humor: string | null = 'happy';
 
   sugestoesVisiveis: string[] = [];
   sugestoesBusca = [
@@ -184,8 +184,9 @@ export class ChatAtendimentoComponent implements OnInit {
     this.chatService.sendMessage(payload).subscribe({
       next: (resposta: any) => {
         const mensagem = resposta?.message || 'Resposta recebida.';
+        const opcoes = resposta?.options || '';
         this.humor = resposta?.humor || 'happy';
-        this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date() });
+        this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date(), opcoes });
         this.isLoading = false;
       },
       error: () => {

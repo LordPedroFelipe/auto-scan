@@ -4,6 +4,9 @@ import { EstoqueService } from '../../services/estoque.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CadastroVeiculoModalComponent } from '../../components/cadastro-veiculo-modal/cadastro-veiculo-modal.component';
 import { VeiculoResumoModel } from 'src/app/models/veiculo.model';
+import { PageEvent } from '@angular/material/paginator';
+import { DetalhesVeiculosModalComponent } from '../../components/detalhes-veiculos-modal/detalhes-veiculos-modal.component';
+
 
 @Component({
   selector: 'app-estoque',
@@ -14,8 +17,10 @@ export class EstoqueComponent implements OnInit {
   veiculos: VeiculoResumoModel[] = [];
   carregando = false;
 
-  displayedColumns: string[] = ['brand', 'model', 'year', 'price', 'mileage', 'color', 'acoes'];
-
+  displayedColumns: string[] = ['foto', 'brand', 'model', 'year', 'price', 'mileage', 'color', 'acoes'];
+  pageIndex = 0;
+  pageSize = 10;
+  totalCount = 0;
 
   constructor(
     private estoqueService: EstoqueService,
@@ -23,17 +28,27 @@ export class EstoqueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.carregarVeiculos();
+  }
+
+  carregarVeiculos(pageIndex: number = 0) {
     this.carregando = true;
-    this.estoqueService.listarAtivos().subscribe({
+    this.estoqueService.listarPaginado(pageIndex + 1, this.pageSize).subscribe({
       next: (res) => {
         this.veiculos = res.items;
+        this.totalCount = res.totalCount;
         this.carregando = false;
       },
-      error: (err) => {
-        console.error('Erro ao carregar veículos', err);
+      error: () => {
         this.carregando = false;
       }
     });
+  }
+
+  mudarPagina(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.carregarVeiculos(this.pageIndex);
   }
 
   abrirCadastro(veiculo?: Veiculo) {
@@ -46,6 +61,13 @@ export class EstoqueComponent implements OnInit {
       if (result) {
         veiculo ? this.estoqueService.editar(result) : this.estoqueService.adicionar(result);
       }
+    });
+  }
+
+  abrirDetalhes(veiculo: VeiculoResumoModel) {
+    this.dialog.open(DetalhesVeiculosModalComponent, {
+      data: veiculo,
+      width: '600px'
     });
   }
 

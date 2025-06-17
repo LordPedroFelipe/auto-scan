@@ -22,6 +22,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTabsModule } from '@angular/material/tabs';
 
 // Módulos
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,6 +59,9 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 // NGX-MASK
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { LeadDetalheModalComponent } from './components/lead-detalhe-modal/lead-detalhe-modal.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
+import { DetalhesVeiculosModalComponent } from './components/detalhes-veiculos-modal/detalhes-veiculos-modal.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +86,10 @@ import { LeadDetalheModalComponent } from './components/lead-detalhe-modal/lead-
     LojaFormComponent,
     UsuarioFormComponent,
     LeadFormModalComponent,
-    LeadDetalheModalComponent
+    LeadDetalheModalComponent,
+    PaginationComponent,
+    TestDriveListComponent,
+    DetalhesVeiculosModalComponent
   ],
   imports: [
     BrowserModule,
@@ -108,6 +116,8 @@ import { LeadDetalheModalComponent } from './components/lead-detalhe-modal/lead-
     MatListModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatPaginatorModule,
+    MatTabsModule,
 
     // NGX-MASK
     NgxMaskDirective

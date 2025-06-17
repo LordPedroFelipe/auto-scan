@@ -4,7 +4,8 @@
       <h3>{{ plan.name }}</h3>
       <p>{{ plan.description }}</p>
       <p class="price">{{ plan.price }}</p>
-      <button (click)="selectPlan(plan)">Escolher Plano</button>
+      <button routerLink="/cadastro-loja">Escolher Plano</button>
+      <button mat-stroked-button color="accent" routerLink="/cadastro-loja">Escolher Plano</button>
     </div>
   </div>
   

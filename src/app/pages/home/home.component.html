@@ -4,7 +4,7 @@
         <div class="hero-content">
           <img src="assets/img/ScanDriveCarsCenter.png" alt="Logo ScanDrive" class="logo-scan-cars" />
           <p>Simplificando a gestão de veículos para lojas e revendas.</p>
-          <button mat-raised-button color="primary" routerLink="/planos">Ver Planos</button>
+          <button mat-raised-button color="accent" routerLink="/planos" class="btn-planos">Ver Planos</button>
         </div>
     </section>
       
@@ -16,7 +16,10 @@
                 <mat-card-title>Visualização via QR Code</mat-card-title>
                 <mat-card-content>
                 <p>Permita que seus clientes acessem os dados dos veículos rapidamente através de QR Code personalizado para cada carro.</p>
-                <button mat-stroked-button color="accent" routerLink="/atendimento">Gerar QR Code</button>
+                <button mat-raised-button color="primary" routerLink="/atendimento">
+                  <mat-icon>qr_code</mat-icon>
+                  Gerar QR Code
+                </button>
                 </mat-card-content>
             </mat-card>
         
@@ -24,7 +27,10 @@
                 <mat-card-title>Assistente Virtual Integrado</mat-card-title>
                 <mat-card-content>
                 <p>Chat com IA para responder dúvidas dos clientes diretamente no celular, como se fosse um vendedor real.</p>
-                <button mat-stroked-button color="accent" routerLink="/atendimento">Simular Atendimento</button>
+                <button mat-raised-button color="primary" routerLink="/atendimento">
+                  <mat-icon>chat</mat-icon>
+                  Simular Atendimento
+                </button>
                 </mat-card-content>
             </mat-card>
         
@@ -32,7 +38,10 @@
                 <mat-card-title>Gestão de Estoque Inteligente</mat-card-title>
                 <mat-card-content>
                 <p>Gerencie todos os seus veículos, histórico e status de forma centralizada, com controle por usuário e plano.</p>
-                <button mat-stroked-button color="accent" routerLink="/atendimento">Gerir Estoque</button>
+                <button mat-raised-button color="primary" routerLink="/atendimento">
+                  <mat-icon>garage</mat-icon>
+                  Gerir Estoque
+                </button>
                 </mat-card-content>
             </mat-card>
         </div>
@@ -42,7 +51,10 @@
     <section class="cta-section">
         <img src="assets/img/ScanDrive-White/6.png" alt="Logo ScanDrive" class="logo-scan" />
       <h2>Pronto para evoluir sua loja?</h2>
-      <button mat-stroked-button color="accent" routerLink="/cadastro-loja">Crie sua conta gratuita</button>
+      <button mat-stroked-button color="accent" routerLink="/cadastro-loja">
+        <mat-icon>store</mat-icon>
+        Crie sua conta gratuita
+      </button>
     </section>
   </div>
   
