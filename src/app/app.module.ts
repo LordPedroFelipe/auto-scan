@@ -24,6 +24,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Módulos
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -118,6 +121,9 @@ import { DetalhesVeiculosModalComponent } from './components/detalhes-veiculos-m
     MatNativeDateModule,
     MatPaginatorModule,
     MatTabsModule,
+    MatExpansionModule,
+    MatSelectModule,
+    MatCheckboxModule,
 
     // NGX-MASK
     NgxMaskDirective

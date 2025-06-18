@@ -103,3 +103,13 @@
 .next-btn {
   right: 16px;
 }
+.dados-card {
+  margin-top: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}

@@ -6,7 +6,7 @@ import { CadastroVeiculoModalComponent } from '../../components/cadastro-veiculo
 import { VeiculoResumoModel } from 'src/app/models/veiculo.model';
 import { PageEvent } from '@angular/material/paginator';
 import { DetalhesVeiculosModalComponent } from '../../components/detalhes-veiculos-modal/detalhes-veiculos-modal.component';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-estoque',
@@ -16,6 +16,7 @@ import { DetalhesVeiculosModalComponent } from '../../components/detalhes-veicul
 export class EstoqueComponent implements OnInit {
   veiculos: VeiculoResumoModel[] = [];
   carregando = false;
+  filtroForm!: FormGroup;
 
   displayedColumns: string[] = ['foto', 'brand', 'model', 'year', 'price', 'mileage', 'color', 'acoes'];
   pageIndex = 0;
@@ -23,11 +24,24 @@ export class EstoqueComponent implements OnInit {
   totalCount = 0;
 
   constructor(
+    private fb: FormBuilder,
     private estoqueService: EstoqueService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.filtroForm = this.fb.group({
+      brand: [''],
+      model: [''],
+      year: [''],
+      color: [''],
+      transmission: [''],
+      fuelType: [''],
+      hasAuction: [false],
+      hasAccident: [false],
+      isFirstOwner: [false],
+      isOnOffer: [false]
+    });
     this.carregarVeiculos();
   }
 
@@ -73,7 +87,32 @@ export class EstoqueComponent implements OnInit {
 
   excluir(id: string) {
     if (confirm('Tem certeza que deseja excluir este veículo?')) {
-      this.estoqueService.excluir(id);
+      // this.estoqueService.excluir(id);
     }
+  }
+
+  aplicarFiltros() {
+    const filtros = this.filtroForm.value;
+
+    const params = {
+      pageNumber: this.pageIndex + 1,
+      pageSize: this.pageSize,
+      ...filtros
+    };
+
+    this.carregando = true;
+    this.estoqueService.listarPaginadoComFiltro(params).subscribe({
+      next: (res) => {
+        this.veiculos = res.items;
+        this.totalCount = res.totalCount;
+        this.carregando = false;
+      },
+      error: () => this.carregando = false
+    });
+  }
+
+  limparFiltros() {
+    this.filtroForm.reset();
+    this.aplicarFiltros();
   }
 }
