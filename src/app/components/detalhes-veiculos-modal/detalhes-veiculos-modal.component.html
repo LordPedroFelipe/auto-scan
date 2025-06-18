@@ -26,7 +26,7 @@
   <div class="info-container">
 
     <!-- Descrição textual principal -->
-    <mat-card class="desc-card">
+    <mat-card class="info-card">
       <mat-card-title>Descrição do Veículo</mat-card-title>
       <mat-card-content>
         <p>{{ data.description }}</p>
@@ -34,7 +34,7 @@
     </mat-card>
 
     <!-- Dados Técnicos -->
-    <mat-card class="dados-card">
+    <mat-card class="info-card">
       <mat-card-title>Dados Técnicos</mat-card-title>
       <mat-card-content>
         <div class="grid">
@@ -57,7 +57,7 @@
     </mat-card>
 
     <!-- Informações Comerciais -->
-    <mat-card class="dados-card">
+    <mat-card class="info-card">
       <mat-card-title>Informações Comerciais</mat-card-title>
       <mat-card-content>
         <div class="grid">
@@ -79,7 +79,7 @@
     </mat-card>
 
     <!-- Opcionais (se houver) -->
-    <mat-card class="dados-card" *ngIf="data.optionals?.length">
+    <mat-card class="info-card" *ngIf="data.optionals?.length">
       <mat-card-title>Opcionais</mat-card-title>
       <mat-card-content>
         <ul>
