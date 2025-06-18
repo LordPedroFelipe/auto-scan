@@ -1,68 +1,22 @@
-<div class="container"> 
-  <h2>Lista de Leads</h2>
+   
+<div class="leads-wrapper">
+  <h2>Leads Cadastrados</h2>
 
-  <mat-table [dataSource]="leads" class="mat-elevation-z2">
+  <div class="cards-container">
+    <mat-card class="card-lead" *ngFor="let lead of leads">
+      <mat-card-content>
+        <h3>{{ lead.name }}</h3>
+        <p><strong>Email:</strong> {{ lead.email }}</p>
+        <p><strong>Telefone:</strong> {{ lead.phone }}</p>
+        <p><strong>Observações:</strong> {{ lead.notes }}</p>
+        <p><strong>Loja:</strong> {{ lead.shopId }}</p>
+        <p><strong>Veiculo:</strong> {{ lead.vehicleId }}</p>
+      </mat-card-content>
 
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
-      <mat-cell *matCellDef="let lead"> {{ lead.name }} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-      <mat-cell *matCellDef="let lead"> {{ lead.email }} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="phone">
-      <mat-header-cell *matHeaderCellDef> Telefone </mat-header-cell>
-      <mat-cell *matCellDef="let lead"> {{ lead.phone }} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="notes">
-      <mat-header-cell *matHeaderCellDef> Cidade / Observações </mat-header-cell>
-      <mat-cell *matCellDef="let lead"> {{ lead.notes || '-' }} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="acoes">
-      <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
-      <mat-cell *matCellDef="let lead">
-        <!-- Ligar -->
-        <a mat-icon-button [href]="'tel:' + lead.phone" matTooltip="Ligar">
-          <mat-icon>phone</mat-icon>
-        </a>
-
-        <!-- WhatsApp -->
-        <a mat-icon-button [href]="'https://wa.me/' + lead.phone" target="_blank" matTooltip="WhatsApp">
-          <mat-icon svgIcon="whatsapp"></mat-icon>
-        </a>
-
-        <!-- E-mail -->
-        <a mat-icon-button [href]="'mailto:' + lead.email" matTooltip="Enviar Email">
-          <mat-icon>email</mat-icon>
-        </a>
-
-        <!-- Ver Localização (Google Maps com base na cidade/notes) -->
-        <a *ngIf="lead.notes" 
-           mat-icon-button 
-           [href]="'https://www.google.com/maps/search/' + lead.notes" 
-           target="_blank" 
-           matTooltip="Ver Localização">
-          <mat-icon>location_on</mat-icon>
-        </a>
-        
-        <button mat-icon-button color="primary" (click)="abrirDetalhes(lead)">
-            <mat-icon>info</mat-icon>
-        </button>
-
-        <!-- Excluir -->
-        <button mat-icon-button color="warn" (click)="excluir(lead.id)" matTooltip="Excluir">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="['name', 'email', 'phone', 'notes', 'acoes']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['name', 'email', 'phone', 'notes', 'acoes']"></mat-row>
-  </mat-table>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="abrirDetalhes(lead)">Detalhes</button>
+        <button mat-raised-button color="primary" (click)="excluir(lead.email)">Excluir</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
-    
