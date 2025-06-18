@@ -27,7 +27,23 @@
       [ngClass]="{ 'cliente': msg.autor === 'Cliente', 'ia': msg.autor === 'IA' }"
       class="mensagem-bolha"
     >
-      <strong>{{ msg.autor }}:</strong> {{ msg.texto }}
+      <strong>{{ msg.autor }}:</strong> 
+      
+    
+      <!-- Mostrar spinner se for loading -->
+      <ng-container *ngIf="msg.isLoading; else textoMensagem">
+        <mat-progress-spinner
+          diameter="20"
+          mode="indeterminate"
+          color="primary"
+        ></mat-progress-spinner>
+        {{ msg.texto }}
+      </ng-container>
+      
+    
+      <ng-template #textoMensagem>
+        {{ msg.texto }}
+      </ng-template>
 
           <!-- Se a mensagem for do tipo com opções -->
       <div *ngIf="msg.opcoes">
@@ -61,7 +77,13 @@
       [color]="isRecording ? 'warn' : 'accent'"
       matTooltip="Fale com o assistente"
     >
-      <mat-icon>{{ isRecording ? 'stop' : 'mic' }}</mat-icon>
+      <mat-icon *ngIf="!isLoading">{{ isRecording ? 'stop' : 'mic' }}</mat-icon>
+      <mat-progress-spinner
+        *ngIf="isLoading"
+        diameter="20"
+        mode="indeterminate"
+        color="primary"
+      ></mat-progress-spinner>
     </button>
 
     <button (click)="enviar()" [disabled]="!novaMensagem.trim() || isLoading">

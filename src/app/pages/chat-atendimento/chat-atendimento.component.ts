@@ -18,6 +18,7 @@ interface Mensagem {
   texto: string;
   data: Date;
   opcoes?: string[] | null;
+  isLoading?: boolean;
 }
 
 @Component({
@@ -93,6 +94,13 @@ export class ChatAtendimentoComponent implements OnInit {
   ngOnInit(): void {
     this.placa = this.route.snapshot.paramMap.get('placa');
 
+    // Verifica se já tem LEAD salvo em localStorage
+    const leadStorage = localStorage.getItem('leadData');
+    if (leadStorage) {
+      this.leadData = JSON.parse(leadStorage);
+      this.leadCapturado = true;
+    }
+
     if (this.placa) {
       this.imagensVeiculo = this.buscarImagensDoVeiculo(this.placa);
       // this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
@@ -164,6 +172,8 @@ export class ChatAtendimentoComponent implements OnInit {
         await this.leadService.criar(novoLead).toPromise();
         this.leadData = result;
         this.leadCapturado = true;
+        
+        localStorage.setItem('leadData', JSON.stringify(result));
       } catch (error) {
         this.alert.showError('Erro ao salvar o LEAD.');
         return;
@@ -180,16 +190,30 @@ export class ChatAtendimentoComponent implements OnInit {
       message: pergunta
     };
 
+    const loadingMsg: Mensagem = {
+      autor: 'IA',
+      texto: 'Digitando...',
+      data: new Date(),
+      isLoading: true
+    };
+
+    this.mensagens.push(loadingMsg);
+    this.scrollToBottom();
     this.isLoading = true;
     this.chatService.sendMessage(payload).subscribe({
       next: (resposta: any) => {
+        this.mensagens = this.mensagens.filter(msg => !msg.isLoading);
+
         const mensagem = resposta?.message || 'Resposta recebida.';
         const opcoes = resposta?.options || '';
         this.humor = resposta?.humor || 'happy';
         this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date(), opcoes });
+        
+        this.scrollToBottom();
         this.isLoading = false;
       },
       error: () => {
+        this.mensagens = this.mensagens.filter(msg => !msg.isLoading);
         this.isLoading = false;
         this.alert.showError('Erro ao enviar mensagem para o assistente.');
       }
@@ -345,6 +369,12 @@ export class ChatAtendimentoComponent implements OnInit {
   selecionarOpcao(opcao: string): void {
     this.novaMensagem = opcao;
     this.enviar();
+  }
+
+  limparLeadCache(): void {
+    localStorage.removeItem('leadData');
+    this.leadCapturado = false;
+    this.leadData = null;
   }
 
 }
