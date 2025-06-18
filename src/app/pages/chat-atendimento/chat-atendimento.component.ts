@@ -243,6 +243,12 @@ export class ChatAtendimentoComponent implements OnInit {
         });
       },
       error: (err) => {
+        if (err.status === 401) {
+          console.warn('[ChatService] Usuário não autenticado. Chat desativado.');
+          this.mensagemPollingSub?.unsubscribe();
+          return;
+        }
+
         this.alert.showError('Erro ao buscar mensagens do chat.');
         console.error('[Polling Chat]', err);
       }
