@@ -52,9 +52,9 @@
             mat-stroked-button
             color="primary"
             *ngFor="let op of msg.opcoes"
-            (click)="selecionarOpcao(op)"
+            (click)="clicarOpcao(op)"
           >
-            {{ op }}
+            {{ op.label || op }}
           </button>
         </div>
       </div>

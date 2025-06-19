@@ -1,0 +1,22 @@
+.agendamento-container {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.agendamento-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 24px;
+}
+
+.campo {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}

@@ -33,4 +33,8 @@ export class TestDriveService {
   excluir(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  agendarTestDrive(payload: any): Observable<any> {
+    return this.http.post(this.apiUrl, payload);
+  }
 }

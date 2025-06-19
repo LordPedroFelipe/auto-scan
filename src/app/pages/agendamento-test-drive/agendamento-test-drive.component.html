@@ -1,0 +1,62 @@
+<div class="agendamento-container">
+  <mat-card class="agendamento-card">
+    <mat-card-header>
+      <mat-card-title>Agende seu Test Drive</mat-card-title>
+      <mat-card-subtitle>Preencha os dados abaixo para agendar um test drive com a loja</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="agendar()">
+        <!-- Nome -->
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Nome completo</mat-label>
+          <input matInput formControlName="customerName" required />
+          <mat-error *ngIf="form.get('customerName')?.hasError('required')">Campo obrigatório</mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="customerEmail" required />
+          <mat-error *ngIf="form.get('customerEmail')?.hasError('required')">Campo obrigatório</mat-error>
+          <mat-error *ngIf="form.get('customerEmail')?.hasError('email')">Email inválido</mat-error>
+        </mat-form-field>
+
+        <!-- Telefone -->
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Telefone</mat-label>
+          <input matInput formControlName="customerPhone" required />
+          <mat-error *ngIf="form.get('customerPhone')?.hasError('required')">Campo obrigatório</mat-error>
+        </mat-form-field>
+
+        <!-- Data desejada -->
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Data preferida</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="preferredDate" required />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('preferredDate')?.hasError('required')">Informe a data desejada</mat-error>
+        </mat-form-field>
+
+        <!-- Horário -->
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Horário aproximado</mat-label>
+          <input matInput type="time" formControlName="preferredTime" />
+        </mat-form-field>
+
+        <!-- Observações -->
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Observações</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+
+        <!-- Botão -->
+        <div class="botoes">
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+            {{ isLoading ? 'Agendando...' : 'Agendar Test Drive' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

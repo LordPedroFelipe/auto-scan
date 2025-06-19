@@ -12,6 +12,7 @@ import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.co
 import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
 import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AgendamentoTestDriveComponent } from './pages/agendamento-test-drive/agendamento-test-drive.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,6 +21,8 @@ const routes: Routes = [
   { path: 'atendimento', component: ChatAtendimentoComponent },
   { path: 'atendimento/:placa', component: ChatAtendimentoComponent },
   { path: 'cadastro-loja', component: CadastroLojaComponent },
+  { path: 'testdrive', component: AgendamentoTestDriveComponent },
+  { path: 'testdrive/:vehicleId', component: AgendamentoTestDriveComponent },
   
   // Rotas privadas
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },

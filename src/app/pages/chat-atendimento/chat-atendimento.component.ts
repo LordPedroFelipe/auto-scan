@@ -17,7 +17,7 @@ interface Mensagem {
   autor: 'IA' | 'Cliente';
   texto: string;
   data: Date;
-  opcoes?: string[] | null;
+  opcoes?: any[] | null;
   isLoading?: boolean;
 }
 
@@ -207,7 +207,28 @@ export class ChatAtendimentoComponent implements OnInit {
         const mensagem = resposta?.message || 'Resposta recebida.';
         const opcoes = resposta?.options || '';
         this.humor = resposta?.humor || 'happy';
-        this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date(), opcoes });
+
+        // Detecta link de testdrive na mensagem
+        const testdriveRegex = /(https:\/\/scandrive\.com\.br\/testdrive\/[a-f0-9\-]{36})/;
+        const match = mensagem.match(testdriveRegex);
+          if (match) {
+          const url = match[1];
+          // opcoes.push(`📅 Agendar Test Drive`);
+          this.mensagens.push({
+            autor: 'IA',
+            texto: mensagem,
+            data: new Date(),
+            opcoes: [
+              {
+                label: '📅 Agendar Test Drive',
+                url: url
+              }
+            ]
+          });
+        } else {
+          this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date(), opcoes });
+        }
+        // this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date(), opcoes });
         
         this.scrollToBottom();
         this.isLoading = false;
@@ -366,6 +387,13 @@ export class ChatAtendimentoComponent implements OnInit {
     this.enviar();
   }
 
+  clicarOpcao(op: any): void {
+    if (typeof op === 'object' && op.url) {
+      window.open(op.url, '_blank');
+    } else if (typeof op === 'string') {
+      this.selecionarOpcao(op);
+    }
+  }
   selecionarOpcao(opcao: string): void {
     this.novaMensagem = opcao;
     this.enviar();

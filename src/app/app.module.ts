@@ -65,7 +65,11 @@ import { LeadDetalheModalComponent } from './components/lead-detalhe-modal/lead-
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
 import { DetalhesVeiculosModalComponent } from './components/detalhes-veiculos-modal/detalhes-veiculos-modal.component';
+import { AgendamentoTestDriveComponent } from './pages/agendamento-test-drive/agendamento-test-drive.component';
 
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { MY_DATE_FORMATS } from './custom-date-format'; // ajuste o caminho se necessário
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,7 +96,8 @@ import { DetalhesVeiculosModalComponent } from './components/detalhes-veiculos-m
     LeadDetalheModalComponent,
     PaginationComponent,
     TestDriveListComponent,
-    DetalhesVeiculosModalComponent
+    DetalhesVeiculosModalComponent,
+    AgendamentoTestDriveComponent
   ],
   imports: [
     BrowserModule,
@@ -133,6 +138,11 @@ import { DetalhesVeiculosModalComponent } from './components/detalhes-veiculos-m
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     provideNgxMask(),
+
+    // FORMATOS DE DATA EM PT-BR
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ],
   bootstrap: [AppComponent]
 })
