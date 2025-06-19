@@ -1,5 +1,5 @@
 <div class="agendamento-container">
-  <mat-card class="agendamento-card">
+  <mat-card *ngIf="!agendamentoConfirmado" class="agendamento-card">
     <mat-card-header>
       <mat-card-title>Agende seu Test Drive</mat-card-title>
       <mat-card-subtitle>Preencha os dados abaixo para agendar um test drive com a loja</mat-card-subtitle>
@@ -59,4 +59,31 @@
       </form>
     </mat-card-content>
   </mat-card>
+
+  <!-- SE AGENDAMENTO FOI CONFIRMADO -->
+  <mat-card *ngIf="agendamentoConfirmado" class="agendamento-confirmado">
+    <mat-card-header>
+      <mat-card-title>Agendamento Confirmado</mat-card-title>
+      <mat-card-subtitle>{{ agendamento?.customerName }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <img [src]="agendamento?.vehicleMainPhotoUrl" class="thumb-carro" *ngIf="agendamento?.vehicleMainPhotoUrl" />
+
+      <p><strong>Veículo:</strong> {{ agendamento?.vehicleBrand }} {{ agendamento?.vehicleModel }} {{ agendamento?.vehicleYear }}</p>
+      <p><strong>Loja:</strong> {{ agendamento?.shopName }}</p>
+      <p><strong>Data e Hora:</strong> {{ agendamento?.preferredDate | date: 'dd/MM/yyyy HH:mm' }}</p>
+      <p><strong>Email:</strong> {{ agendamento?.customerEmail }}</p>
+      <p><strong>Telefone:</strong> {{ agendamento?.customerPhone }}</p>
+      <p *ngIf="agendamento?.notes"><strong>Obs.:</strong> {{ agendamento?.notes }}</p>
+    </mat-card-content>
+
+    <mat-card-actions class="acoes">
+      <button mat-flat-button color="primary" (click)="imprimir()">Imprimir</button>
+      <button mat-stroked-button color="accent" (click)="enviarWhatsApp()">WhatsApp</button>
+      <button mat-stroked-button color="accent" (click)="enviarEmail()">Email</button>
+      <button mat-stroked-button (click)="voltarInicio()">Voltar</button>
+    </mat-card-actions>
+  </mat-card>
+
 </div>

@@ -21,7 +21,6 @@ const routes: Routes = [
   { path: 'atendimento', component: ChatAtendimentoComponent },
   { path: 'atendimento/:placa', component: ChatAtendimentoComponent },
   { path: 'cadastro-loja', component: CadastroLojaComponent },
-  { path: 'testdrive', component: AgendamentoTestDriveComponent },
   { path: 'testdrive/:vehicleId', component: AgendamentoTestDriveComponent },
   
   // Rotas privadas
