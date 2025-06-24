@@ -19,6 +19,7 @@ interface Mensagem {
   data: Date;
   opcoes?: any[] | null;
   isLoading?: boolean;
+  fotos?: string[];
 }
 
 @Component({
@@ -205,31 +206,27 @@ export class ChatAtendimentoComponent implements OnInit {
         this.mensagens = this.mensagens.filter(msg => !msg.isLoading);
 
         const mensagem = resposta?.message || 'Resposta recebida.';
-        const opcoes = resposta?.options || '';
+        const opcoes = resposta?.options || [];
+        const fotos = resposta?.photos || [];
         this.humor = resposta?.humor || 'happy';
 
-        // Detecta link de testdrive na mensagem
-        const testdriveRegex = /(https:\/\/scandrive\.com\.br\/testdrive\/[a-f0-9\-]{36})/;
-        const match = mensagem.match(testdriveRegex);
-          if (match) {
-          const url = match[1];
-          // opcoes.push(`📅 Agendar Test Drive`);
-          this.mensagens.push({
-            autor: 'IA',
-            texto: mensagem,
-            data: new Date(),
-            opcoes: [
-              {
-                label: '📅 Agendar Test Drive',
-                url: url
-              }
-            ]
+        const opcoesFormatadas = [...opcoes];
+
+        // Se houver fotos, adiciona uma opção para ver em destaque
+        if (fotos.length > 0) {
+          fotos.forEach((url: any) => {
+            this.imagensVeiculo.push(url);
           });
-        } else {
-          this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date(), opcoes });
         }
-        // this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date(), opcoes });
-        
+
+        this.mensagens.push({
+          autor: 'IA',
+          texto: mensagem,
+          data: new Date(),
+          opcoes: opcoesFormatadas,
+          fotos
+        });
+
         this.scrollToBottom();
         this.isLoading = false;
       },

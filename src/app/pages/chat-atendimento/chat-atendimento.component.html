@@ -7,19 +7,6 @@
     <p>Seu assistente inteligente para compra de veículos</p>
   </div>
 
-  <!-- Carrossel de imagens -->
-  <div class="carrossel-veiculo" *ngIf="placa && imagensVeiculo.length">
-    <h3>Fotos do veículo</h3>
-    <div class="carousel-wrapper">
-      <img
-        *ngFor="let img of imagensVeiculo"
-        [src]="img"
-        alt="Imagem do veículo"
-        (click)="abrirImagem(img)"
-      />
-    </div>
-  </div>
-
   <!-- Mensagens do chat -->
   <div class="mensagens" #mensagensDiv>
     <div
@@ -56,6 +43,19 @@
           >
             {{ op.label || op }}
           </button>
+        </div>
+      </div>
+
+      <!-- Carrossel de imagens -->
+      <div class="carrossel-veiculo" *ngIf="msg.fotos && msg.fotos.length > 0">
+        <h3>Fotos do veículo</h3>
+        <div class="carousel-wrapper">
+          <img
+            *ngFor="let img of msg.fotos"
+            [src]="img"
+            alt="Imagem do veículo"
+            (click)="abrirImagem(img)"
+          />
         </div>
       </div>
     </div>
