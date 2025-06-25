@@ -5,6 +5,9 @@
       <mat-card-subtitle>Informe seus dados e veja as condições de pagamento</mat-card-subtitle>
     </mat-card-header>
 
+    <!-- FOTO DO VEÍCULO -->
+    <img *ngIf="fotoVeiculoUrl" [src]="fotoVeiculoUrl" alt="Foto do veículo" class="foto-veiculo" />
+
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="simular()">
         <mat-tab-group>

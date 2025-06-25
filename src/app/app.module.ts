@@ -71,6 +71,7 @@ import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/materia
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MY_DATE_FORMATS } from './custom-date-format';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
+import { PascalCasePipe } from './pipes/pascal-case.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -99,7 +100,8 @@ import { SimularFinanciamentoComponent } from './pages/simular-financiamento/sim
     TestDriveListComponent,
     DetalhesVeiculosModalComponent,
     AgendamentoTestDriveComponent,
-    SimularFinanciamentoComponent
+    SimularFinanciamentoComponent,
+    PascalCasePipe,
   ],
   imports: [
     BrowserModule,
@@ -146,7 +148,8 @@ import { SimularFinanciamentoComponent } from './pages/simular-financiamento/sim
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [PascalCasePipe]
 })
 export class AppModule {
   constructor(

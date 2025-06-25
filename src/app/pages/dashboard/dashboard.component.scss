@@ -51,3 +51,60 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 }
+
+    h2 {
+        margin-top: 1rem;
+    }
+
+.visualizacao-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+
+  button {
+    font-weight: 500;
+  }
+}
+
+.tabela-palavras {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.card-palavra {
+  width: 100%;
+  max-width: 240px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  mat-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  mat-card-content p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .card-palavra {
+    max-width: 100%;
+  }
+
+  .visualizacao-toggle {
+    justify-content: center;
+  }
+}
+

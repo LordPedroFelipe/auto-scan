@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   palavrasMaisBuscadas = new MatTableDataSource<any>();
   isLoading = false;
 
+  modoTabela = true;
+
   constructor(
     private dashboardService: DashboardService,
     private alert: AlertService

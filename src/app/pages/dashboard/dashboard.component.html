@@ -1,22 +1,37 @@
 <div class="dashboard-container">
-  <h1>Bem-vindo à sua Central, {{ nomeLoja || 'Loja' }}</h1>
-  <p class="subtitulo">Aqui estão os principais indicadores da sua operação:</p>
+    <h1>Bem-vindo à sua Central, {{ nomeLoja || 'Loja' }}</h1>
+    <p class="subtitulo">Aqui estão os principais indicadores da sua operação:</p>
 
-  <div class="cards-grid">
-    <mat-card class="info-card" *ngFor="let indicador of indicadores" [ngStyle]="{ 'border-top': '5px solid ' + indicador.cor }">
-      <mat-card-title>{{ indicador.icone }} {{ indicador.titulo }}</mat-card-title>
-      <mat-card-content>
-        <h2>{{ indicador.valor }}</h2>
-      </mat-card-content>
-    </mat-card>
-  </div>
+    <div class="cards-grid">
+        <mat-card class="info-card" *ngFor="let indicador of indicadores" [ngStyle]="{ 'border-top': '5px solid ' + indicador.cor }">
+        <mat-card-title>{{ indicador.icone }} {{ indicador.titulo }}</mat-card-title>
+        <mat-card-content>
+            <h2>{{ indicador.valor }}</h2>
+        </mat-card-content>
+        </mat-card>
+    </div>
   
-  <h2>Palavras Mais Buscadas no Chat</h2>
+    <!--canvas baseChart
+        [data]="{
+            labels: palavrasMaisBuscadas.map(p => p.palavra),
+            datasets: [{ data: palavrasMaisBuscadas.map(p => p.quantidade), label: 'Buscas' }]
+        }"
+        [type]="'bar'">
+    </canvas-->
 
-    <mat-table [dataSource]="palavrasMaisBuscadas" class="mat-elevation-z2">
+    <h2>Palavras Mais Buscadas no Chat</h2>
+
+    <div class="visualizacao-toggle">
+    <button mat-stroked-button color="primary" (click)="modoTabela = !modoTabela">
+        {{ modoTabela ? 'Exibir como Cards' : 'Exibir como Tabela' }}
+    </button>
+    </div>
+
+    <!-- VISUALIZAÇÃO EM TABELA -->
+    <mat-table *ngIf="modoTabela" [dataSource]="palavrasMaisBuscadas" class="mat-elevation-z2 tabela-palavras">
     <ng-container matColumnDef="palavra">
         <mat-header-cell *matHeaderCellDef>Palavra</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.keyword }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.keyword | pascalCase }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="quantidade">
@@ -28,13 +43,14 @@
     <mat-row *matRowDef="let row; columns: ['palavra', 'quantidade']"></mat-row>
     </mat-table>
 
-    <!--canvas baseChart
-        [data]="{
-            labels: palavrasMaisBuscadas.map(p => p.palavra),
-            datasets: [{ data: palavrasMaisBuscadas.map(p => p.quantidade), label: 'Buscas' }]
-        }"
-        [type]="'bar'">
-    </canvas-->
-
+    <!-- VISUALIZAÇÃO EM CARDS -->
+    <div class="cards-wrapper" *ngIf="!modoTabela">
+    <mat-card *ngFor="let item of palavrasMaisBuscadas.data" class="card-palavra">
+        <mat-card-title>{{ item.keyword | pascalCase }}</mat-card-title>
+        <mat-card-content>
+        <p><strong>Quantidade:</strong> {{ item.count }}</p>
+        </mat-card-content>
+    </mat-card>
+    </div>
 
 </div>
