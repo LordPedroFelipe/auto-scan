@@ -193,7 +193,7 @@ export class ChatAtendimentoComponent implements OnInit {
 
     const loadingMsg: Mensagem = {
       autor: 'IA',
-      texto: 'Digitando...',
+      texto: 'Pensando...',
       data: new Date(),
       isLoading: true
     };

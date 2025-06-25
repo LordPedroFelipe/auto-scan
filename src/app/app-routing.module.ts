@@ -13,6 +13,7 @@ import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
 import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AgendamentoTestDriveComponent } from './pages/agendamento-test-drive/agendamento-test-drive.component';
+import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,6 +23,9 @@ const routes: Routes = [
   { path: 'atendimento/:placa', component: ChatAtendimentoComponent },
   { path: 'cadastro-loja', component: CadastroLojaComponent },
   { path: 'testdrive/:vehicleId', component: AgendamentoTestDriveComponent },
+  { path: 'simular-financiamento', component: SimularFinanciamentoComponent },
+  { path: 'simular-financiamento/:vehicleId', component: SimularFinanciamentoComponent },
+  { path: 'simular-financiamento/:vehicleId/:valor/:foto', component: SimularFinanciamentoComponent },
   
   // Rotas privadas
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },

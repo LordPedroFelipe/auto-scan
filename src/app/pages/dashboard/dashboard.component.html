@@ -16,12 +16,12 @@
     <mat-table [dataSource]="palavrasMaisBuscadas" class="mat-elevation-z2">
     <ng-container matColumnDef="palavra">
         <mat-header-cell *matHeaderCellDef>Palavra</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.palavra }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.keyword }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="quantidade">
         <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.quantidade }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.count }}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="['palavra', 'quantidade']"></mat-header-row>

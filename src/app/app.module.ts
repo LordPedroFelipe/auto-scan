@@ -69,7 +69,8 @@ import { AgendamentoTestDriveComponent } from './pages/agendamento-test-drive/ag
 
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { MY_DATE_FORMATS } from './custom-date-format'; // ajuste o caminho se necessário
+import { MY_DATE_FORMATS } from './custom-date-format';
+import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,7 +98,8 @@ import { MY_DATE_FORMATS } from './custom-date-format'; // ajuste o caminho se n
     PaginationComponent,
     TestDriveListComponent,
     DetalhesVeiculosModalComponent,
-    AgendamentoTestDriveComponent
+    AgendamentoTestDriveComponent,
+    SimularFinanciamentoComponent
   ],
   imports: [
     BrowserModule,

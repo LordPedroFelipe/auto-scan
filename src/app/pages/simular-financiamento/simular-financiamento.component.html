@@ -1,0 +1,134 @@
+<div class="agendamento-container">
+  <mat-card *ngIf="!simulacaoConfirmada" class="agendamento-card">
+    <mat-card-header>
+      <mat-card-title>Simule seu Financiamento</mat-card-title>
+      <mat-card-subtitle>Informe seus dados e veja as condições de pagamento</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="simular()">
+        <mat-tab-group>
+
+          <!-- ABA 1: VALORES E CONDIÇÕES -->
+          <mat-tab label="Valores e Condições">
+            <!-- Valor do Veículo (bloqueado) -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Valor do Veículo</mat-label>
+              <input matInput formControlName="valorVeiculo" readonly />
+            </mat-form-field>
+
+            <!-- Entrada desejada -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Entrada desejada</mat-label>
+              <input matInput type="number" formControlName="valorEntrada" required />
+            </mat-form-field>
+
+            <!-- Parcelas -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Número de Parcelas</mat-label>
+              <mat-select formControlName="quantidadeParcelas" required>
+                <mat-option [value]="24">24x</mat-option>
+                <mat-option [value]="36">36x</mat-option>
+                <mat-option [value]="48">48x</mat-option>
+                <mat-option [value]="60">60x</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Taxa de Juros -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Taxa de juros mensal (%)</mat-label>
+              <input matInput type="number" step="0.01" formControlName="taxaJuros" required />
+            </mat-form-field>
+
+            <!-- Valor da Parcela (calculado) -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Valor estimado da parcela</mat-label>
+              <input matInput formControlName="valorParcela" readonly />
+            </mat-form-field>
+          </mat-tab>
+
+          <!-- ABA 2: DADOS DO CLIENTE -->
+          <mat-tab label="Dados do Cliente">
+            <!-- Nome -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Nome completo</mat-label>
+              <input matInput formControlName="nomeCompleto" required />
+            </mat-form-field>
+
+            <!-- CPF -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>CPF</mat-label>
+              <input matInput formControlName="cpf" required />
+            </mat-form-field>
+
+            <!-- Telefone -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Telefone</mat-label>
+              <input matInput formControlName="telefone" required />
+            </mat-form-field>
+
+            <!-- CEP -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>CEP</mat-label>
+              <input matInput formControlName="cep" (blur)="buscarEndereco()" required />
+            </mat-form-field>
+
+            <!-- Endereço auto preenchido -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Rua</mat-label>
+              <input matInput formControlName="rua" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="numero" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="bairro" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="cidade" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Estado</mat-label>
+              <input matInput formControlName="estado" />
+            </mat-form-field>
+          </mat-tab>
+        </mat-tab-group>
+
+        <div class="botoes">
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+            {{ isLoading ? 'Simulando...' : 'Simular Financiamento' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Resultado da simulação -->
+  <mat-card *ngIf="simulacaoConfirmada" class="agendamento-confirmado">
+    <mat-card-header>
+      <mat-card-title>Simulação Realizada</mat-card-title>
+      <mat-card-subtitle>{{ form.value.nomeCompleto }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p><strong>Veículo:</strong> {{ form.value.valorVeiculo | currency:'BRL' }}</p>
+      <p><strong>Entrada:</strong> {{ form.value.valorEntrada | currency:'BRL' }}</p>
+      <p><strong>Parcelas:</strong> {{ form.value.quantidadeParcelas }}x</p>
+      <p><strong>Taxa de Juros:</strong> {{ form.value.taxaJuros }}% ao mês</p>
+      <p><strong>Valor estimado da parcela:</strong> {{ form.value.valorParcela | currency:'BRL' }}</p>
+      <p><strong>Telefone:</strong> {{ form.value.telefone }}</p>
+    </mat-card-content>
+
+    <mat-card-actions class="acoes">
+      <button mat-flat-button color="primary" (click)="imprimir()">Imprimir</button>
+      <button mat-stroked-button color="accent" (click)="voltarInicio()">Nova Simulação</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
