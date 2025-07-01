@@ -28,6 +28,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 // Módulos
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -142,6 +143,7 @@ import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component
     MatSelectModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatButtonToggleModule,
 
     // NGX-MASK
     NgxMaskDirective,

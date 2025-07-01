@@ -1,4 +1,5 @@
 export interface LeadModel {
+  id?: string;
   name: string;
   phone: string;
   email: string;
