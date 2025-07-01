@@ -1,37 +1,146 @@
 <div class="container">
   <h2>Lista de Usuários</h2>
-  <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Usuário</button>
 
-  <mat-table [dataSource]="usuarios" class="mat-elevation-z2">
+    <div class="actions">
+        <button 
+            mat-flat-button color="primary"
+            (click)="abrirCadastro()"
+            disabled="true">
+                Cadastrar Usuário
+            </button>
+    </div>
+    <!--button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Usuário</button-->
 
-    <ng-container matColumnDef="userName">
-      <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
-      <mat-cell *matCellDef="let u">{{ u.userName }}</mat-cell>
-    </ng-container>
 
-    <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell *matCellDef="let u">{{ u.email }}</mat-cell>
-    </ng-container>
+    <app-loading [isLoading]="carregando" [text]="'Carregando...'">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Filtros Avançados
+                </mat-panel-title>
+                <mat-panel-description>
+                    (opcional)
+                </mat-panel-description>
+                </mat-expansion-panel-header>
 
-    <ng-container matColumnDef="phoneNumber">
-      <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
-      <mat-cell *matCellDef="let u">{{ u.phoneNumber }}</mat-cell>
-    </ng-container>
+                <!--form [formGroup]="filtroForm" (ngSubmit)="aplicarFiltros()">
+                <div class="filtros-grid">
 
-    <ng-container matColumnDef="acoes">
-      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-      <mat-cell *matCellDef="let u">
-        <button mat-icon-button color="primary" (click)="editar(u)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="excluir(u.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+                    <mat-form-field appearance="fill">
+                    <mat-label>Marca</mat-label>
+                    <input matInput formControlName="brand" />
+                    </mat-form-field>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+                    <mat-form-field appearance="fill">
+                    <mat-label>Modelo</mat-label>
+                    <input matInput formControlName="model" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                    <mat-label>Ano</mat-label>
+                    <input matInput type="number" formControlName="year" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                    <mat-label>Cor</mat-label>
+                    <input matInput formControlName="color" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                    <mat-label>Câmbio</mat-label>
+                    <mat-select formControlName="transmission">
+                        <mat-option value="">Todos</mat-option>
+                        <mat-option value="Automático">Automático</mat-option>
+                        <mat-option value="Manual">Manual</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                    <mat-label>Combustível</mat-label>
+                    <mat-select formControlName="fuelType">
+                        <mat-option value="">Todos</mat-option>
+                        <mat-option value="Gasolina">Gasolina</mat-option>
+                        <mat-option value="Flex">Flex</mat-option>
+                        <mat-option value="Diesel">Diesel</mat-option>
+                        <mat-option value="Elétrico">Elétrico</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+
+                    <mat-checkbox formControlName="hasAuction">Leilão</mat-checkbox>
+                    <mat-checkbox formControlName="hasAccident">Sinistro</mat-checkbox>
+                    <mat-checkbox formControlName="isFirstOwner">1º dono</mat-checkbox>
+                    <mat-checkbox formControlName="isOnOffer">Em oferta</mat-checkbox>
+
+                </div>
+
+                <div class="filtros-acoes">
+                    <button mat-flat-button color="primary" type="submit">Aplicar Filtros</button>
+                    <button mat-stroked-button type="button" (click)="limparFiltros()">Limpar</button>
+                </div>
+                </form-->
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <div class="cards-container">
+            <!--mat-card class="card-veiculo" *ngFor="let v of veiculos">
+                <div class="card-topo">
+                <img *ngIf="v.mainPhotoUrl" [src]="v.mainPhotoUrl" [alt]="v.brand + ' ' + v.model" />
+                </div>
+
+                <mat-card-content>
+                <h3>{{ v.brand }} {{ v.model }} {{ v.year }}</h3>
+                <p><strong>Cor:</strong> {{ v.color }}</p>
+                <p><strong>KM:</strong> {{ v.mileage | number }} km</p>
+                <p><strong>Preço:</strong> R$ {{ v.price | number: '1.0-0' }}</p>
+                </mat-card-content>
+
+                <mat-card-actions align="end">
+                <button mat-raised-button color="primary"  (click)="abrirDetalhes(v)">Detalhes</button>
+                </mat-card-actions>
+            </mat-card-->
+            <mat-table [dataSource]="usuarios" class="mat-elevation-z2">
+
+                <ng-container matColumnDef="userName">
+                <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+                <mat-cell *matCellDef="let u">{{ u.userName }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                <mat-cell *matCellDef="let u">{{ u.email }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="phoneNumber">
+                <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
+                <mat-cell *matCellDef="let u">{{ u.phoneNumber }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="acoes">
+                <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+                <mat-cell *matCellDef="let u">
+                    <button mat-icon-button color="primary" (click)="editar(u)">
+                    <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="excluir(u.id)">
+                    <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+
+        <!-- Paginação -->
+        <mat-paginator
+            [length]="totalCount"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            [pageSizeOptions]="[5, 10, 20]"
+            (page)="mudarPagina($event)">
+        </mat-paginator>
+    </app-loading>
+
 </div>

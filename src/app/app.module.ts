@@ -27,6 +27,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 
 // Módulos
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -72,6 +73,11 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import { MY_DATE_FORMATS } from './custom-date-format';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
 import { PascalCasePipe } from './pipes/pascal-case.pipe';
+import { NgxApexchartsModule } from 'ngx-apexcharts';
+import { GraficoPalavrasComponent } from './components/grafico-palavras/grafico-palavras.component';
+import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,6 +108,8 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
     AgendamentoTestDriveComponent,
     SimularFinanciamentoComponent,
     PascalCasePipe,
+    GraficoPalavrasComponent,
+    QrCodeListComponent,
   ],
   imports: [
     BrowserModule,
@@ -133,9 +141,13 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
     MatExpansionModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatChipsModule,
 
     // NGX-MASK
-    NgxMaskDirective
+    NgxMaskDirective,
+    
+    // NGX-Apex-Charts
+    NgxApexchartsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

@@ -1,33 +1,71 @@
 <h2 mat-dialog-title>{{ data ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
 
-<form [formGroup]="form" (ngSubmit)="salvar()" class="form-container">
+<mat-tab-group>
+  <!-- Aba Dados Pessoais -->
+  <mat-tab label="Dados Pessoais">
+    <form [formGroup]="form" (ngSubmit)="salvar()" class="form-container">
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Nome</mat-label>
-    <input matInput formControlName="userName" required>
-    <mat-error *ngIf="form.get('userName')?.hasError('required')">
-      Nome é obrigatório
-    </mat-error>
-  </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="userName" required>
+        <mat-error *ngIf="form.get('userName')?.hasError('required')">
+          Nome é obrigatório
+        </mat-error>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Email</mat-label>
-    <input matInput type="email" formControlName="email" required>
-    <mat-error *ngIf="form.get('email')?.hasError('required')">
-      Email é obrigatório
-    </mat-error>
-    <mat-error *ngIf="form.get('email')?.hasError('email')">
-      Email inválido
-    </mat-error>
-  </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required>
+        <mat-error *ngIf="form.get('email')?.hasError('required')">Email é obrigatório</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Telefone</mat-label>
-    <input matInput formControlName="phoneNumber">
-  </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Telefone</mat-label>
+        <input matInput formControlName="phoneNumber">
+      </mat-form-field>
 
-  <div mat-dialog-actions align="end">
-    <button mat-button (click)="fechar()">Cancelar</button>
-    <button mat-flat-button color="primary" [disabled]="form.invalid">Salvar</button>
-  </div>
-</form>
+      <!-- Campos de senha só no modo criação -->
+      <ng-container *ngIf="!data">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            A senha deve ter no mínimo 6 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Confirmar Senha</mat-label>
+          <input matInput type="password" formControlName="confirmPassword">
+          <mat-error *ngIf="form.hasError('passwordMismatch')">
+            As senhas não coincidem
+          </mat-error>
+        </mat-form-field>
+      </ng-container>
+    </form>
+  </mat-tab>
+
+  <!-- Aba Permissões -->
+  <mat-tab label="Permissões" *ngIf="data">
+    <div class="permissoes-container">
+      <ng-container *ngIf="isLoadingRoles">
+        <mat-spinner diameter="30"></mat-spinner>
+      </ng-container>
+
+      <ng-container *ngIf="!isLoadingRoles && userRoles.length > 0">
+          <mat-chip *ngFor="let role of userRoles" color="primary" selected>{{ role }}</mat-chip>
+      </ng-container>
+
+      <ng-container *ngIf="!isLoadingRoles && userRoles.length === 0">
+        <p>Nenhuma permissão atribuída a este usuário.</p>
+      </ng-container>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+<!-- Botões -->
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-flat-button color="primary" [disabled]="form.invalid">Salvar</button>
+</div>

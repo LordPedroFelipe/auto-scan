@@ -1,0 +1,40 @@
+<div class="qr-code-lista-container">
+  <h2>QR Codes da Loja</h2>
+
+  <mat-progress-spinner
+    *ngIf="isLoading"
+    mode="indeterminate"
+    diameter="50"
+    class="loading-spinner"
+  ></mat-progress-spinner>
+
+  <div *ngIf="!isLoading">
+    <mat-table [dataSource]="qrCodes" class="mat-elevation-z2">
+
+      <ng-container matColumnDef="vehiclePlate">
+        <mat-header-cell *matHeaderCellDef>Placa</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.vehiclePlate }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="code">
+        <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.code }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="link">
+        <mat-header-cell *matHeaderCellDef>Link</mat-header-cell>
+        <mat-cell *matCellDef="let item">
+          <a [href]="item.link" target="_blank">{{ item.link }}</a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.createdAt | date:'short' }}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+</div>

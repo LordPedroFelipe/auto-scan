@@ -1,0 +1,23 @@
+.qr-code-lista-container {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  mat-table {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .loading-spinner {
+    display: flex;
+    margin: 0 auto;
+    margin-top: 40px;
+  }
+
+  a {
+    color: #1976d2;
+    text-decoration: underline;
+  }
+}

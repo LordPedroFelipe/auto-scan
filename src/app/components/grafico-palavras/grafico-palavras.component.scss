@@ -1,0 +1,33 @@
+.titulo-dashboard {
+  text-align: center;
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+  font-size: 1.5rem;
+}
+
+.graficos-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+.grafico-box {
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .grafico-box {
+    max-width: 100%;
+  }
+}

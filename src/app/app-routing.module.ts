@@ -14,6 +14,7 @@ import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.
 import { AuthGuard } from './guards/auth.guard';
 import { AgendamentoTestDriveComponent } from './pages/agendamento-test-drive/agendamento-test-drive.component';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component';
+import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'usuarios-lista', component: UsuariosListaComponent, canActivate: [AuthGuard]  },
   { path: 'lead-lista', component: LeadListaComponent, canActivate: [AuthGuard]  },
   { path: 'test-drive-list', component: TestDriveListComponent, canActivate: [AuthGuard]  },
+  { path: 'qr-code-list', component: QrCodeListComponent, canActivate: [AuthGuard]  },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 

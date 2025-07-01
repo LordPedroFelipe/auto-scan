@@ -1,0 +1,26 @@
+<h2 class="titulo-dashboard">Palavras Mais Buscadas - Visão Gráfica</h2>
+
+<div class="graficos-wrapper">
+  <!-- Gráfico de Pizza -->
+  <div class="grafico-box">
+    <apx-chart
+      [series]="pieChartOptions.series"
+      [chart]="pieChartOptions.chart"
+      [labels]="pieChartOptions.labels"
+      [responsive]="pieChartOptions.responsive"
+      [title]="pieChartOptions.title">
+    </apx-chart>
+  </div>
+
+  <!-- Gráfico de Linha -->
+  <div class="grafico-box">
+    <apx-chart
+      [series]="lineChartOptions.series"
+      [chart]="lineChartOptions.chart"
+      [xaxis]="lineChartOptions.xaxis"
+      [stroke]="lineChartOptions.stroke"
+      [dataLabels]="lineChartOptions.dataLabels"
+      [title]="lineChartOptions.title">
+    </apx-chart>
+  </div>
+</div>

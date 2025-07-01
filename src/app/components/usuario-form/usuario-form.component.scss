@@ -2,9 +2,22 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-width: 300px;
+  padding: 16px;
 }
 
 .full-width {
   width: 100%;
+}
+
+.permissoes-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+mat-chip {
+  font-size: 14px;
+  margin-right: 8px;
 }

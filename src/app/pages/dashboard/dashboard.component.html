@@ -22,35 +22,36 @@
     <h2>Palavras Mais Buscadas no Chat</h2>
 
     <div class="visualizacao-toggle">
-    <button mat-stroked-button color="primary" (click)="modoTabela = !modoTabela">
-        {{ modoTabela ? 'Exibir como Cards' : 'Exibir como Tabela' }}
-    </button>
+        <button mat-stroked-button color="primary" (click)="modoTabela = !modoTabela">
+            {{ modoTabela ? 'Exibir como Cards' : 'Exibir como Tabela' }}
+        </button>
     </div>
 
     <!-- VISUALIZAÇÃO EM TABELA -->
     <mat-table *ngIf="modoTabela" [dataSource]="palavrasMaisBuscadas" class="mat-elevation-z2 tabela-palavras">
-    <ng-container matColumnDef="palavra">
-        <mat-header-cell *matHeaderCellDef>Palavra</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.keyword | pascalCase }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="palavra">
+            <mat-header-cell *matHeaderCellDef>Palavra</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.keyword | pascalCase }}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="quantidade">
-        <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.count }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="quantidade">
+            <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.count }}</mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="['palavra', 'quantidade']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['palavra', 'quantidade']"></mat-row>
+        <mat-header-row *matHeaderRowDef="['palavra', 'quantidade']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['palavra', 'quantidade']"></mat-row>
     </mat-table>
 
     <!-- VISUALIZAÇÃO EM CARDS -->
     <div class="cards-wrapper" *ngIf="!modoTabela">
-    <mat-card *ngFor="let item of palavrasMaisBuscadas.data" class="card-palavra">
-        <mat-card-title>{{ item.keyword | pascalCase }}</mat-card-title>
-        <mat-card-content>
-        <p><strong>Quantidade:</strong> {{ item.count }}</p>
-        </mat-card-content>
-    </mat-card>
+        <mat-card *ngFor="let item of palavrasMaisBuscadas.data" class="card-palavra">
+            <mat-card-title>{{ item.keyword | pascalCase }}</mat-card-title>
+            <mat-card-content>
+            <p><strong>Quantidade:</strong> {{ item.count }}</p>
+            </mat-card-content>
+        </mat-card>
     </div>
 
+    <app-grafico-palavras></app-grafico-palavras>
 </div>
