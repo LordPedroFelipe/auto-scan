@@ -26,6 +26,30 @@ export const INDICADORES_MOCK: Indicador[] = [
     cor: '#F44336'
   },
   {
+    titulo: 'Mensagens Totais no Mês',
+    valor: 87,
+    icone: '📨',
+    cor: '#9E9E9E'
+  },
+  {
+    titulo: 'Chats com IA Iniciados',
+    valor: 42,
+    icone: '🤖',
+    cor: '#FF5722'
+  },
+  {
+    titulo: 'QR Codes Acessados',
+    valor: 58,
+    icone: '📱',
+    cor: '#2196F3'
+  },
+  {
+    titulo: 'Visitas à Página de Loja',
+    valor: 312,
+    icone: '🌐',
+    cor: '#607D8B'
+  },
+  {
     titulo: 'Taxa de Conversão',
     valor: '12.4%',
     icone: '📈',

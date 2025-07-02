@@ -1,40 +1,66 @@
-<div class="qr-code-lista-container">
+<div class="container">
   <h2>QR Codes da Loja</h2>
 
-  <mat-progress-spinner
-    *ngIf="isLoading"
-    mode="indeterminate"
-    diameter="50"
-    class="loading-spinner"
-  ></mat-progress-spinner>
-
-  <div *ngIf="!isLoading">
-    <mat-table [dataSource]="qrCodes" class="mat-elevation-z2">
-
-      <ng-container matColumnDef="vehiclePlate">
-        <mat-header-cell *matHeaderCellDef>Placa</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.vehiclePlate }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="code">
-        <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.code }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="link">
-        <mat-header-cell *matHeaderCellDef>Link</mat-header-cell>
-        <mat-cell *matCellDef="let item">
-          <a [href]="item.link" target="_blank">{{ item.link }}</a>
-        </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="createdAt">
-        <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.createdAt | date:'short' }}</mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+  <div class="actions">
+    <button mat-stroked-button (click)="alternarModo()" class="btn-modo">
+      {{ modoVisualizacao === 'tabela' ? 'Ver em Cards' : 'Ver em Tabela' }}
+    </button>
   </div>
+
+  <app-loading [isLoading]="isLoading" [text]="'Carregando QR Codes...'">
+
+    <div *ngIf="modoVisualizacao === 'cards'" class="cards-container">
+      <mat-card class="card-qrcode" *ngFor="let item of qrCodes">
+        <mat-card-content>
+          <h3>Placa: {{ item.vehiclePlate }}</h3>
+          <p><strong>Código:</strong> {{ item.code }}</p>
+          <p><strong>Link:</strong> <a [href]="item.link" target="_blank">{{ item.link }}</a></p>
+          <p><strong>Criado em:</strong> {{ item.createdAt | date: 'short' }}</p>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" target="_blank">
+            Acessar Link
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div *ngIf="modoVisualizacao === 'tabela'" class="tabela-container">
+      <table mat-table [dataSource]="qrCodes" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="vehiclePlate">
+          <th mat-header-cell *matHeaderCellDef>Placa</th>
+          <td mat-cell *matCellDef="let item">{{ item.vehiclePlate }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef>Código</th>
+          <td mat-cell *matCellDef="let item">{{ item.code }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="link">
+          <th mat-header-cell *matHeaderCellDef>Link</th>
+          <td mat-cell *matCellDef="let item">
+            <a [href]="item.link" target="_blank">{{ item.link }}</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef>Criado em</th>
+          <td mat-cell *matCellDef="let item">{{ item.createdAt | date:'short' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="totalCount"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="mudarPagina($event)">
+    </mat-paginator>
+  </app-loading>
 </div>
