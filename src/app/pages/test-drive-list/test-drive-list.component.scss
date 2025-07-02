@@ -46,6 +46,27 @@
       flex-direction: column;
       justify-content: space-between;
     }
+    .card-lead {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        min-height: 280px;
+
+        mat-card-content {
+            flex: 1 1 auto;
+        }
+
+        mat-card-actions {
+            margin-top: auto;
+            padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            border-top: 1px solid #e0e0e0;
+        }
+    }
+
 
     h3 {
       margin: 0 0 8px 0;
@@ -86,3 +107,4 @@ button {
 .btn-modo {
     margin-left: 20px;
 }
+

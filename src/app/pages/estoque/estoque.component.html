@@ -83,18 +83,25 @@
         <div class="cards-container">
             <mat-card class="card-veiculo" *ngFor="let v of veiculos">
                 <div class="card-topo">
-                <img *ngIf="v.mainPhotoUrl" [src]="v.mainPhotoUrl" [alt]="v.brand + ' ' + v.model" />
+                    <ng-container *ngIf="v.mainPhotoUrl; else semImagem">
+                        <img [src]="v.mainPhotoUrl" [alt]="v.brand + ' ' + v.model" />
+                    </ng-container>
+                    <ng-template #semImagem>
+                        <div class="sem-imagem">
+                        <span>Sem Foto</span>
+                        </div>
+                    </ng-template>
                 </div>
 
                 <mat-card-content>
-                <h3>{{ v.brand }} {{ v.model }} {{ v.year }}</h3>
-                <p><strong>Cor:</strong> {{ v.color }}</p>
-                <p><strong>KM:</strong> {{ v.mileage | number }} km</p>
-                <p><strong>Preço:</strong> R$ {{ v.price | number: '1.0-0' }}</p>
+                    <h3>{{ v.brand }} {{ v.model }} {{ v.year }}</h3>
+                    <p><strong>Cor:</strong> {{ v.color }}</p>
+                    <p><strong>KM:</strong> {{ v.mileage | number }} km</p>
+                    <p><strong>Preço:</strong> R$ {{ v.price | number: '1.0-0' }}</p>
                 </mat-card-content>
 
                 <mat-card-actions align="end">
-                <button mat-raised-button color="primary"  (click)="abrirDetalhes(v)">Detalhes</button>
+                    <button mat-raised-button color="primary"  (click)="abrirDetalhes(v)">Detalhes</button>
                 </mat-card-actions>
             </mat-card>
         </div>

@@ -85,3 +85,55 @@ mat-card-actions {
   justify-content: space-between;
   padding: 8px 16px 16px;
 }
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.card-veiculo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  .card-topo {
+    height: 180px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: cover;
+    }
+
+    .sem-imagem {
+      width: 100%;
+      height: 100%;
+      background: #f5f5f5;
+      color: #999;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #ccc;
+    }
+  }
+
+  mat-card-content {
+    flex: 1;
+  }
+
+  mat-card-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+    border-top: 1px solid #eee;
+  }
+}
