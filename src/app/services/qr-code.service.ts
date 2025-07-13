@@ -15,4 +15,13 @@ export class QrCodeService {
     return this.http.get<any[]>(`${this.apiUrl}/shop/1ae44908-6f2e-49f9-a3e8-34be6f882084`);
     
   }
+
+  visualizarQRCode(id: string): void {
+    const url = `${this.apiUrl}/${id}/image`;
+    window.open(url, '_blank');
+  }
+  
+  criar(qrCode: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/shop/1ae44908-6f2e-49f9-a3e8-34be6f882084`, qrCode);
+  }
 }

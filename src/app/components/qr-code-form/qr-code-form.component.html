@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Criar QR Code</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Tipo de Redirecionamento</mat-label>
+    <mat-select formControlName="redirectType" (selectionChange)="onRedirectTypeChange()">
+      <mat-option value="Shop">Loja</mat-option>
+      <mat-option value="Vehicle">Veículo</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width" *ngIf="opcoesRedirectId.length > 0">
+    <mat-label>ID de Redirecionamento</mat-label>
+    <mat-select formControlName="redirectId">
+      <mat-option *ngFor="let item of opcoesRedirectId" [value]="item.id">
+        {{ item.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="primary" (click)="salvar()" [disabled]="form.invalid">Salvar</button>
+</mat-dialog-actions>

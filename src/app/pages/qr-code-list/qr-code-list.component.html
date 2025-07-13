@@ -2,6 +2,7 @@
   <h2>QR Codes da Loja</h2>
 
   <div class="actions">
+    <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar QR Code</button>
     <button mat-stroked-button (click)="alternarModo()" class="btn-modo">
       {{ modoVisualizacao === 'tabela' ? 'Ver em Cards' : 'Ver em Tabela' }}
     </button>
@@ -13,7 +14,8 @@
       <mat-card class="card-qrcode" *ngFor="let item of qrCodes">
         <mat-card-content>
           <h3>Placa: {{ item.vehiclePlate }}</h3>
-          <p><strong>Código:</strong> {{ item.code }}</p>
+          <p><strong>Tipo:</strong> {{ item.redirectType }}</p>
+          <p><strong>ID:</strong> {{ item.redirectId }}</p>
           <p><strong>Link:</strong> <a [href]="item.link" target="_blank">{{ item.link }}</a></p>
           <p><strong>Criado em:</strong> {{ item.createdAt | date: 'short' }}</p>
         </mat-card-content>
@@ -27,6 +29,16 @@
 
     <div *ngIf="modoVisualizacao === 'tabela'" class="tabela-container">
       <table mat-table [dataSource]="qrCodes" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="redirectType">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let item">{{ item.redirectType }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="redirectId">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let item">{{ item.redirectId }}</td>
+        </ng-container>
 
         <ng-container matColumnDef="vehiclePlate">
           <th mat-header-cell *matHeaderCellDef>Placa</th>
@@ -48,6 +60,15 @@
         <ng-container matColumnDef="createdAt">
           <th mat-header-cell *matHeaderCellDef>Criado em</th>
           <td mat-cell *matCellDef="let item">{{ item.createdAt | date:'short' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef>Ações</th>
+          <td mat-cell *matCellDef="let item">            
+              <button mat-icon-button color="primary" (click)="visualizarQRCode(item.id)" matTooltip="Visualizar QR Code">
+                <mat-icon>qr_code</mat-icon>
+              </button>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

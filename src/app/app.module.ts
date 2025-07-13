@@ -77,6 +77,7 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
 import { NgxApexchartsModule } from 'ngx-apexcharts';
 import { GraficoPalavrasComponent } from './components/grafico-palavras/grafico-palavras.component';
 import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
+import { QrCodeFormComponent } from './components/qr-code-form/qr-code-form.component';
 
 
 @NgModule({
@@ -111,6 +112,7 @@ import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component
     PascalCasePipe,
     GraficoPalavrasComponent,
     QrCodeListComponent,
+    QrCodeFormComponent,
   ],
   imports: [
     BrowserModule,
