@@ -78,6 +78,7 @@ import { NgxApexchartsModule } from 'ngx-apexcharts';
 import { GraficoPalavrasComponent } from './components/grafico-palavras/grafico-palavras.component';
 import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
 import { QrCodeFormComponent } from './components/qr-code-form/qr-code-form.component';
+import { RelatoriosComponent } from './page/relatorios/relatorios.component';
 
 
 @NgModule({
@@ -113,6 +114,7 @@ import { QrCodeFormComponent } from './components/qr-code-form/qr-code-form.comp
     GraficoPalavrasComponent,
     QrCodeListComponent,
     QrCodeFormComponent,
+    RelatoriosComponent,
   ],
   imports: [
     BrowserModule,

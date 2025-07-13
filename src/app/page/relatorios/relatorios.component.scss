@@ -1,0 +1,54 @@
+// Estilo principal do card
+mat-card {
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 900px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background-color: #ffffff;
+
+  mat-card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #2e2e2e;
+  }
+
+  mat-form-field {
+    margin-bottom: 1.25rem;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+
+    button {
+      grid-column: span 2;
+      justify-self: end;
+      margin-top: 1rem;
+    }
+  }
+}
+
+// Forçar largura total
+.full-width {
+  width: 100%;
+}
+
+// Responsividade para telas menores (mobile/tablet)
+@media (max-width: 768px) {
+  mat-card {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+
+    button {
+      grid-column: span 1;
+      justify-self: stretch;
+    }
+  }
+}

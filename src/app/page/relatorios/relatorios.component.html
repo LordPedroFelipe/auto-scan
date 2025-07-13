@@ -1,0 +1,46 @@
+<mat-card>
+  <mat-card-title>Relatórios</mat-card-title>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Selecionar Relatório</mat-label>
+    <mat-select [(ngModel)]="relatorioSelecionado" (selectionChange)="onRelatorioChange()">
+      <mat-option *ngFor="let r of relatorios" [value]="r">
+        {{ r.nome }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Filtros dinâmicos -->
+  <ng-container *ngIf="relatorioSelecionado?.id === 'shopReport'">
+    <form [formGroup]="formShopReport">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Loja</mat-label>
+        <mat-select formControlName="shopId">
+          <mat-option *ngFor="let loja of lojas" [value]="loja.id">{{ loja.nome }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Vendedor (opcional)</mat-label>
+        <mat-select formControlName="sellerId">
+          <mat-option *ngFor="let seller of vendedores" [value]="seller.id">{{ seller.nome }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100">
+        <input matInput [matDatepicker]="picker1" placeholder="Data Início" formControlName="startDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100">
+        <input matInput [matDatepicker]="picker2" placeholder="Data Fim" formControlName="endDate">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="gerarRelatorioShop()" [disabled]="formShopReport.invalid">
+        Gerar Relatório
+      </button>
+    </form>
+  </ng-container>
+</mat-card>
