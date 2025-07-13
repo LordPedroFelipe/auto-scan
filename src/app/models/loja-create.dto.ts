@@ -6,13 +6,14 @@ export interface LojaCreateDto {
   isActive?: boolean;
   qrCodeLimit?: number;
   owner?: {
-    userName: string;
-    normalizedUserName: string;
-    email: string;
-    normalizedEmail: string;
-    emailConfirmed: boolean;
-    passwordHash: string;
-    phoneNumber: string;
-    phoneNumberConfirmed: boolean;
+    id?: string;
+    userName?: string;
+    normalizedUserName?: string;
+    email?: string;
+    normalizedEmail?: string;
+    emailConfirmed?: boolean;
+    passwordHash?: string;
+    phoneNumber?: string;
+    phoneNumberConfirmed?: boolean;
   };
 }

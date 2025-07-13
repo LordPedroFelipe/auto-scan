@@ -43,12 +43,12 @@ export class LojaFormComponent {
 
   salvar() {
     console.log('salvar:', this.form.invalid);
-    console.log('salvar form:', this.form);
-    console.log('salvar value:', this.form.value);
-    if (this.form.invalid) return;
+    console.log('salvar value:', this.isEdicao, this.form.value);
+    // if (this.form.invalid) return;
 
     const lojaForm = this.form.value;
 
+    console.log('salvar value:', this.isEdicao, this.form.value);
     if (this.isEdicao) {
       const lojaAtualizada: any = {
         ...this.data!,
@@ -64,7 +64,10 @@ export class LojaFormComponent {
         description: lojaForm.description,
         isActive: lojaForm.isActive,
         qrCodeLimit: lojaForm.qrCodeLimit,
-        ownerId: lojaForm.ownerId
+        ownerId: lojaForm.ownerId,
+        /*owner: {
+          id: lojaForm.ownerId
+        }*/
       };
 
       this.lojaService.criar(novaLoja).subscribe(result => {
