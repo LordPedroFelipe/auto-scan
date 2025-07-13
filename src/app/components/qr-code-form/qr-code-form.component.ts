@@ -35,8 +35,8 @@ export class QrCodeFormComponent implements OnInit {
 
     // console.log(' onRedirectTypeChange ', tipo);
     if (tipo === 'Vehicle') {
-      this.estoqueService.listarAtivos().subscribe((veiculos: any) => {
-        // console.log(' veiculos ', veiculos);
+      this.estoqueService.listarAtivosSimples().subscribe((veiculos: any) => {
+        console.log(' veiculos ', veiculos);
         this.opcoesRedirectId = veiculos.items.map((v: any) => ({
           id: v.id,
           label: `${v.alternativeName} ${v.brand} - ${v.licensePlate}`

@@ -16,6 +16,10 @@ export class EstoqueService {
     return this.http.get<VeiculoResponse>(this.apiUrl);
   }
 
+  listarAtivosSimples(): Observable<VeiculoResponse> {
+    return this.http.get<VeiculoResponse>(`${this.apiUrl}/list-items`);
+  }
+
   listarPaginado(pageNumber: number = 1, pageSize: number = 10) {
     return this.http.get<any>(this.apiUrl, {
       params: {
