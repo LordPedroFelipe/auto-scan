@@ -5,19 +5,25 @@
   padding: 16px;
 }
 
-.full-width {
-  width: 100%;
-}
-
 .permissoes-container {
-  padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
+  padding: 16px;
 }
 
 mat-chip {
   font-size: 14px;
   margin-right: 8px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }

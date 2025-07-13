@@ -1,35 +1,48 @@
-<h2 mat-dialog-title>{{ data ? 'Editar' : 'Cadastrar' }} Veículo</h2>
+<h2 mat-dialog-title>{{ data ? 'Editar' : 'Cadastrar' }} Estabelecimento</h2>
+
 <mat-dialog-content>
   <form [formGroup]="form">
-    <mat-form-field appearance="fill" class="full">
-      <mat-label>Modelo</mat-label>
-      <input matInput formControlName="modelo">
-    </mat-form-field>
+    <mat-tab-group [(selectedIndex)]="abaSelecionada">
+      <!-- Aba 1: Dados Gerais -->
+      <mat-tab label="Dados Gerais">
+        <div class="tab-content">
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Nome da Loja</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full">
-      <mat-label>Marca</mat-label>
-      <input matInput formControlName="marca">
-    </mat-form-field>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Descrição</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+          </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full">
-      <mat-label>Ano</mat-label>
-      <input matInput type="number" formControlName="ano">
-    </mat-form-field>
+          <mat-slide-toggle formControlName="isActive">Ativo</mat-slide-toggle>
 
-    <mat-form-field appearance="fill" class="full">
-      <mat-label>Preço</mat-label>
-      <input matInput type="number" formControlName="preco">
-    </mat-form-field>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Limite de QR Codes</mat-label>
+            <input matInput type="number" formControlName="qrCodeLimit">
+          </mat-form-field>
+        </div>
+      </mat-tab>
 
-    <mat-form-field appearance="fill" class="full">
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
-        <mat-option value="disponível">Disponível</mat-option>
-        <mat-option value="vendido">Vendido</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <!-- Aba 2: Dono -->
+      <mat-tab label="Dono">
+        <div class="tab-content">
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>ID do Dono</mat-label>
+            <input matInput formControlName="ownerId">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Email do Dono</mat-label>
+            <input matInput formControlName="ownerEmail">
+          </mat-form-field>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </form>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
   <button mat-button (click)="fechar()">Cancelar</button>
   <button mat-flat-button color="primary" (click)="salvar()">Salvar</button>

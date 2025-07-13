@@ -1,71 +1,137 @@
-<h2 mat-dialog-title>{{ data ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
+  <h2 mat-dialog-title>{{ data ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
 
-<mat-tab-group>
-  <!-- Aba Dados Pessoais -->
-  <mat-tab label="Dados Pessoais">
-    <form [formGroup]="form" (ngSubmit)="salvar()" class="form-container">
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Nome</mat-label>
-        <input matInput formControlName="userName" required>
-        <mat-error *ngIf="form.get('userName')?.hasError('required')">
-          Nome é obrigatório
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required>
-        <mat-error *ngIf="form.get('email')?.hasError('required')">Email é obrigatório</mat-error>
-        <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Telefone</mat-label>
-        <input matInput formControlName="phoneNumber">
-      </mat-form-field>
-
-      <!-- Campos de senha só no modo criação -->
-      <ng-container *ngIf="!data">
+  <mat-tab-group>
+    <!-- Aba 1: Dados Pessoais -->
+    <mat-tab label="Dados Pessoais">
+      <form [formGroup]="form" (ngSubmit)="salvar()" class="form-container">
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Senha</mat-label>
-          <input matInput type="password" formControlName="password">
-          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
-            A senha deve ter no mínimo 6 caracteres
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="userName" required>
+          <mat-error *ngIf="form.get('userName')?.hasError('required')">
+            Nome é obrigatório
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Confirmar Senha</mat-label>
-          <input matInput type="password" formControlName="confirmPassword">
-          <mat-error *ngIf="form.hasError('passwordMismatch')">
-            As senhas não coincidem
-          </mat-error>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
+          <mat-error *ngIf="form.get('email')?.hasError('required')">Email é obrigatório</mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
         </mat-form-field>
-      </ng-container>
-    </form>
-  </mat-tab>
 
-  <!-- Aba Permissões -->
-  <mat-tab label="Permissões" *ngIf="data">
-    <div class="permissoes-container">
-      <ng-container *ngIf="isLoadingRoles">
-        <mat-spinner diameter="30"></mat-spinner>
-      </ng-container>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Telefone</mat-label>
+          <input matInput formControlName="phoneNumber">
+        </mat-form-field>
 
-      <ng-container *ngIf="!isLoadingRoles && userRoles.length > 0">
-          <mat-chip *ngFor="let role of userRoles" color="primary" selected>{{ role }}</mat-chip>
-      </ng-container>
+        <ng-container *ngIf="!data">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Senha</mat-label>
+            <input matInput type="password" formControlName="password">
+            <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+              A senha deve ter no mínimo 6 caracteres
+            </mat-error>
+          </mat-form-field>
 
-      <ng-container *ngIf="!isLoadingRoles && userRoles.length === 0">
-        <p>Nenhuma permissão atribuída a este usuário.</p>
-      </ng-container>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Confirmar Senha</mat-label>
+            <input matInput type="password" formControlName="confirmPassword">
+            <mat-error *ngIf="form.hasError('passwordMismatch')">
+              As senhas não coincidem
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+      </form>
+    </mat-tab>
 
-<!-- Botões -->
-<div mat-dialog-actions align="end">
-  <button mat-button (click)="fechar()">Cancelar</button>
-  <button mat-flat-button color="primary" [disabled]="form.invalid">Salvar</button>
-</div>
+    <!-- Aba 2: Papéis e Módulos -->
+    <mat-tab label="Papéis">
+      <div class="permissoes-container">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Papel (Role)</mat-label>
+          <mat-select [(value)]="papelSelecionado">
+            <mat-option *ngFor="let papel of papeis" [value]="papel">
+              {{ papel }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="adicionarPapel()">
+          Adicionar Papel
+        </button>
+
+        <ng-container *ngIf="isLoadingClaims">
+          <mat-spinner diameter="30"></mat-spinner>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoadingClaims && userPermissions.length > 0">
+          <mat-card class="card-qrcode" *ngFor="let permission of userPermissions">
+            <mat-card-content>
+              <h3><strong>{{ permission }}</strong></h3>
+            </mat-card-content>
+            <!--mat-card-actions align="end">
+              <button mat-raised-button color="primary" target="_blank">
+                Acessar Link
+              </button>
+            </!--mat-card-actions-->
+          </mat-card>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoadingClaims && userPermissions.length === 0">
+          <p>Nenhum Papel atribuído a este usuário.</p>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+    <!-- Aba 3: Permissões do Usuário -->
+    <mat-tab label="Módulos e Permissões">
+      <div class="permissoes-container">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Módulo</mat-label>
+          <mat-select [(value)]="moduloSelecionado" (selectionChange)="filtrarPermissoesPorModulo()">
+            <mat-option *ngFor="let modulo of modulos" [value]="modulo">{{ modulo }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Permissão</mat-label>
+          <mat-select [(value)]="permissaoSelecionada">
+            <mat-option *ngFor="let perm of permissoesFiltradas" [value]="perm">
+              {{ perm }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="adicionarClaim()">
+          Adicionar Permissão
+        </button>
+
+        <ng-container *ngIf="isLoadingClaims">
+          <mat-spinner diameter="30"></mat-spinner>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoadingClaims && userClaims.length > 0">
+          <mat-card class="card-qrcode" *ngFor="let claim of userClaims">
+            <mat-card-content>
+              <p><strong> {{ claim }}</strong></p>
+            </mat-card-content>
+            <!--mat-card-actions align="end">
+              <button mat-raised-button color="primary" target="_blank">
+                Acessar Link
+              </button>
+            </mat-card-actions-->
+          </mat-card>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoadingClaims && userClaims.length === 0">
+          <p>Nenhuma permissão atribuída a este usuário.</p>
+        </ng-container>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Botões -->
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="fechar()">Cancelar</button>
+    <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">Salvar</button>
+  </div>

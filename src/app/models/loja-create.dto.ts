@@ -2,8 +2,10 @@
 export interface LojaCreateDto {
   name: string;
   description?: string;
-  ownerId: string;
-  owner: {
+  ownerId?: string;
+  isActive?: boolean;
+  qrCodeLimit?: number;
+  owner?: {
     userName: string;
     normalizedUserName: string;
     email: string;

@@ -2,15 +2,13 @@
   <h2>Lista de Usuários</h2>
 
     <div class="actions">
-        <button 
+        <button
             mat-flat-button color="primary"
-            (click)="abrirCadastro()"
-            disabled="true">
+            (click)="abrirCadastro()">
                 Cadastrar Usuário
-            </button>
+        </button>
     </div>
     <!--button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Usuário</button-->
-
 
     <app-loading [isLoading]="carregando" [text]="'Carregando...'">
         <mat-accordion>

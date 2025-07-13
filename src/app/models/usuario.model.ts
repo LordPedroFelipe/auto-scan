@@ -6,6 +6,7 @@ export interface UsuarioModel {
   normalizedEmail: string;
   emailConfirmed: boolean;
   passwordHash: string;
+  password: string;
   securityStamp: string;
   concurrencyStamp: string;
   phoneNumber: string;
@@ -14,4 +15,5 @@ export interface UsuarioModel {
   lockoutEnd: string;
   lockoutEnabled: boolean;
   accessFailedCount: number;
+  roles: any;
 }

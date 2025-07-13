@@ -9,6 +9,7 @@ import { UsuarioModel } from '../models/usuario.model';
 })
 export class UsuarioService {
   private readonly apiUrl = `${environment.apiUrl}/Users`;
+  private readonly apiUrlBase = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 
@@ -31,4 +32,37 @@ export class UsuarioService {
   buscarPorId(id: string): Observable<UsuarioModel> {
     return this.http.get<UsuarioModel>(`${this.apiUrl}/${id}`);
   }
+
+  listarUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/list-items`);
+  }
+
+  listarPapeis(): Observable<{ id: string, description: string }[]> {
+    return this.http.get<{ id: string, description: string }[]>(`${this.apiUrlBase}/Permissions/roles`);
+  }
+
+  listarModulos(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrlBase}/Permissions/modules`);
+  }
+
+  listarPermissoesDisponiveis(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrlBase}/Permissions/available-claims`);
+  }
+
+  buscarPermissoesDoUsuario(userId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrlBase}/Permissions/user/${userId}/roles`);
+  }
+
+  adicionarPermissao(userId: string, role: string[]): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlBase}/Permissions/user/${userId}/roles`, role);
+  }
+
+  buscarClaimDoUsuario(userId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrlBase}/Permissions/user/${userId}/claims`);
+  }
+
+  adicionarClaim(userId: string, claim: string[]): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlBase}/Permissions/user/${userId}/claims`, claim);
+  }
+
 }

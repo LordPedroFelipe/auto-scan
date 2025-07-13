@@ -1,36 +1,39 @@
 [
     {
       "nome": "Básico",
-      "preco": 299,
+      "preco": 399,
       "descricao": "Para lojas que estão começando",
       "beneficios": [
         "Cadastro/Integração de até 20 veículos",
-        "Visualização via QR Code",
+        "Painel de gestão de estoque",
+        "Visualização via QR Code com Dados da Loja",
         "Atendimento IA básico",
+        "Agendamento de Test Drive",
         "Suporte por e-mail"
       ]
     },
     {
       "nome": "Premium",
-      "preco": 599,
+      "preco": 799,
       "descricao": "Para lojas com alto volume de vendas",
       "beneficios": [
         "Cadastro/Integração ilimitado de veículos",
-        "QR Codes personalizados",
+        "Painel de gestão de estoque",
+        "QR Codes personalizados de Veiculos",
+        "Visualização via QR Code com Dados da Loja",
         "IA com atendimento ao cliente",
-        "IA com análise de perfil do cliente",
         "Painel avançado de LEADs",
-        "Gerador de relatórios",
+        "Captura de LEADs",
         "Agendamento de Test Drive",
         "Dashboard com Indicadores da Loja",
-        "Painel de gestão de estoque",
+        "Gerador de relatórios",
         "Suporte por WhatsApp prioritário"
       ],
       "destaque": true
     },
     {
       "nome": "Medium",
-      "preco": 399,
+      "preco": 599,
       "descricao": "Para lojas com operação média",
       "beneficios": [
         "Cadastro de até 100 veículos",
@@ -43,4 +46,3 @@
       ]
     }
   ]
-  

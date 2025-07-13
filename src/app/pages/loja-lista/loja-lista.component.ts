@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { LojaFormComponent } from 'src/app/components/loja-form/loja-form.component';
 import { LojaModel } from 'src/app/models/loja.model';
 import { LojaService } from 'src/app/services/loja.service';
-import { LojaFormComponent } from 'src/app/components/loja-form/loja-form.component';
 
 @Component({
   selector: 'app-loja-lista',
@@ -30,7 +30,7 @@ export class LojaListaComponent implements OnInit {
 
   abrirCadastro(): void {
     const dialogRef = this.dialog.open(LojaFormComponent, {
-      width: '400px'
+      width: '600px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -42,7 +42,7 @@ export class LojaListaComponent implements OnInit {
 
   editar(loja: LojaModel): void {
     const dialogRef = this.dialog.open(LojaFormComponent, {
-      width: '400px',
+      width: '600px',
       data: loja
     });
 

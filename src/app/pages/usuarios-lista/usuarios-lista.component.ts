@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { UsuarioFormComponent } from 'src/app/components/usuario-form/usuario-form.component';
@@ -14,7 +14,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class UsuariosListaComponent {
   usuarios: UsuarioModel[] = [];
   displayedColumns = ['userName', 'email', 'phoneNumber', 'acoes'];
-  
+
   carregando = false;
   filtroForm!: FormGroup;
 
@@ -39,9 +39,10 @@ export class UsuariosListaComponent {
   }
 
   abrirCadastro(): void {
-    const dialogRef = this.dialog.open(UsuarioFormComponent, { width: '400px' });
+    const dialogRef = this.dialog.open(UsuarioFormComponent, { width: '600px' });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.carregarUsuarios();
       if (result) {
         this.usuarioService.criar(result).subscribe(() => this.carregarUsuarios());
       }
@@ -50,11 +51,12 @@ export class UsuariosListaComponent {
 
   editar(usuario: UsuarioModel): void {
     const dialogRef = this.dialog.open(UsuarioFormComponent, {
-      width: '400px',
+      width: '600px',
       data: usuario
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.carregarUsuarios();
       if (result) {
         this.usuarioService.atualizar(usuario.id, result).subscribe(() => this.carregarUsuarios());
       }
@@ -66,10 +68,10 @@ export class UsuariosListaComponent {
       this.usuarioService.excluir(id).subscribe(() => this.carregarUsuarios());
     }
   }
-  
-    mudarPagina(event: PageEvent) {
-      this.pageIndex = event.pageIndex;
-      this.pageSize = event.pageSize;
-      this.carregarUsuarios(this.pageIndex);
-    }
+
+  mudarPagina(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.carregarUsuarios(this.pageIndex);
+  }
 }
