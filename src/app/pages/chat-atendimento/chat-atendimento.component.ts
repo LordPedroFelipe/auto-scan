@@ -233,7 +233,7 @@ export class ChatAtendimentoComponent implements OnInit {
       error: () => {
         this.mensagens = this.mensagens.filter(msg => !msg.isLoading);
         this.isLoading = false;
-        this.alert.showError('Erro ao enviar mensagem para o assistente.');
+        this.alert.showError('Tente enviar a mensagem novamente.');
       }
     });
   }
@@ -291,7 +291,7 @@ export class ChatAtendimentoComponent implements OnInit {
           return;
         }
 
-        this.alert.showError('Erro ao buscar mensagens do chat.');
+        // this.alert.showError('Erro ao buscar mensagens do chat.');
         console.error('[Polling Chat]', err);
       }
     });
