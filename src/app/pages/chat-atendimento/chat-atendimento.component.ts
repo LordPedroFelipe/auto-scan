@@ -113,33 +113,6 @@ export class ChatAtendimentoComponent implements OnInit {
     this.iniciarPollingMensagens();
     this.sugestoesVisiveis = this.shuffle(this.sugestoesBusca).slice(0, 6);
   }
-  /*
-  enviar(): void {
-    if (!this.novaMensagem.trim()) return;
-
-    const pergunta = this.novaMensagem;
-    this.mensagens.push({ autor: 'Cliente', texto: pergunta, data: new Date() });
-    this.novaMensagem = '';
-
-    const payload: SendMessageRequest = {
-      sessionId: this.sessionId,
-      message: pergunta
-    };
-
-    this.isLoading = true;
-    this.chatService.sendMessage(payload).subscribe({
-      next: (resposta: any) => {
-        const mensagem = resposta?.message || 'Resposta recebida.';
-        this.mensagens.push({ autor: 'IA', texto: mensagem, data: new Date() });
-        this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-        this.alert.showError('Erro ao enviar mensagem para o assistente.');
-      }
-    });
-  }
-  */
 
   async enviar(): Promise<void> {
     if (!this.novaMensagem.trim()) return;
@@ -203,6 +176,8 @@ export class ChatAtendimentoComponent implements OnInit {
     this.isLoading = true;
     this.chatService.sendMessage(payload).subscribe({
       next: (resposta: any) => {
+        
+        console.log('msg enviar', resposta);
         this.mensagens = this.mensagens.filter(msg => !msg.isLoading);
 
         const mensagem = resposta?.message || 'Resposta recebida.';
@@ -278,6 +253,7 @@ export class ChatAtendimentoComponent implements OnInit {
       next: (res: any[]) => {
         res.forEach(msg => {
           if (!this.mensagensMap.has(msg.texto)) {
+            console.log('msg ', msg);
             const autor = msg.autor?.toLowerCase() === 'cliente' ? 'Cliente' : 'IA';
             this.mensagens.push({ autor, texto: msg.texto, data: new Date(msg.data) });
             this.mensagensMap.set(msg.texto, true);
@@ -400,6 +376,31 @@ export class ChatAtendimentoComponent implements OnInit {
     localStorage.removeItem('leadData');
     this.leadCapturado = false;
     this.leadData = null;
+  }
+
+  formatarTexto(texto: string): string {
+    if (!texto) return '';
+    const comLinks = texto.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+    return comLinks.replace(/\n/g, '<br>');
+  }
+
+  onImageError(event: any): void {
+    event.target.src = 'assets/img/sem-foto.png';
+  }
+
+  getImagemPorHumor(): string {
+    switch (this.humor) {
+      case 'happy':
+        return 'assets/img/ScanDrive-White/9.png';
+      case 'neutral':
+        return 'assets/img/ScanDrive-White/neutral.png';
+      case 'sad':
+        return 'assets/img/ScanDrive-White/sad.png';
+      case 'surprised':
+        return 'assets/img/ScanDrive-White/surprised.png';
+      default:
+        return 'assets/img/ScanDrive-White/9.png';
+    }
   }
 
 }

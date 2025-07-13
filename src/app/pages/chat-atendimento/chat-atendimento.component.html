@@ -2,7 +2,7 @@
 
   <!-- Cabeçalho com imagem do agente -->
   <div class="agente-header">
-    <img src="assets/img/ScanDrive-White/9.png" alt="ScanDrive IA" *ngIf="humor === 'happy' || ''" />
+    <img [src]="getImagemPorHumor()" alt="ScanDrive IA" />
     <h2>Atendimento ScanDrive</h2>
     <p>Seu assistente inteligente para compra de veículos</p>
   </div>
@@ -13,8 +13,8 @@
       *ngFor="let msg of mensagens"
       [ngClass]="{ 'cliente': msg.autor === 'Cliente', 'ia': msg.autor === 'IA' }"
       class="mensagem-bolha"
-    >
-      <strong>{{ msg.autor }}:</strong> 
+    > 
+      <strong>{{ msg.autor }}:</strong>
       
     
       <!-- Mostrar spinner se for loading -->
@@ -29,7 +29,7 @@
       
     
       <ng-template #textoMensagem>
-        {{ msg.texto }}
+        <span [innerHTML]="formatarTexto(msg.texto)"></span>
       </ng-template>
 
           <!-- Se a mensagem for do tipo com opções -->
