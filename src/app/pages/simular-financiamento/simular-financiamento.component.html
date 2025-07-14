@@ -11,7 +11,6 @@
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="simular()">
         <mat-tab-group>
-
           <!-- ABA 1: VALORES E CONDIÇÕES -->
           <mat-tab label="Valores e Condições">
             <!-- Valor do Veículo (bloqueado) -->
@@ -48,35 +47,68 @@
               <mat-label>Valor estimado da parcela</mat-label>
               <input matInput formControlName="valorParcela" readonly />
             </mat-form-field>
-          </mat-tab>
 
-          <!-- ABA 2: DADOS DO CLIENTE -->
-          <mat-tab label="Dados do Cliente">
-            <!-- Nome -->
+            <!-- Nome completo -->
             <mat-form-field appearance="fill" class="campo">
               <mat-label>Nome completo</mat-label>
-              <input matInput formControlName="nomeCompleto" required />
+              <input matInput formControlName="nome" required />
             </mat-form-field>
 
-            <!-- CPF -->
+            <!-- Email -->
             <mat-form-field appearance="fill" class="campo">
-              <mat-label>CPF</mat-label>
-              <input matInput formControlName="cpf" required />
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" required />
             </mat-form-field>
 
             <!-- Telefone -->
             <mat-form-field appearance="fill" class="campo">
               <mat-label>Telefone</mat-label>
+              <input
+                matInput
+                formControlName="telefone"
+                required
+                mask="(00) 00000-0000"
+                placeholder="(00) 00000-0000"
+              />
+            </mat-form-field>
+
+            <!-- Data de nascimento -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Data de nascimento</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dataNascimento"
+                required
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+          </mat-tab>
+
+          <!-- ABA 2: DADOS DO CLIENTE -->
+          <!--mat-tab label="Dados do Cliente">
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Nome completo</mat-label>
+              <input matInput formControlName="nomeCompleto" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>CPF</mat-label>
+              <input matInput formControlName="cpf" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Telefone</mat-label>
               <input matInput formControlName="telefone" required />
             </mat-form-field>
 
-            <!-- CEP -->
             <mat-form-field appearance="fill" class="campo">
               <mat-label>CEP</mat-label>
               <input matInput formControlName="cep" (blur)="buscarEndereco()" required />
             </mat-form-field>
 
-            <!-- Endereço auto preenchido -->
             <mat-form-field appearance="fill" class="campo">
               <mat-label>Rua</mat-label>
               <input matInput formControlName="rua" />
@@ -101,11 +133,11 @@
               <mat-label>Estado</mat-label>
               <input matInput formControlName="estado" />
             </mat-form-field>
-          </mat-tab>
+          </!--mat-tab-->
         </mat-tab-group>
 
         <div class="botoes">
-          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
             {{ isLoading ? 'Simulando...' : 'Simular Financiamento' }}
           </button>
         </div>

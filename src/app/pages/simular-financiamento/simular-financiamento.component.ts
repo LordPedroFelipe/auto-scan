@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AlertService } from 'src/app/services/alert.service';
+import { LeadService } from 'src/app/services/lead.service';
 
 @Component({
   selector: 'app-simular-financiamento',
@@ -14,13 +16,18 @@ export class SimularFinanciamentoComponent implements OnInit {
   isLoading = false;
   simulacaoConfirmada = false;
   @Input() valorVeiculoFixo: string = '85000';
-  
+
   @Input() fotoVeiculoUrl: string = '';
+  placa: string = '';
+  leadData: any = null;
+  leadCapturado: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private leadService: LeadService,
+    private alert: AlertService,
   ) {}
 
   ngOnInit(): void {
@@ -39,15 +46,10 @@ export class SimularFinanciamentoComponent implements OnInit {
       quantidadeParcelas: [null, Validators.required],
       taxaJuros: [1.5, [Validators.required, Validators.min(0)]], // em percentual
       valorParcela: [{ value: '', disabled: true }],
-      nomeCompleto: ['', [Validators.required, Validators.minLength(3)]],
-      cpf: ['', [Validators.required]],
-      telefone: ['', [Validators.required]],
-      cep: ['', [Validators.required]],
-      rua: [''],
-      numero: [''],
-      bairro: [''],
-      cidade: [''],
-      estado: ['']
+      nome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      telefone: ['', Validators.required],
+      dataNascimento: [null]
     });
 
     // Observa mudanças e recalcula valor da parcela
@@ -97,15 +99,48 @@ export class SimularFinanciamentoComponent implements OnInit {
     }
   }
 
-  simular(): void {
+  async simular(): Promise<void> {
     if (this.form.invalid) return;
 
     this.isLoading = true;
 
-    // Simulação fake (mock delay)
-    setTimeout(() => {
+    // Mock de simulação com atraso
+    setTimeout(async () => {
       this.simulacaoConfirmada = true;
       this.isLoading = false;
+
+      const formData = this.form.value;
+
+      // Montar observações com dados da simulação
+      const observacaoSimulacao = `
+        Valor Veículo: R$ ${formData.valorVeiculo}
+        Entrada: R$ ${formData.valorEntrada}
+        Parcelas: ${formData.quantidadeParcelas}x
+        Juros: ${formData.taxaJuros}%
+        Parcela Estimada: R$ ${formData.valorParcela}
+      `.trim();
+
+      const novoLead = {
+        name: formData.nome,
+        email: formData.email,
+        phone: formData.telefone,
+        notes: observacaoSimulacao,
+        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // use seu shopId real
+        // vehicleId: this.placa ?? '', // se estiver usando placa como ID do veículo
+        birthDate: formData.dataNascimento,
+      };
+
+      try {
+        await this.leadService.criar(novoLead).toPromise();
+        this.leadCapturado = true;
+        this.leadData = novoLead;
+
+        localStorage.setItem('leadData', JSON.stringify(novoLead));
+        this.alert.showSuccess('Informações salvas com sucesso.');
+      } catch (error) {
+        this.alert.showError('Erro ao salvar o LEAD.');
+      }
+
     }, 1000);
   }
 
