@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { UserRole } from 'src/app/models/user-role.enum';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { MatSidenav } from '@angular/material/sidenav';
+import { UserRole } from 'src/app/models/user-role.enum';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +17,7 @@ export class NavbarComponent implements OnInit {
   menuAberto = false;
   modoMenu: 'over' | 'side' = 'side';
   chatAtendimento = false;
+  email: string | null = null;
 
   constructor(
     private router: Router,
@@ -54,7 +54,7 @@ export class NavbarComponent implements OnInit {
       this.menuAberto = false;
       return;
     }
-    
+
     this.isLogado = this.authService.isAuthenticated();
 
     if (this.isLogado) {
@@ -64,6 +64,7 @@ export class NavbarComponent implements OnInit {
 
       const email = this.authService.getUserEmail();
       const permissions = this.authService.getPermissions();
+      this.email = email || null;
 
       console.log('Usuário:', email);
       console.log('Role:', this.role);

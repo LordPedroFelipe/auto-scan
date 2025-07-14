@@ -1,22 +1,27 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
-  HttpInterceptor,
   HttpHandler,
-  HttpRequest,
-  HttpErrorResponse
+  HttpInterceptor,
+  HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AlertService } from '../services/alert.service';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private alert: AlertService) {}
+  constructor(
+    private alert: AlertService,
+    private router: Router
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        const rotaAtual = this.router.url;
         let mensagem = 'Erro inesperado.';
 
         if (error.status === 0) {
@@ -33,7 +38,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           mensagem = error.error;
         }
 
-        this.alert.showError(mensagem);
+        if (!rotaAtual.startsWith('/atendimento')) {
+          this.alert.showError(mensagem);
+        }
         return throwError(() => new Error(mensagem));
       })
     );
