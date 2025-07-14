@@ -68,7 +68,7 @@ export class EstoqueComponent implements OnInit {
   abrirCadastro(veiculo?: Veiculo) {
     const dialogRef = this.dialog.open(CadastroVeiculoModalComponent, {
       data: veiculo || null,
-      width: '500px'
+      width: '600px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

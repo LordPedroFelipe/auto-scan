@@ -113,11 +113,11 @@ export class SimularFinanciamentoComponent implements OnInit {
 
       // Montar observações com dados da simulação
       const observacaoSimulacao = `
-        Valor Veículo: R$ ${formData.valorVeiculo}
+        Valor Veículo: R$ ${formData.valorVeiculo?.value}
         Entrada: R$ ${formData.valorEntrada}
         Parcelas: ${formData.quantidadeParcelas}x
         Juros: ${formData.taxaJuros}%
-        Parcela Estimada: R$ ${formData.valorParcela}
+        Parcela Estimada: R$ ${formData.valorParcela?.value}
       `.trim();
 
       const novoLead = {

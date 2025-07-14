@@ -106,5 +106,13 @@
             </mat-card>
         </div>
 
+        <!-- Paginação -->
+        <mat-paginator
+            [length]="totalCount"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            [pageSizeOptions]="[5, 10, 20]"
+            (page)="mudarPagina($event)">
+        </mat-paginator>
     </app-loading>
 </div>

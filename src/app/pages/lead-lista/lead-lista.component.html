@@ -2,7 +2,7 @@
   <h2>Lista de Leads</h2>
 
   <div class="actions">
-    <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Lead</button>
+    <!--button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Lead</!--button-->
     <button mat-stroked-button (click)="alternarModo()" class="btn-modo">
       {{ modoVisualizacao === 'tabela' ? 'Ver em Cards' : 'Ver em Tabela' }}
     </button>
@@ -84,9 +84,9 @@
             <button mat-icon-button color="primary" (click)="abrirDetalhes(lead)">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button color="accent" (click)="abrirCadastro()">
+            <!--button mat-icon-button color="accent" (click)="abrirCadastro()">
               <mat-icon>edit</mat-icon>
-            </button>
+            </!--button-->
             <button mat-icon-button color="warn" (click)="excluir(lead.id)">
               <mat-icon>delete</mat-icon>
             </button>
