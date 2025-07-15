@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
 import { LeadService } from 'src/app/services/lead.service';
+import { VeiculoService } from 'src/app/services/veiculo.service';
 
 @Component({
   selector: 'app-simular-financiamento',
@@ -21,6 +22,8 @@ export class SimularFinanciamentoComponent implements OnInit {
   placa: string = '';
   leadData: any = null;
   leadCapturado: boolean = false;
+  vehicleId!: string;
+  data?: any;
 
   constructor(
     private fb: FormBuilder,
@@ -28,6 +31,7 @@ export class SimularFinanciamentoComponent implements OnInit {
     private route: ActivatedRoute,
     private leadService: LeadService,
     private alert: AlertService,
+    private veiculoService: VeiculoService,
   ) {}
 
   ngOnInit(): void {
@@ -35,22 +39,46 @@ export class SimularFinanciamentoComponent implements OnInit {
     if (rotaFoto) {
       this.fotoVeiculoUrl = rotaFoto;
     }
-    const valorVeiculoFixo = this.route.snapshot.queryParamMap.get('valor');
+    /*const valorVeiculoFixo = this.route.snapshot.queryParamMap.get('valor');
     if (valorVeiculoFixo) {
       this.valorVeiculoFixo = rotaFoto || '85000';
-    }
+    }*/
+    this.valorVeiculoFixo = '85000';
+    this.vehicleId = this.route.snapshot.paramMap.get('vehicleId')!;
 
-    this.form = this.fb.group({
-      valorVeiculo: [{ value: this.valorVeiculoFixo, disabled: true }],
-      valorEntrada: [null, [Validators.required, Validators.min(0)]],
-      quantidadeParcelas: [null, Validators.required],
-      taxaJuros: [1.5, [Validators.required, Validators.min(0)]], // em percentual
-      valorParcela: [{ value: '', disabled: true }],
-      nome: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      telefone: ['', Validators.required],
-      dataNascimento: [null]
-    });
+    if (this.vehicleId) {
+      this.veiculoService.getVeiculoById(this.vehicleId).subscribe({
+        next: (res: any) => {
+          this.data = res;
+          this.valorVeiculoFixo = this.data.price;
+
+          this.form = this.fb.group({
+            valorVeiculo: [{ value: this.valorVeiculoFixo, disabled: true }],
+            valorEntrada: [null, [Validators.required, Validators.min(0)]],
+            quantidadeParcelas: [null, Validators.required],
+            taxaJuros: [1.5, [Validators.required, Validators.min(0)]], // em percentual
+            valorParcela: [{ value: '', disabled: true }],
+            nome: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            telefone: ['', Validators.required],
+            dataNascimento: [null]
+          });
+        },
+        error: (err: any) => console.error('Erro ao carregar veículo:', err)
+      });
+    } else {
+      this.form = this.fb.group({
+        valorVeiculo: [{ value: this.valorVeiculoFixo, disabled: true }],
+        valorEntrada: [null, [Validators.required, Validators.min(0)]],
+        quantidadeParcelas: [null, Validators.required],
+        taxaJuros: [1.5, [Validators.required, Validators.min(0)]], // em percentual
+        valorParcela: [{ value: '', disabled: true }],
+        nome: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        telefone: ['', Validators.required],
+        dataNascimento: [null]
+      });
+    }
 
     // Observa mudanças e recalcula valor da parcela
     this.form.get('valorEntrada')?.valueChanges.subscribe(() => this.calcularParcela());

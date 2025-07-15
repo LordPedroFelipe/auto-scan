@@ -27,9 +27,7 @@ const routes: Routes = [
   { path: 'atendimento/:placa', component: ChatAtendimentoComponent },
   { path: 'cadastro-loja', component: CadastroLojaComponent },
   { path: 'testdrive/:vehicleId', component: AgendamentoTestDriveComponent },
-  { path: 'simular-financiamento', component: SimularFinanciamentoComponent },
   { path: 'simular-financiamento/:vehicleId', component: SimularFinanciamentoComponent },
-  { path: 'simular-financiamento/:vehicleId/:valor/:foto', component: SimularFinanciamentoComponent },
   { path: 'vehicle/:id', component: VeiculoDetalhesComponent },
   { path: 'shop/:id', component: LojaDetalhesComponent },
 
