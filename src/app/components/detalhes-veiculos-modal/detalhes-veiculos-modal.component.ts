@@ -7,8 +7,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./detalhes-veiculos-modal.component.scss']
 })
 export class DetalhesVeiculosModalComponent {
-  
+
   fotoSelecionadaIndex: number | null = null;
+  
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 

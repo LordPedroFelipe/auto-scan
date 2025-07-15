@@ -79,6 +79,8 @@ import { RelatoriosComponent } from './page/relatorios/relatorios.component';
 import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
 import { PascalCasePipe } from './pipes/pascal-case.pipe';
+import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
+import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.component';
 
 
 @NgModule({
@@ -115,6 +117,8 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
     QrCodeListComponent,
     QrCodeFormComponent,
     RelatoriosComponent,
+    VeiculoDetalhesComponent,
+    LojaDetalhesComponent,
   ],
   imports: [
     BrowserModule,

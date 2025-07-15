@@ -1,0 +1,190 @@
+<div class="car-highlight-banner" (click)="abrirFotoFullscreen(1)">
+  <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
+
+  <div class="highlight-overlay">
+    <div class="highlight-details">
+      <h2 class="car-version">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
+      <div class="car-price">R$ {{ data.price | number: '1.0-0' }}</div>
+      <div class="car-location">{{ data.shopName }} - {{ data.city }}/{{ data.state }}</div>
+    </div>
+    <button mat-raised-button color="accent" class="view-gallery-btn">
+      Ver Galeria
+      <mat-icon>photo_library</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-tab-group *ngIf="data">
+    <!-- Aba de Informações -->
+    <mat-tab label="Informações">
+        <div class="vehicle-highlight-container">
+            <!-- FOTO PRINCIPAL EM DESTAQUE -->
+            <div class="main-photo-wrapper">
+            <img [src]="data.mainPhotoUrl" alt="{{ data.brand }}" class="main-photo-highlight" />
+            </div>
+
+            <!-- DETALHES PRINCIPAIS DO VEÍCULO -->
+            <div class="details-highlight-card">
+            <h2 class="vehicle-title">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
+            <p class="vehicle-price">R$ {{ data.price | number: '1.0-0' }}</p>
+
+            <div class="tag-list">
+                <span class="tag" *ngIf="data.isFirstOwner">1º Dono</span>
+                <span class="tag" *ngIf="!data.hasAccident">Sem Sinistro</span>
+                <span class="tag" *ngIf="data.isOnOffer">Oferta Especial</span>
+                <span class="tag" *ngIf="data.isHighlighted">Destaque</span>
+            </div>
+
+            <div class="vehicle-specs">
+                <p><strong>KM:</strong> {{ data.mileage | number }} km</p>
+                <p><strong>Ano:</strong> {{ data.year }}</p>
+                <p><strong>Cor:</strong> {{ data.color }}</p>
+                <p><strong>Combustível:</strong> {{ data.fuelType }}</p>
+                <p><strong>Câmbio:</strong> {{ data.transmission }}</p>
+                <p><strong>Categoria:</strong> {{ data.category }} ({{ data.categoryType }})</p>
+                <p><strong>Placa:</strong> {{ data.licensePlate }}</p>
+                <p><strong>Proprietários:</strong> {{ data.ownersCount }}</p>
+                <p><strong>Condição:</strong> {{ data.condition }}</p>
+            </div>
+
+            <div class="shop-info">
+                <strong>Loja:</strong> {{ data.shopName }} - {{ data.city }}/{{ data.state }}
+            </div>
+            </div>
+        </div>
+    </mat-tab>
+
+    <!-- Aba de Fotos -->
+    <mat-tab label="Fotos" *ngIf="data?.photoUrls?.length">
+        <div class="photo-gallery-container">
+            <div class="photo-grid">
+            <img
+                *ngFor="let foto of data.photoUrls; let i = index"
+                [src]="foto"
+                class="photo-thumbnail"
+                (click)="abrirFotoFullscreen(i)"
+                alt="Foto {{ i + 1 }}"
+            />
+            </div>
+        </div>
+    </mat-tab>
+
+
+    <!-- Aba de Descrição -->
+    <mat-tab label="Descrição">
+        <div class="info-container">
+
+        <!-- Descrição textual principal -->
+        <mat-card class="info-card">
+            <mat-card-title>Descrição do Veículo</mat-card-title>
+            <mat-card-content>
+            <p>{{ data.description }}</p>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Dados Técnicos -->
+        <mat-card class="info-card">
+            <mat-card-title>Dados Técnicos</mat-card-title>
+            <mat-card-content>
+            <div class="grid">
+                <div><strong>Marca:</strong> {{ data.brand }}</div>
+                <div><strong>Modelo:</strong> {{ data.model }}</div>
+                <div><strong>Versão:</strong> {{ data.version }}</div>
+                <div><strong>Ano:</strong> {{ data.year }}</div>
+                <div><strong>Cor:</strong> {{ data.color }}</div>
+                <div><strong>KM:</strong> {{ data.mileage | number }}</div>
+                <div><strong>Portas:</strong> {{ data.doors }}</div>
+                <div><strong>Motor:</strong> {{ data.engine || '---' }}</div>
+                <div><strong>Câmbio:</strong> {{ data.transmission }}</div>
+                <div><strong>Combustível:</strong> {{ data.fuelType }}</div>
+                <div><strong>Categoria:</strong> {{ data.category }} ({{ data.categoryType }})</div>
+                <div><strong>Placa:</strong> {{ data.licensePlate }}</div>
+                <div><strong>Renavam:</strong> {{ data.renavam || '---' }}</div>
+                <div><strong>Condição:</strong> {{ data.condition }}</div>
+            </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Informações Comerciais -->
+        <mat-card class="info-card">
+            <mat-card-title>Informações Comerciais</mat-card-title>
+            <mat-card-content>
+            <div class="grid">
+                <div><strong>Preço:</strong> R$ {{ data.price | number: '1.0-0' }}</div>
+                <div><strong>Preço FIPE:</strong> R$ {{ data.fipePrice | number: '1.0-0' }}</div>
+                <div><strong>Em oferta:</strong> {{ data.isOnOffer ? 'Sim' : 'Não' }}</div>
+                <div><strong>Destaque:</strong> {{ data.isHighlighted ? 'Sim' : 'Não' }}</div>
+                <div><strong>1º Dono:</strong> {{ data.isFirstOwner ? 'Sim' : 'Não' }}</div>
+                <div><strong>Leilão:</strong> {{ data.hasAuction ? 'Sim' : 'Não' }}</div>
+                <div><strong>Sinistro:</strong> {{ data.hasAccident ? 'Sim' : 'Não' }}</div>
+                <div><strong>Loja:</strong> {{ data.shopName }}</div>
+                <div><strong>Cidade:</strong> {{ data.city }}</div>
+                <div><strong>Estado:</strong> {{ data.state }}</div>
+                <div><strong>Código externo:</strong> {{ data.externalVehicleCode }}</div>
+                <div><strong>Código de importação:</strong> {{ data.importCode }}</div>
+                <div><strong>Data de cadastro:</strong> {{ data.createdAt | date: 'short' }}</div>
+            </div>
+            </mat-card-content>
+        </mat-card>
+
+        </div>
+    </mat-tab>
+
+    <!-- Aba de Opcionais -->
+    <mat-tab label="Opcionais" *ngIf="data.optionals">
+        <div class="info-container">
+        <!-- Opcionais (se houver) -->
+        <mat-card class="info-card" *ngIf="data.optionals?.length">
+            <mat-card-title>Opcionais</mat-card-title>
+            <mat-card-content>
+            <ul>
+                <li *ngFor="let op of data.optionals">{{ op.description }}</li>
+            </ul>
+            </mat-card-content>
+        </mat-card>
+
+        </div>
+    </mat-tab>
+
+    <!-- Aba de Observações -->
+    <mat-tab label="Observações" *ngIf="data.siteObservations">
+        <div class="info-container">
+        <mat-card class="obs-card">
+            <mat-card-title>Observações do Site</mat-card-title>
+            <mat-card-content>
+            <p>{{ data.siteObservations }}</p>
+            </mat-card-content>
+        </mat-card>
+        </div>
+    </mat-tab>
+
+</mat-tab-group>
+
+        <!-- Fullscreen Modal -->
+        <div class="fullscreen-overlay" *ngIf="fotoSelecionadaIndex !== null">
+            <div class="fullscreen-view">
+            <button mat-icon-button class="close-btn" (click)="fecharFullscreen()">
+                <mat-icon>close</mat-icon>
+            </button>
+
+            <button
+                mat-icon-button
+                class="nav-btn prev-btn"
+                (click)="fotoAnterior()"
+                [disabled]="fotoSelecionadaIndex === 0"
+            >
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <img [src]="data.photoUrls[fotoSelecionadaIndex]" class="fullscreen-image" />
+
+            <button
+                mat-icon-button
+                class="nav-btn next-btn"
+                (click)="proximaFoto()"
+                [disabled]="fotoSelecionadaIndex === data.photoUrls.length - 1"
+            >
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            </div>
+        </div>

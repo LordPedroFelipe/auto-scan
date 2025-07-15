@@ -10,12 +10,14 @@ import { EstoqueComponent } from './pages/estoque/estoque.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LeadListaComponent } from './pages/lead-lista/lead-lista.component';
 import { LoginComponent } from './pages/login/login.component';
+import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.component';
 import { LojaListaComponent } from './pages/loja-lista/loja-lista.component';
 import { PlanosComponent } from './pages/planos/planos.component';
 import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component';
 import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
 import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.component';
+import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -28,6 +30,8 @@ const routes: Routes = [
   { path: 'simular-financiamento', component: SimularFinanciamentoComponent },
   { path: 'simular-financiamento/:vehicleId', component: SimularFinanciamentoComponent },
   { path: 'simular-financiamento/:vehicleId/:valor/:foto', component: SimularFinanciamentoComponent },
+  { path: 'vehicle/:id', component: VeiculoDetalhesComponent },
+  { path: 'shop/:id', component: LojaDetalhesComponent },
 
   // Rotas privadas
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
