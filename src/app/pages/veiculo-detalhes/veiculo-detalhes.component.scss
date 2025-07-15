@@ -342,3 +342,41 @@ mat-tab-group {
     }
   }
 }
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: auto;
+    padding: 40px;
+
+  button {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

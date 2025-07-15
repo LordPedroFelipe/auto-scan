@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TestDriveService } from 'src/app/services/test-drive.service';
 import { AlertService } from 'src/app/services/alert.service';
+import { TestDriveService } from 'src/app/services/test-drive.service';
+import { VeiculoService } from 'src/app/services/veiculo.service';
 
 @Component({
   selector: 'app-agendamento-test-drive',
@@ -15,16 +16,26 @@ export class AgendamentoTestDriveComponent implements OnInit {
   isLoading = false;
   agendamentoConfirmado = false;
   agendamento?: any;
+  data?: any;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private testDriveService: TestDriveService,
-    private alert: AlertService
+    private alert: AlertService,
+    private veiculoService: VeiculoService,
   ) {}
 
   ngOnInit(): void {
     this.vehicleId = this.route.snapshot.paramMap.get('vehicleId')!;
+
+    if (this.vehicleId) {
+      this.veiculoService.getVeiculoById(this.vehicleId).subscribe({
+        next: (res: any) => this.data = res,
+        error: (err: any) => console.error('Erro ao carregar veículo:', err)
+      });
+    }
+
     this.form = this.fb.group({
       customerName: ['', [Validators.required, Validators.minLength(3)]],
       customerEmail: ['', [Validators.required, Validators.email]],
@@ -61,7 +72,7 @@ export class AgendamentoTestDriveComponent implements OnInit {
     const payload = {
       vehicleId: this.vehicleId,
       preferredDate: preferredDateISO,
-      ...rest 
+      ...rest
     };
 
     this.isLoading = true;

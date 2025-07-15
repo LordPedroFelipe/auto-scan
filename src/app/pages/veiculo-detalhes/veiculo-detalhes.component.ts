@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { VeiculoService } from 'src/app/services/veiculo.service';
 
 @Component({
@@ -13,7 +13,8 @@ export class VeiculoDetalhesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private veiculoService: VeiculoService
+    private veiculoService: VeiculoService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -47,5 +48,21 @@ export class VeiculoDetalhesComponent implements OnInit {
     if (this.fotoSelecionadaIndex !== null && this.fotoSelecionadaIndex > 0) {
       this.fotoSelecionadaIndex--;
     }
+  }
+  agendarTestDrive() {
+    console.log('Agendar Test Drive acionado!');
+    this.router.navigate(['/testdrive', this.data.id]);
+  }
+
+  simularFinanciamento() {
+    console.log('Simular financiamento acionado!');
+    this.router.navigate(['/simular-financiamento', this.data.id]);
+  }
+
+  falarComIA() {
+    // Inicia um chat com IA ou redireciona
+    console.log('Falar com IA acionado!');
+    this.router.navigate(['/atendimento', this.data.id]);
+    // this.chatService.abrirChatComContextoVeiculo(this.data);
   }
 }

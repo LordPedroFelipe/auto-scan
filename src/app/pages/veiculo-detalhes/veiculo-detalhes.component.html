@@ -1,17 +1,29 @@
 <div class="car-highlight-banner" (click)="abrirFotoFullscreen(1)">
-  <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
+    <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
 
-  <div class="highlight-overlay">
-    <div class="highlight-details">
-      <h2 class="car-version">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
-      <div class="car-price">R$ {{ data.price | number: '1.0-0' }}</div>
-      <div class="car-location">{{ data.shopName }} - {{ data.city }}/{{ data.state }}</div>
+    <div class="highlight-overlay">
+        <div class="highlight-details">
+            <h2 class="car-version">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
+            <div class="car-price">R$ {{ data.price | number: '1.0-0' }}</div>
+            <div class="car-location">{{ data.shopName }} - {{ data.city }}/{{ data.state }}</div>
+        </div>
+        <div class="action-buttons">
+            <button mat-raised-button color="primary" (click)="agendarTestDrive()">
+                Agendar Test Drive
+                <mat-icon class="btn-icon">event</mat-icon>
+            </button>
+
+            <button mat-raised-button color="accent" (click)="simularFinanciamento()">
+                Simular Financiamento
+                <mat-icon class="btn-icon">attach_money</mat-icon>
+            </button>
+
+            <button mat-raised-button color="warn" (click)="falarComIA()">
+                Falar com IA
+                <mat-icon class="btn-icon">smart_toy</mat-icon>
+            </button>
+        </div>
     </div>
-    <button mat-raised-button color="accent" class="view-gallery-btn">
-      Ver Galeria
-      <mat-icon>photo_library</mat-icon>
-    </button>
-  </div>
 </div>
 
 <mat-tab-group *ngIf="data">
