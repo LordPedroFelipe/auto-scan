@@ -7,16 +7,28 @@
     <p>Seu assistente inteligente para compra de veículos</p>
   </div>
 
+  <div class="car-highlight-banner">
+      <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
+
+      <div class="highlight-overlay">
+          <div class="highlight-details">
+              <h2 class="car-version">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
+              <div class="car-price">R$ {{ data.price | number: '1.0-0' }}</div>
+              <div class="car-location">{{ data.shopName }} - {{ data.city }}/{{ data.state }}</div>
+          </div>
+      </div>
+  </div>
+
   <!-- Mensagens do chat -->
   <div class="mensagens" #mensagensDiv>
     <div
       *ngFor="let msg of mensagens"
       [ngClass]="{ 'cliente': msg.autor === 'Cliente', 'ia': msg.autor === 'IA' }"
       class="mensagem-bolha"
-    > 
+    >
       <strong>{{ msg.autor }}:</strong>
-      
-    
+
+
       <!-- Mostrar spinner se for loading -->
       <ng-container *ngIf="msg.isLoading; else textoMensagem">
         <mat-progress-spinner
@@ -26,8 +38,7 @@
         ></mat-progress-spinner>
         {{ msg.texto }}
       </ng-container>
-      
-    
+
       <ng-template #textoMensagem>
         <span [innerHTML]="formatarTexto(msg.texto)"></span>
       </ng-template>
@@ -58,6 +69,18 @@
           />
         </div>
       </div>
+
+        <div class="photo-gallery-container" *ngIf="data.photoUrls && data.photoUrls.length > 0">
+            <div class="photo-grid">
+            <img
+                *ngFor="let foto of data.photoUrls; let i = index"
+                [src]="foto"
+                class="photo-thumbnail"
+                (click)="abrirFotoFullscreen(i)"
+                alt="Foto {{ i + 1 }}"
+            />
+            </div>
+        </div>
     </div>
   </div>
 
@@ -96,7 +119,34 @@
       ></mat-progress-spinner>
     </button>
   </div>
-  
+        <!-- Fullscreen Modal -->
+        <div class="fullscreen-overlay" *ngIf="fotoSelecionadaIndex !== null">
+            <div class="fullscreen-view">
+            <button mat-icon-button class="close-btn" (click)="fecharFullscreen()">
+                <mat-icon>close</mat-icon>
+            </button>
+
+            <button
+                mat-icon-button
+                class="nav-btn prev-btn"
+                (click)="fotoAnterior()"
+                [disabled]="fotoSelecionadaIndex === 0"
+            >
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <img [src]="data.photoUrls[fotoSelecionadaIndex]" class="fullscreen-image" />
+
+            <button
+                mat-icon-button
+                class="nav-btn next-btn"
+                (click)="proximaFoto()"
+                [disabled]="fotoSelecionadaIndex === data.photoUrls.length - 1"
+            >
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            </div>
+        </div>
 
   <!-- Sugestões rápidas de busca -->
   <!--div class="sugestoes-chat" *ngIf="sugestoesVisiveis.length">

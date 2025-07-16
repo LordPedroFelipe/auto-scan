@@ -49,6 +49,7 @@ export class VeiculoDetalhesComponent implements OnInit {
       this.fotoSelecionadaIndex--;
     }
   }
+
   agendarTestDrive() {
     console.log('Agendar Test Drive acionado!');
     this.router.navigate(['/testdrive', this.data.id]);

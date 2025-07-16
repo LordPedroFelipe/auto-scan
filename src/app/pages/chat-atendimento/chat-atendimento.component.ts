@@ -51,6 +51,7 @@ export class ChatAtendimentoComponent implements OnInit {
   data?: any;
 
   sugestoesVisiveis: string[] = [];
+  fotoSelecionadaIndex: number | null = null;
   sugestoesBusca = [
     'SUV até 100 mil',
     'Carro econômico para cidade',
@@ -226,6 +227,7 @@ export class ChatAtendimentoComponent implements OnInit {
         next: (res: any) => {
           this.data = res;
           this.imagensVeiculo = this.data.mainPhotoUrl;
+          console.log('this.data ', this.data)
           // this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
           this.enviarMensagemPlacaCarro();
         },
@@ -410,4 +412,23 @@ export class ChatAtendimentoComponent implements OnInit {
     }
   }
 
+  abrirFotoFullscreen(index: number) {
+    this.fotoSelecionadaIndex = index;
+  }
+
+  fecharFullscreen() {
+    this.fotoSelecionadaIndex = null;
+  }
+
+  proximaFoto() {
+    if (this.fotoSelecionadaIndex !== null && this.fotoSelecionadaIndex < this.data.photoUrls.length - 1) {
+      this.fotoSelecionadaIndex++;
+    }
+  }
+
+  fotoAnterior() {
+    if (this.fotoSelecionadaIndex !== null && this.fotoSelecionadaIndex > 0) {
+      this.fotoSelecionadaIndex--;
+    }
+  }
 }
