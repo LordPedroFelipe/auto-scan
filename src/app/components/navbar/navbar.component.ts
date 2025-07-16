@@ -39,8 +39,7 @@ export class NavbarComponent implements OnInit {
   atualizarEstado(): void {
     console.log('atualizarEstado:');
     const urlAtual = this.router.url;
-    this.chatAtendimento = urlAtual.includes('atendimento');
-    this.chatAtendimento = urlAtual.includes('vehicle');
+    this.chatAtendimento = urlAtual.includes('atendimento') || urlAtual.includes('vehicle') || urlAtual.includes('simular-financiamento');
 
     // Lista de rotas públicas
     const rotasPublicas = ['/', '/login', '/cadastro', '/planos', '/home'];

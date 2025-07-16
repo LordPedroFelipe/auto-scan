@@ -1,17 +1,18 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { interval, Subscription, switchMap } from 'rxjs';
 import { ImagemModalComponent } from 'src/app/components/imagem-modal/imagem-modal.component';
+import { LeadFormModalComponent } from 'src/app/components/lead-form-modal/lead-form-modal.component';
+import { MicRecordingSnackComponent } from 'src/app/components/mic-recording-snack/mic-recording-snack.component';
 import { SendMessageRequest } from 'src/app/models/send-message.model';
 import { AlertService } from 'src/app/services/alert.service';
 import { ChatService } from 'src/app/services/chat.service';
-import { interval, Subscription, switchMap } from 'rxjs';
-import { MicRecordingSnackComponent } from 'src/app/components/mic-recording-snack/mic-recording-snack.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { IaChatService } from 'src/app/services/ia-chat.service';
-import { LeadFormModalComponent } from 'src/app/components/lead-form-modal/lead-form-modal.component';
 import { LeadService } from 'src/app/services/lead.service';
 import { LocationService } from 'src/app/services/location.service';
+import { VeiculoService } from 'src/app/services/veiculo.service';
 
 interface Mensagem {
   autor: 'IA' | 'Cliente';
@@ -46,6 +47,8 @@ export class ChatAtendimentoComponent implements OnInit {
   leadData: any = null;
 
   humor: string | null = 'happy';
+  vehicleId?: string;
+  data?: any;
 
   sugestoesVisiveis: string[] = [];
   sugestoesBusca = [
@@ -90,10 +93,12 @@ export class ChatAtendimentoComponent implements OnInit {
     private iaChatService: IaChatService,
     private leadService: LeadService,
     private localizacaoService: LocationService,
+    private veiculoService: VeiculoService,
   ) {}
 
   ngOnInit(): void {
     this.placa = this.route.snapshot.paramMap.get('placa');
+    this.vehicleId = this.route.snapshot.paramMap.get('placa') || '';
 
     // Verifica se já tem LEAD salvo em localStorage
     const leadStorage = localStorage.getItem('leadData');
@@ -103,9 +108,7 @@ export class ChatAtendimentoComponent implements OnInit {
     }
 
     if (this.placa) {
-      this.imagensVeiculo = this.buscarImagensDoVeiculo(this.placa);
-      // this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
-      this.enviarMensagemPlacaCarro();
+      this.buscarImagensDoVeiculo(this.placa);
     } else {
       this.enviarMensagemBoasVindas();
     }
@@ -146,7 +149,7 @@ export class ChatAtendimentoComponent implements OnInit {
         await this.leadService.criar(novoLead).toPromise();
         this.leadData = result;
         this.leadCapturado = true;
-        
+
         localStorage.setItem('leadData', JSON.stringify(result));
       } catch (error) {
         this.alert.showError('Erro ao salvar o LEAD.');
@@ -176,7 +179,7 @@ export class ChatAtendimentoComponent implements OnInit {
     this.isLoading = true;
     this.chatService.sendMessage(payload).subscribe({
       next: (resposta: any) => {
-        
+
         console.log('msg enviar', resposta);
         this.mensagens = this.mensagens.filter(msg => !msg.isLoading);
 
@@ -217,14 +220,18 @@ export class ChatAtendimentoComponent implements OnInit {
     this.mensagens.push({ autor: 'IA', texto, data: new Date(), opcoes: sugestoesVisiveis });
   }
 
-  buscarImagensDoVeiculo(placa: string): string[] {
-    return [
-      `assets/img/veiculos/${placa}-1.jpeg`,
-      `assets/img/veiculos/${placa}-2.jpeg`,
-      `assets/img/veiculos/${placa}-3.jpeg`,
-      `assets/img/veiculos/${placa}-4.jpeg`,
-      `assets/img/veiculos/${placa}-5.jpeg`
-    ];
+  buscarImagensDoVeiculo(placa: string): void {
+    if (this.vehicleId) {
+      this.veiculoService.getVeiculoById(this.vehicleId).subscribe({
+        next: (res: any) => {
+          this.data = res;
+          this.imagensVeiculo = this.data.mainPhotoUrl;
+          // this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
+          this.enviarMensagemPlacaCarro();
+        },
+        error: (err: any) => console.error('Erro ao carregar veículo:', err)
+      });
+    }
   }
 
   abrirImagem(imgUrl: string): void {
@@ -334,15 +341,15 @@ export class ChatAtendimentoComponent implements OnInit {
   enviarMensagemBoasVindas(): void {
     const index = Math.floor(Math.random() * this.mensagensBoasVindas.length);
     const mensagem = this.mensagensBoasVindas[index];
-    
+
     const sugestoesVisiveis = this.shuffle(this.sugestoesBusca).slice(0, 3);
     this.enviarMensagemIA(mensagem, sugestoesVisiveis);
   }
 
   enviarMensagemPlacaCarro(): void {
-    const mensagem = this.iaChatService.gerarMensagemVendaFake();
+    const mensagem = this.iaChatService.gerarMensagemVendaComDados(this.data);
     // const mensagem = `🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`;
-    
+
     const sugestoesVisiveis = [
       'Agendar TestDrive',
       'Simular Financiamento',
