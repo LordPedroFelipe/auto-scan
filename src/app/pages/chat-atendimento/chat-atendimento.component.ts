@@ -226,7 +226,7 @@ export class ChatAtendimentoComponent implements OnInit {
       this.veiculoService.getVeiculoById(this.vehicleId).subscribe({
         next: (res: any) => {
           this.data = res;
-          this.imagensVeiculo = this.data.mainPhotoUrl;
+          this.imagensVeiculo = this.data?.mainPhotoUrl || '';
           console.log('this.data ', this.data)
           // this.enviarMensagemIA(`🚗 Encontramos um veículo com placa ${this.placa}. Veja abaixo os detalhes.`);
           this.enviarMensagemPlacaCarro();

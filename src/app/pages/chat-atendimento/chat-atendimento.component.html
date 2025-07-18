@@ -7,7 +7,7 @@
     <p>Seu assistente inteligente para compra de veículos</p>
   </div>
 
-  <div class="car-highlight-banner">
+  <div class="car-highlight-banner" *ngIf="data && data?.mainPhotoUrl">
       <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
 
       <div class="highlight-overlay">
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-        <div class="photo-gallery-container" *ngIf="data.photoUrls && data.photoUrls.length > 0">
+        <div class="photo-gallery-container" *ngIf="data && data.photoUrls && data.photoUrls.length > 0">
             <div class="photo-grid">
             <img
                 *ngFor="let foto of data.photoUrls; let i = index"
