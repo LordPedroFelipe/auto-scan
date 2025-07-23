@@ -19,6 +19,7 @@ import { SimularFinanciamentoComponent } from './pages/simular-financiamento/sim
 import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
 import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.component';
 import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: 'qr-code-list', component: QrCodeListComponent, canActivate: [AuthGuard]  },
   { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard]  },
   { path: 'configuracoes', component: ConfiguracoesComponent, canActivate: [AuthGuard]  },
+  { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard]  },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 

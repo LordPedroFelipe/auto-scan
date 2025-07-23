@@ -1,0 +1,51 @@
+.conta-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  mat-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: #fff;
+  }
+
+  .perfil {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+    }
+
+    input[type='file'] {
+      font-size: 0.9rem;
+    }
+  }
+
+  .full {
+    width: 100%;
+  }
+
+  button {
+    align-self: flex-start;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+}

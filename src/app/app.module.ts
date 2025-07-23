@@ -89,6 +89,7 @@ import { SimularFinanciamentoComponent } from './pages/simular-financiamento/sim
 import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
 import { PascalCasePipe } from './pipes/pascal-case.pipe';
 import { MonitoramentoComponent } from './components/configuracao/monitoramento/monitoramento.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 
 @NgModule({
@@ -134,6 +135,7 @@ import { MonitoramentoComponent } from './components/configuracao/monitoramento/
     NotificacoesComponent,
     SegurancaComponent,
     MonitoramentoComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,
