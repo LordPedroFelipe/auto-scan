@@ -1,0 +1,27 @@
+<div class="notificacoes-wrapper">
+  <h2>Preferências de Notificações</h2>
+
+  <mat-card *ngFor="let pref of preferencias" class="notificacao-card">
+    <h3>{{ pref.tipo }}</h3>
+
+    <div class="canais">
+      <mat-checkbox [(ngModel)]="pref.email">E-mail</mat-checkbox>
+      <mat-checkbox [(ngModel)]="pref.whatsapp">WhatsApp</mat-checkbox>
+      <mat-checkbox [(ngModel)]="pref.sms">SMS</mat-checkbox>
+      <mat-checkbox [(ngModel)]="pref.push">Push</mat-checkbox>
+    </div>
+
+    <mat-form-field appearance="fill" class="frequencia-select">
+      <mat-label>Frequência</mat-label>
+      <mat-select [(ngModel)]="pref.frequencia">
+        <mat-option *ngFor="let freq of frequencias" [value]="freq">
+          {{ freq | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+
+  <button mat-raised-button color="primary" (click)="salvar()">
+    Salvar Preferências
+  </button>
+</div>

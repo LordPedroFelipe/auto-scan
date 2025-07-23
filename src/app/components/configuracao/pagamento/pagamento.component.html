@@ -1,0 +1,72 @@
+<h2>Gerenciar Pagamento</h2>
+
+<div class="pagamento-wrapper">
+
+    <mat-card class="plano-atual">
+        <h3>Plano Atual</h3>
+        <div class="titulo">
+            <strong>{{ pagamentoAtual.plano }}</strong>
+            <span>{{ pagamentoAtual.valor | currency:'BRL' }}</span>
+        </div>
+        <div class="info">
+            <span>Método: {{ pagamentoAtual.metodo | titlecase }}</span>
+            <span>Data: {{ pagamentoAtual.data | date:'longDate' }}</span>
+            <span>Status: {{ pagamentoAtual.status }}</span>
+        </div>
+    </mat-card>
+
+    <mat-card>
+        <h3>Histórico de Pagamentos</h3>
+        <mat-list *ngIf="historico.length > 0; else vazio">
+            <mat-list-item *ngFor="let pagamento of historico">
+            <div mat-line>{{ pagamento.plano }} — {{ pagamento.valor | currency:'BRL' }}</div>
+            <div mat-line class="secundario">
+                {{ pagamento.data | date:'shortDate' }} — {{ pagamento.metodo | titlecase }} — {{ pagamento.status }}
+            </div>
+            </mat-list-item>
+        </mat-list>
+
+        <ng-template #vazio>
+            <p>Nenhum pagamento anterior encontrado.</p>
+        </ng-template>
+    </mat-card>
+
+    <mat-card>
+        <h3>Realizar Pagamento</h3>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Plano</mat-label>
+            <mat-select [(ngModel)]="planoSelecionado">
+            <mat-option *ngFor="let plano of planos" [value]="plano">
+                {{ plano.nome }} - {{ plano.preco | currency:'BRL' }}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-radio-group [(ngModel)]="metodoPagamento">
+            <mat-radio-button value="pix">Pix</mat-radio-button>
+            <mat-radio-button value="cartao">Cartão de Crédito</mat-radio-button>
+        </mat-radio-group>
+
+        <div *ngIf="metodoPagamento === 'pix'" class="pagamento-box">
+            <p>Escaneie o QR Code abaixo:</p>
+            <img src="assets/qrcode-exemplo.png" alt="QR Code Pix" />
+        </div>
+
+        <div *ngIf="metodoPagamento === 'cartao'" class="pagamento-box">
+            <p>Digite os dados do cartão</p>
+            <mat-form-field class="full-width">
+            <input matInput placeholder="Número do Cartão" />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+            <input matInput placeholder="Validade" />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+            <input matInput placeholder="CVV" />
+            </mat-form-field>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="confirmarPagamento()">
+            Confirmar Pagamento
+        </button>
+    </mat-card>
+</div>

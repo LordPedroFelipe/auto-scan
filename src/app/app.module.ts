@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -72,15 +73,22 @@ import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxApexchartsModule } from 'ngx-apexcharts';
+import { ContaComponent } from './components/configuracao/conta/conta.component';
+import { NotificacoesComponent } from './components/configuracao/notificacoes/notificacoes.component';
+import { PagamentoComponent } from './components/configuracao/pagamento/pagamento.component';
+import { PreferenciasComponent } from './components/configuracao/preferencias/preferencias.component';
+import { SegurancaComponent } from './components/configuracao/seguranca/seguranca.component';
 import { GraficoPalavrasComponent } from './components/grafico-palavras/grafico-palavras.component';
 import { QrCodeFormComponent } from './components/qr-code-form/qr-code-form.component';
 import { MY_DATE_FORMATS } from './custom-date-format';
-import { RelatoriosComponent } from './page/relatorios/relatorios.component';
-import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
-import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
-import { PascalCasePipe } from './pipes/pascal-case.pipe';
-import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
+import { ConfiguracoesComponent } from './pages/configuracoes/configuracoes.component';
 import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.component';
+import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
+import { RelatoriosComponent } from './pages/relatorios/relatorios.component';
+import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
+import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
+import { PascalCasePipe } from './pipes/pascal-case.pipe';
+import { MonitoramentoComponent } from './components/configuracao/monitoramento/monitoramento.component';
 
 
 @NgModule({
@@ -119,6 +127,13 @@ import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.compo
     RelatoriosComponent,
     VeiculoDetalhesComponent,
     LojaDetalhesComponent,
+    ConfiguracoesComponent,
+    PagamentoComponent,
+    ContaComponent,
+    PreferenciasComponent,
+    NotificacoesComponent,
+    SegurancaComponent,
+    MonitoramentoComponent,
   ],
   imports: [
     BrowserModule,
@@ -153,6 +168,7 @@ import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.compo
     MatChipsModule,
     MatButtonToggleModule,
     MatMenuModule,
+    MatRadioModule,
 
     // NGX-MASK
     NgxMaskDirective,

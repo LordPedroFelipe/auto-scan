@@ -1,0 +1,77 @@
+<div class="monitoramento" *ngIf="!loading; else loadingTpl">
+  <!-- Saúde da API -->
+  <section>
+    <h2>Status da API</h2>
+    <mat-card class="card api">
+      <p>Status: <strong>{{ statusApi }}</strong></p>
+      <p>Versão: {{ versaoApi }}</p>
+      <p>Último check: {{ timestampApi | date:'short' }}</p>
+    </mat-card>
+  </section>
+
+  <!-- Métricas -->
+  <section>
+    <h2>Métricas do Sistema</h2>
+    <mat-card class="card metrics">
+      <p><strong>Uptime:</strong> {{ uptime }}</p>
+      <p><strong>CPU:</strong> {{ cpu }}%</p>
+
+      <div class="grid">
+        <div>
+          <h4>Memória</h4>
+          <p>Total: {{ memoria.total }}</p>
+          <p>Usada: {{ memoria.used }}</p>
+          <p>Livre: {{ memoria.free }}</p>
+          <p>Uso: {{ memoria.usagePercent }}%</p>
+        </div>
+
+        <div>
+          <h4>Disco</h4>
+          <p>Total: {{ disco.total }}</p>
+          <p>Usado: {{ disco.used }}</p>
+          <p>Livre: {{ disco.free }}</p>
+          <p>Uso: {{ disco.usagePercent }}%</p>
+        </div>
+      </div>
+    </mat-card>
+  </section>
+
+  <!-- Banco de Dados -->
+  <section>
+    <h2>Status do Banco de Dados</h2>
+    <mat-card class="card db" [ngClass]="{ erro: erroDb }">
+      <ng-container *ngIf="!erroDb; else erroTpl">
+        <p><strong>Conexão:</strong> {{ conexao }}</p>
+        <p><strong>Estado:</strong> {{ estadoDb }}</p>
+        <p><strong>Conexão ativa:</strong> {{ conexaoAtiva }}</p>
+        <p><strong>Tamanho total:</strong> {{ tamanhoTotalTabelas }}</p>
+
+        <h4>Tabelas com mais dados:</h4>
+        <table class="tabela-tamanhos">
+          <thead>
+            <tr>
+              <th>Tabela</th>
+              <th>Linhas</th>
+              <th>Tamanho</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of tabelasMaisPesadas">
+              <td>{{ t.tableName }}</td>
+              <td>{{ t.rowCount }}</td>
+              <td>{{ t.size }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+
+      <ng-template #erroTpl>
+        <p class="erro-texto">Erro ao acessar banco de dados (500)</p>
+      </ng-template>
+    </mat-card>
+  </section>
+</div>
+
+<ng-template #loadingTpl>
+  <mat-spinner></mat-spinner>
+</ng-template>

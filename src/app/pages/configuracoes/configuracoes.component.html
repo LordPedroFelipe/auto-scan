@@ -1,0 +1,34 @@
+<div class="configuracoes-container">
+  <h1>Configurações</h1>
+
+  <mat-tab-group
+    [(selectedIndex)]="selectedIndex"
+    (selectedIndexChange)="onTabChange($event)"
+    mat-stretch-tabs
+    class="tabs"
+  >
+    <mat-tab label="Pagamento">
+      <app-pagamento></app-pagamento>
+    </mat-tab>
+
+    <mat-tab label="Conta">
+      <app-conta></app-conta>
+    </mat-tab>
+
+    <mat-tab label="Preferências">
+      <app-preferencias></app-preferencias>
+    </mat-tab>
+
+    <mat-tab label="Notificações">
+      <app-notificacoes></app-notificacoes>
+    </mat-tab>
+
+    <mat-tab label="Segurança">
+      <app-seguranca></app-seguranca>
+    </mat-tab>
+
+    <mat-tab label="Monitoramento">
+      <app-monitoramento></app-monitoramento>
+    </mat-tab>
+  </mat-tab-group>
+</div>

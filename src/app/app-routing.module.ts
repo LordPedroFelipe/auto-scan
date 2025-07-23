@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { RelatoriosComponent } from './page/relatorios/relatorios.component';
 import { AgendamentoTestDriveComponent } from './pages/agendamento-test-drive/agendamento-test-drive.component';
 import { CadastroLojaComponent } from './pages/cadastro-loja/cadastro-loja.component';
 import { ChatAtendimentoComponent } from './pages/chat-atendimento/chat-atendimento.component';
+import { ConfiguracoesComponent } from './pages/configuracoes/configuracoes.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EstoqueComponent } from './pages/estoque/estoque.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -14,6 +14,7 @@ import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.compo
 import { LojaListaComponent } from './pages/loja-lista/loja-lista.component';
 import { PlanosComponent } from './pages/planos/planos.component';
 import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
+import { RelatoriosComponent } from './pages/relatorios/relatorios.component';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component';
 import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
 import { UsuariosListaComponent } from './pages/usuarios-lista/usuarios-lista.component';
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'test-drive-list', component: TestDriveListComponent, canActivate: [AuthGuard]  },
   { path: 'qr-code-list', component: QrCodeListComponent, canActivate: [AuthGuard]  },
   { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard]  },
+  { path: 'configuracoes', component: ConfiguracoesComponent, canActivate: [AuthGuard]  },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
