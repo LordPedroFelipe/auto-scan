@@ -65,9 +65,7 @@ export class LojaFormComponent {
         isActive: lojaForm.isActive,
         qrCodeLimit: lojaForm.qrCodeLimit,
         ownerId: lojaForm.ownerId,
-        /*owner: {
-          id: lojaForm.ownerId
-        }*/
+        // owner: { id: lojaForm.ownerId }
       };
 
       this.lojaService.criar(novaLoja).subscribe(result => {

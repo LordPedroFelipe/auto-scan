@@ -43,7 +43,32 @@
         <span [innerHTML]="formatarTexto(msg.texto)"></span>
       </ng-template>
 
-          <!-- Se a mensagem for do tipo com opções -->
+      <div class="botoes-sugestoes" *ngIf="msg.testdriveUrl">
+        <a
+          *ngIf="msg.testdriveUrl"
+          mat-stroked-button
+          color="accent"
+          [href]="msg.testdriveUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Agendar Test Drive
+        </a>
+      </div>
+      <div class="botoes-sugestoes" *ngIf="msg.financingUrl">
+        <a
+          *ngIf="msg.financingUrl"
+          mat-stroked-button
+          color="accent"
+          [href]="msg.financingUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Simular Financiamento
+        </a>
+      </div>
+
+      <!-- Se a mensagem for do tipo com opções -->
       <div *ngIf="msg.opcoes">
         <div class="botoes-sugestoes">
           <button
@@ -70,17 +95,17 @@
         </div>
       </div>
 
-        <div class="photo-gallery-container" *ngIf="data && data.photoUrls && data.photoUrls.length > 0">
-            <div class="photo-grid">
-            <img
-                *ngFor="let foto of data.photoUrls; let i = index"
-                [src]="foto"
-                class="photo-thumbnail"
-                (click)="abrirFotoFullscreen(i)"
-                alt="Foto {{ i + 1 }}"
-            />
-            </div>
-        </div>
+      <div class="photo-gallery-container" *ngIf="data && data.photoUrls && data.photoUrls.length > 0">
+          <div class="photo-grid">
+          <img
+              *ngFor="let foto of data.photoUrls; let i = index"
+              [src]="foto"
+              class="photo-thumbnail"
+              (click)="abrirFotoFullscreen(i)"
+              alt="Foto {{ i + 1 }}"
+          />
+          </div>
+      </div>
     </div>
   </div>
 
@@ -119,34 +144,34 @@
       ></mat-progress-spinner>
     </button>
   </div>
-        <!-- Fullscreen Modal -->
-        <div class="fullscreen-overlay" *ngIf="fotoSelecionadaIndex !== null">
-            <div class="fullscreen-view">
-            <button mat-icon-button class="close-btn" (click)="fecharFullscreen()">
-                <mat-icon>close</mat-icon>
-            </button>
+  <!-- Fullscreen Modal -->
+  <div class="fullscreen-overlay" *ngIf="fotoSelecionadaIndex !== null">
+      <div class="fullscreen-view">
+      <button mat-icon-button class="close-btn" (click)="fecharFullscreen()">
+          <mat-icon>close</mat-icon>
+      </button>
 
-            <button
-                mat-icon-button
-                class="nav-btn prev-btn"
-                (click)="fotoAnterior()"
-                [disabled]="fotoSelecionadaIndex === 0"
-            >
-                <mat-icon>chevron_left</mat-icon>
-            </button>
+      <button
+          mat-icon-button
+          class="nav-btn prev-btn"
+          (click)="fotoAnterior()"
+          [disabled]="fotoSelecionadaIndex === 0"
+      >
+          <mat-icon>chevron_left</mat-icon>
+      </button>
 
-            <img [src]="data.photoUrls[fotoSelecionadaIndex]" class="fullscreen-image" />
+      <img [src]="data.photoUrls[fotoSelecionadaIndex]" class="fullscreen-image" />
 
-            <button
-                mat-icon-button
-                class="nav-btn next-btn"
-                (click)="proximaFoto()"
-                [disabled]="fotoSelecionadaIndex === data.photoUrls.length - 1"
-            >
-                <mat-icon>chevron_right</mat-icon>
-            </button>
-            </div>
-        </div>
+      <button
+          mat-icon-button
+          class="nav-btn next-btn"
+          (click)="proximaFoto()"
+          [disabled]="fotoSelecionadaIndex === data.photoUrls.length - 1"
+      >
+          <mat-icon>chevron_right</mat-icon>
+      </button>
+      </div>
+  </div>
 
   <!-- Sugestões rápidas de busca -->
   <!--div class="sugestoes-chat" *ngIf="sugestoesVisiveis.length">

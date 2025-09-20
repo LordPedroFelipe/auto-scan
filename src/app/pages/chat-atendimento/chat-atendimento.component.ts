@@ -21,6 +21,8 @@ interface Mensagem {
   opcoes?: any[] | null;
   isLoading?: boolean;
   fotos?: string[];
+  testdriveUrl?: string[];
+  financingUrl?: string[];
 }
 
 @Component({
@@ -170,7 +172,7 @@ export class ChatAtendimentoComponent implements OnInit {
 
     const loadingMsg: Mensagem = {
       autor: 'IA',
-      texto: 'Pensando...',
+      texto: 'Digitando...',
       data: new Date(),
       isLoading: true
     };
@@ -203,7 +205,9 @@ export class ChatAtendimentoComponent implements OnInit {
           texto: mensagem,
           data: new Date(),
           opcoes: opcoesFormatadas,
-          fotos
+          fotos,
+          testdriveUrl: resposta.testdriveUrl,
+          financingUrl: resposta.financingUrl
         });
 
         this.scrollToBottom();
@@ -264,7 +268,7 @@ export class ChatAtendimentoComponent implements OnInit {
           if (!this.mensagensMap.has(msg.texto)) {
             console.log('msg ', msg);
             const autor = msg.autor?.toLowerCase() === 'cliente' ? 'Cliente' : 'IA';
-            this.mensagens.push({ autor, texto: msg.texto, data: new Date(msg.data) });
+            this.mensagens.push({ autor, texto: msg.texto, data: new Date(msg.data), testdriveUrl: msg.testdriveUrl, financingUrl: msg.financingUrl });
             this.mensagensMap.set(msg.texto, true);
           }
         });
