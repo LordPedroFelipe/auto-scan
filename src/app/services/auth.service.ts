@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { Observable, tap } from 'rxjs';
-import { RegisterModel } from '../models/register.model';
-import { LoginModel } from '../models/login.model';
 import { jwtDecode } from 'jwt-decode';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { DecodedTokenModel } from '../models/decoded-token.model';
+import { LoginModel } from '../models/login.model';
+import { RegisterModel } from '../models/register.model';
 
 @Injectable({
   providedIn: 'root'
@@ -75,5 +75,13 @@ export class AuthService {
 
   hasPermission(permission: string): boolean {
     return this.getPermissions().includes(permission);
+  }
+
+  getShopId(): string | null {
+    return this.getDecodedToken()?.["ShopId"] || null;
+  }
+
+  getShopName(): string | null {
+    return this.getDecodedToken()?.["ShopName"] || null;
   }
 }

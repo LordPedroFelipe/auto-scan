@@ -16,14 +16,14 @@
     />
     <mat-nav-list>
       <a mat-list-item routerLink="/dashboard">Dashboard</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/loja-lista">Lojas</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/estoque">Estoque</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/lead-lista">LEADs</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/test-drive-list">Test Drives</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/qr-code-list">QR Codes</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/usuarios-lista">Usuários</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/relatorios">Relatórios</a>
-      <a *ngIf="isInRole(role)" mat-list-item routerLink="/configuracoes">Configurações</a>
+      <a *ngIf="canShow('SHOPS')"        mat-list-item routerLink="/loja-lista">Lojas</a>
+      <a *ngIf="canShow('INVENTORY')"    mat-list-item routerLink="/estoque">Estoque</a>
+      <a *ngIf="canShow('LEADS')"        mat-list-item routerLink="/lead-lista">LEADs</a>
+      <a *ngIf="canShow('TEST_DRIVES')"  mat-list-item routerLink="/test-drive-list">Test Drives</a>
+      <a *ngIf="canShow('QR_CODES')"     mat-list-item routerLink="/qr-code-list">QR Codes</a>
+      <a *ngIf="canShow('USERS')"        mat-list-item routerLink="/usuarios-lista">Usuários</a>
+      <a *ngIf="canShow('REPORTS')"      mat-list-item routerLink="/relatorios">Relatórios</a>
+      <a *ngIf="canShow('SETTINGS')"     mat-list-item routerLink="/configuracoes">Configurações</a>
       <a mat-list-item (click)="logout()">Logout</a>
     </mat-nav-list>
   </mat-sidenav>
@@ -42,7 +42,7 @@
         <mat-icon>menu</mat-icon>
       </button>
 
-      <p class="logo-loja" *ngIf="isLogado">Kafka Veiculos</p>
+      <p class="logo-loja" *ngIf="isLogado">{{ shopName }}</p>
 
       <img
         *ngIf="!isLogado"

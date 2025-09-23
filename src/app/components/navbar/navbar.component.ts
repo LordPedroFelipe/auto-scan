@@ -4,6 +4,41 @@ import { filter } from 'rxjs/operators';
 import { UserRole } from 'src/app/models/user-role.enum';
 import { AuthService } from 'src/app/services/auth.service';
 
+// tipos
+type Role = 'Admin' | 'ShopOwner' | 'ShopSeller';
+type MenuKey =
+  | 'SHOPS'
+  | 'INVENTORY'
+  | 'LEADS'
+  | 'TEST_DRIVES'
+  | 'QR_CODES'
+  | 'USERS'
+  | 'REPORTS'
+  | 'SETTINGS';
+
+// matriz de permissões
+const ROLE_PERMISSIONS: Record<Role, MenuKey[]> = {
+  Admin: [
+    'SHOPS',
+    'INVENTORY',
+    'LEADS',
+    'TEST_DRIVES',
+    'QR_CODES',
+    'USERS',
+    'REPORTS',
+    'SETTINGS',
+  ],
+  ShopOwner: [
+    'INVENTORY',
+    'LEADS',
+    'TEST_DRIVES',
+    'QR_CODES',
+    'REPORTS',
+    'SETTINGS',
+  ],
+  ShopSeller: ['LEADS', 'TEST_DRIVES'],
+};
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -18,6 +53,9 @@ export class NavbarComponent implements OnInit {
   modoMenu: 'over' | 'side' = 'side';
   chatAtendimento = false;
   email: string | null = null;
+  shopName: string | null = null;
+  roles: string[] = [];
+  private allowed = new Set<MenuKey>();
 
   constructor(
     private router: Router,
@@ -34,6 +72,7 @@ export class NavbarComponent implements OnInit {
       .subscribe(() => {
         this.atualizarEstado();
       });
+
   }
 
   atualizarEstado(): void {
@@ -58,17 +97,22 @@ export class NavbarComponent implements OnInit {
     this.isLogado = this.authService.isAuthenticated();
 
     if (this.isLogado) {
-      const roles = this.authService.getRoles();
-      console.log('roles:', roles);
-      this.role = roles.length > 0 ? roles[0] as UserRole : null;
+      this.roles = this.authService.getRoles();
+      console.log('roles:', this.roles);
+      this.role = this.roles.length > 0 ? this.roles[0] as UserRole : null;
 
       const email = this.authService.getUserEmail();
+      const shopId = this.authService.getShopId();
+      this.shopName = this.authService.getShopName();
       const permissions = this.authService.getPermissions();
       this.email = email || null;
 
       console.log('Usuário:', email);
       console.log('Role:', this.role);
+      console.log('shopId:', shopId);
+      // console.log('shopName:', shopName);
       console.log('Permissões:', permissions);
+      this.buildAllowed();
 
       if (this.authService.hasPermission('Module.Vehicles:Permission.Edit')) {
         console.log('Usuário pode editar veículos');
@@ -90,5 +134,19 @@ export class NavbarComponent implements OnInit {
     this.atualizarEstado();
     this.menuAberto = false;
     this.router.navigate(['/login']);
+  }
+
+  private buildAllowed() {
+    this.allowed.clear();
+    const rolesNorm = this.roles.map(r => String(r).trim().toLowerCase());
+    (Object.keys(ROLE_PERMISSIONS) as Role[]).forEach(role => {
+      if (rolesNorm.includes(role.toLowerCase())) {
+        ROLE_PERMISSIONS[role].forEach(m => this.allowed.add(m));
+      }
+    });
+  }
+
+  canShow(key: MenuKey): boolean {
+    return this.allowed.has(key);
   }
 }

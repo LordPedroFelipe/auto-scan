@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Indicador } from '../../models/indicador.model';
-import { INDICADORES_MOCK } from 'src/assets/data/indicadores.mock';
 import { MatTableDataSource } from '@angular/material/table';
-import { DashboardService } from 'src/app/services/dashboard.service';
 import { AlertService } from 'src/app/services/alert.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { INDICADORES_MOCK } from 'src/assets/data/indicadores.mock';
+import { Indicador } from '../../models/indicador.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +13,7 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class DashboardComponent implements OnInit {
   indicadores: Indicador[] = [];
-  nomeLoja = 'Kafka Multimarcas';
+  nomeLoja: string | null = null;
   // palavrasMaisBuscadas: { palavra: string; quantidade: number }[] = [];
   displayedColumns: string[] = ['palavra', 'quantidade'];
   palavrasMaisBuscadas = new MatTableDataSource<any>();
@@ -22,7 +23,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private alert: AlertService
+    private alert: AlertService,
+    public authService: AuthService
     // private alert: AlertService
   ) {}
 
@@ -31,6 +33,7 @@ export class DashboardComponent implements OnInit {
     this.indicadores = INDICADORES_MOCK;
 
     this.carregarPalavras();
+    this.nomeLoja = this.authService.getShopName();
 
     /* this.palavrasMaisBuscadas = [
       { "palavra": "Onix", "quantidade": 12 },
@@ -43,8 +46,10 @@ export class DashboardComponent implements OnInit {
     /* this.chatService.getPalavrasMaisBuscadas().subscribe({
       next: res => this.palavrasMaisBuscadas = res,
       error: err => console.error('Erro ao buscar palavras mais buscadas', err)
-    });*/ 
+    });*/
   }
+
+
 
   carregarPalavras(): void {
     this.isLoading = true;
