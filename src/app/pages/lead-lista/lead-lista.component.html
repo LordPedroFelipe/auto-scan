@@ -121,8 +121,10 @@
           class="kanban-column"
           *ngFor="let st of statuses"
           cdkDropList
+          [id]="'list-' + st.key"
           [cdkDropListData]="kanbanMap[st.key]"
-          (cdkDropListDropped)="onDrop($event, st.key)"
+          [cdkDropListConnectedTo]="connectedDropLists"
+          (cdkDropListDropped)="onDrop($event)"
         >
           <div class="kanban-column-header">
             <h3>{{ st.label }}</h3>

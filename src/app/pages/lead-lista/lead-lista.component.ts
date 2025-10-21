@@ -8,7 +8,7 @@ import { LeadModel } from 'src/app/models/lead.model';
 import { LeadService } from 'src/app/services/lead.service';
 
 // CDK drag-drop
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 
 type KanbanStatus = 'New' | 'InProgress' | 'Contacted' | 'Won' | 'Lost';
 
@@ -28,6 +28,7 @@ export class LeadListaComponent implements OnInit {
   totalCount = 0;
   modoVisualizacao: 'cards' | 'tabela' = 'cards';
   displayedColumns: string[] = ['name', 'email', 'phone', 'acoes'];
+  connectedDropLists: string[] = []; // <— add
 
   // ====== Abas ======
   // 0 -> Lista, 1 -> Kanban
@@ -65,6 +66,7 @@ export class LeadListaComponent implements OnInit {
       phone: ['']
     });
 
+    this.connectedDropLists = this.statuses.map(s => 'list-' + s.key);
     this.carregarLeads();
   }
 
@@ -164,12 +166,10 @@ export class LeadListaComponent implements OnInit {
   }
 
   // ====== Kanban: Drag & Drop ======
-  onDrop(event: CdkDragDrop<LeadModel[]>, novoStatus: KanbanStatus) {
-    // mesmo container -> apenas reordenar
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      return;
-    }
+  onDrop(event: CdkDragDrop<LeadModel[]>) {
+    // console.log('onDrop fired:', event.container.data, event.previousIndex, event.currentIndex, event.previousContainer, event.container);
+    const destinoId = event.container.id || '';                 // ex.: "list-InProgress"
+    const novoStatus = destinoId.replace('list-', '') as KanbanStatus;
 
     // containers diferentes -> transferir
     transferArrayItem(
@@ -179,22 +179,32 @@ export class LeadListaComponent implements OnInit {
       event.currentIndex
     );
 
-    // item movido
+    // item movido (agora no container alvo)
     const moved = event.container.data[event.currentIndex];
-    if (moved) {
-      const id = moved.id;
-      // atualiza status local (kanbanMap)+array base
-      moved.status = novoStatus;
-      this.syncLeadStatusInArray(id, novoStatus);
+    const movedId = moved?.id;
+    // console.log('moved:', movedId, '->', novoStatus);
 
-      // persiste no servidor
-      this.atualizarStatusNoServidor(id, novoStatus);
+    if (moved && movedId) {
+      moved.status = novoStatus;
+      this.syncLeadStatusInArray(movedId, novoStatus);
+      this.atualizarStatusNoServidor(movedId, novoStatus);
     }
   }
 
   private atualizarStatusNoServidor(id: string | undefined, status: KanbanStatus) {
+    // console.log('Atualizando status no servidor:', id, status);
     if (!id) return;
     // Ajuste conforme sua API: se houver atualizarStatus, use-a.
     // Aqui uso um update parcial genérico:
+    this.leadService.buscarPorId(id).subscribe(orig => {
+      const payload: LeadModel = { ...orig, status };
+      this.leadService.atualizar(id, payload).subscribe({
+        next: () => {},
+        error: (err) => {
+          console.error('Erro ao atualizar status', err);
+          this.carregarLeads(this.pageIndex);
+        }
+      });
+    });
   }
 }

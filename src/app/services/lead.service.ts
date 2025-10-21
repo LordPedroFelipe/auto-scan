@@ -48,7 +48,7 @@ export class LeadService {
     return this.http.post<LeadModel>(this.apiUrl, lead);
   }
 
-  atualizar(id: string, lead: LeadModel): Observable<LeadModel> {
+  atualizar(id: string, lead: Partial<LeadModel>): Observable<LeadModel> {
     return this.http.put<LeadModel>(`${this.apiUrl}/${id}`, lead);
   }
 
