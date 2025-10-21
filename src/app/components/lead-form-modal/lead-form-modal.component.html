@@ -1,40 +1,175 @@
-<h2 mat-dialog-title>Precisamos de alguns dados para iniciar</h2>
+<h2 mat-dialog-title>{{ isEdicao ? 'Editar Lead' : 'Novo Lead' }}</h2>
 
 <mat-dialog-content [formGroup]="form">
-  <mat-form-field appearance="outline" class="full">
-    <mat-label>Nome completo</mat-label>
-    <input matInput formControlName="nome" required />
-  </mat-form-field>
+  <mat-tab-group [(selectedIndex)]="abaSelecionada" animationDuration="200ms">
 
-  <mat-form-field appearance="outline" class="full">
-    <mat-label>Email</mat-label>
-    <input matInput type="email" formControlName="email" required />
-  </mat-form-field>
+    <!-- ===================== DADOS PRINCIPAIS ===================== -->
+    <mat-tab label="Dados principais">
+      <div class="tab-content">
+        <div class="row">
 
-  <mat-form-field appearance="outline" class="full">
-    <mat-label>Telefone</mat-label>
-    <input
-        matInput
-        formControlName="telefone"
-        required
-        mask="(00) 00000-0000"
-        placeholder="(00) 00000-0000"
-    />
-  </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Nome completo</mat-label>
+            <input matInput formControlName="name" required />
+          </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full">
-    <mat-label>Data de nascimento</mat-label>
-    <input
-        matInput
-        [matDatepicker]="picker"
-        formControlName="dataNascimento"
-    />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Telefone</mat-label>
+            <input matInput formControlName="phone" required placeholder="(00) 00000-0000" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" required />
+          </mat-form-field>
+
+          <!-- NOVO: CPF (opcional, com máscara e só números no FormControl) -->
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>CPF (opcional)</mat-label>
+            <input
+              matInput
+              formControlName="document"
+              mask="000.000.000-00"
+              [dropSpecialCharacters]="true"
+              inputmode="numeric"
+              placeholder="000.000.000-00"
+              autocomplete="off"
+            />
+            <mat-hint>Somente números</mat-hint>
+            <mat-error *ngIf="form.get('document')?.hasError('pattern') && form.get('document')?.touched">
+              CPF deve ter 11 dígitos.
+            </mat-error>
+          </mat-form-field>
+
+
+          <!-- NOVO: Cidade (opcional) -->
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Cidade</mat-label>
+            <input matInput formControlName="city" placeholder="Ex.: Florianópolis" autocomplete="address-level2" />
+          </mat-form-field>
+
+          <!-- Data de nascimento -->
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Data de nascimento</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateBirthday"  />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <!-- ====== NOVO: Status (combobox) ====== -->
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" required>
+              <mat-option *ngFor="let s of statusOptions" [value]="s">{{ s }}</mat-option>
+            </mat-select>
+            <mat-hint>Selecione o estágio no funil</mat-hint>
+          </mat-form-field>
+
+          <!-- ====== NOVO: Loja (combobox) ====== -->
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Loja</mat-label>
+            <mat-select formControlName="shopId">
+              <mat-option *ngFor="let shop of lojasFiltradas" [value]="shop.id">
+                {{ shop.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- ====== NOVO: Veículo (combobox) ====== -->
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Veículo</mat-label>
+            <mat-select formControlName="vehicleId">
+              <mat-option [value]="null">Sem veículo</mat-option>
+              <mat-option *ngFor="let v of veiculosFiltrados" [value]="v.id">
+                {{ v.name }}
+              </mat-option>
+            </mat-select>
+            <mat-hint>Opcional: vincular um veículo</mat-hint>
+          </mat-form-field>
+
+          <!-- ====== NOVO: Observação ====== -->
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Observação</mat-label>
+            <textarea matInput formControlName="notes" rows="3" placeholder="Ex.: preferência, localização, horários..."></textarea>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- ===================== CONTATO & STATUS ===================== -->
+    <mat-tab label="Contato & Status">
+      <div class="tab-content">
+        <div class="row">
+          <!-- Removido: Status e Notas (agora na primeira aba) -->
+
+          <div class="half switch-line">
+            <mat-slide-toggle color="primary" formControlName="hasBeenContacted">
+              Já teve contato?
+            </mat-slide-toggle>
+          </div>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Primeiro contato</mat-label>
+            <input matInput [matDatepicker]="dp1" formControlName="contactDate" />
+            <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+            <mat-datepicker #dp1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Último contato</mat-label>
+            <input matInput [matDatepicker]="dp2" formControlName="lastContactDate" />
+            <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+            <mat-datepicker #dp2></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- ===================== AUDITORIA ===================== -->
+    <mat-tab label="Auditoria">
+      <div class="tab-content">
+        <div class="row">
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Criado por (ID)</mat-label>
+            <input matInput formControlName="createdById" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Criado por (Nome)</mat-label>
+            <input matInput formControlName="createdByName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Atualizado por (ID)</mat-label>
+            <input matInput formControlName="lastUpdatedById" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Atualizado por (Nome)</mat-label>
+            <input matInput formControlName="lastUpdatedByName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Criado em</mat-label>
+            <input matInput formControlName="createdAt" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half">
+            <mat-label>Atualizado em</mat-label>
+            <input matInput formControlName="updatedAt" />
+          </mat-form-field>
+        </div>
+        <mat-hint>Campos de auditoria são apenas para exibição.</mat-hint>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onSubmit()">Continuar</button>
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="salvar()">
+    {{ isEdicao ? 'Salvar alterações' : 'Criar Lead' }}
+  </button>
 </mat-dialog-actions>

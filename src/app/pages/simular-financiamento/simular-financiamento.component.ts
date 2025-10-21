@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { LeadModel } from 'src/app/models/lead.model';
 import { AlertService } from 'src/app/services/alert.service';
 import { LeadService } from 'src/app/services/lead.service';
 import { VeiculoService } from 'src/app/services/veiculo.service';
@@ -11,14 +12,14 @@ import { VeiculoService } from 'src/app/services/veiculo.service';
   templateUrl: './simular-financiamento.component.html',
   styleUrls: ['./simular-financiamento.component.scss']
 })
-
 export class SimularFinanciamentoComponent implements OnInit {
   form!: FormGroup;
   isLoading = false;
   simulacaoConfirmada = false;
-  @Input() valorVeiculoFixo: string = '85000';
 
+  @Input() valorVeiculoFixo: string = '85000';
   @Input() fotoVeiculoUrl: string = '';
+
   placa: string = '';
   leadData: any = null;
   leadCapturado: boolean = false;
@@ -31,7 +32,7 @@ export class SimularFinanciamentoComponent implements OnInit {
     private route: ActivatedRoute,
     private leadService: LeadService,
     private alert: AlertService,
-    private veiculoService: VeiculoService,
+    private veiculoService: VeiculoService
   ) {}
 
   ngOnInit(): void {
@@ -39,10 +40,7 @@ export class SimularFinanciamentoComponent implements OnInit {
     if (rotaFoto) {
       this.fotoVeiculoUrl = rotaFoto;
     }
-    /*const valorVeiculoFixo = this.route.snapshot.queryParamMap.get('valor');
-    if (valorVeiculoFixo) {
-      this.valorVeiculoFixo = rotaFoto || '85000';
-    }*/
+
     this.valorVeiculoFixo = '85000';
     this.vehicleId = this.route.snapshot.paramMap.get('vehicleId')!;
 
@@ -50,69 +48,85 @@ export class SimularFinanciamentoComponent implements OnInit {
       this.veiculoService.getVeiculoById(this.vehicleId).subscribe({
         next: (res: any) => {
           this.data = res;
-          this.valorVeiculoFixo = this.data.price;
-
-          this.form = this.fb.group({
-            valorVeiculo: [{ value: this.valorVeiculoFixo, disabled: true }],
-            valorEntrada: [null, [Validators.required, Validators.min(0)]],
-            quantidadeParcelas: [null, Validators.required],
-            taxaJuros: [1.5, [Validators.required, Validators.min(0)]], // em percentual
-            valorParcela: [{ value: '', disabled: true }],
-            nome: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
-            telefone: ['', Validators.required],
-            dataNascimento: [null]
-          });
+          this.valorVeiculoFixo = String(this.data?.price ?? '85000');
+          this.buildForm();
+          this.attachCalcListeners();
+          this.calcularParcela(); // garante cálculo após carregar veículo
         },
-        error: (err: any) => console.error('Erro ao carregar veículo:', err)
+        error: (err: any) => {
+          console.error('Erro ao carregar veículo:', err);
+          this.buildForm();
+          this.attachCalcListeners();
+          this.calcularParcela();
+        }
       });
     } else {
-      this.form = this.fb.group({
-        valorVeiculo: [{ value: this.valorVeiculoFixo, disabled: true }],
-        valorEntrada: [null, [Validators.required, Validators.min(0)]],
-        quantidadeParcelas: [null, Validators.required],
-        taxaJuros: [1.5, [Validators.required, Validators.min(0)]], // em percentual
-        valorParcela: [{ value: '', disabled: true }],
-        nome: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        telefone: ['', Validators.required],
-        dataNascimento: [null]
-      });
+      this.buildForm();
+      this.attachCalcListeners();
+      this.calcularParcela();
     }
+  }
 
-    // Observa mudanças e recalcula valor da parcela
+  /** Monta o form (sem listeners). */
+  private buildForm(): void {
+    this.form = this.fb.group({
+      // Valores e condições
+      valorVeiculo: [{ value: this.valorVeiculoFixo, disabled: true }],
+      // entrada opcional: vazio => 0
+      valorEntrada: [0, [Validators.min(0)]],
+      quantidadeParcelas: [36, Validators.required],
+      taxaJuros: [2, [Validators.required, Validators.min(0)]], // % ao mês
+      valorParcela: [{ value: '', disabled: true }],
+
+      // Dados pessoais
+      nome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      telefone: ['', Validators.required],
+      dataNascimento: [null],
+      cpf: [null],
+      cidade: [null]
+    });
+  }
+
+  /** Registra os listeners de cálculo e já calcula na montagem. */
+  private attachCalcListeners(): void {
     this.form.get('valorEntrada')?.valueChanges.subscribe(() => this.calcularParcela());
     this.form.get('quantidadeParcelas')?.valueChanges.subscribe(() => this.calcularParcela());
     this.form.get('taxaJuros')?.valueChanges.subscribe(() => this.calcularParcela());
   }
 
+  /** Cálculo da parcela pela Tabela Price (PMT). */
   calcularParcela(): void {
-    const valorVeiculo = this.valorVeiculoFixo;
-    const entrada = this.form.get('valorEntrada')?.value;
-    const parcelas = this.form.get('quantidadeParcelas')?.value;
-    const taxa = this.form.get('taxaJuros')?.value;
+    if (!this.form) return;
 
-    if (entrada >= 0 && parcelas && taxa >= 0) {
-      const montante = Number(valorVeiculo) - entrada;
-      const jurosDecimal = taxa / 100;
-      const valorFinal = montante * (1 + jurosDecimal * parcelas);
-      const valorParcela = valorFinal / parcelas;
+    const valorVeiculo = Number(this.valorVeiculoFixo) || 0;
+    const entrada = Number(this.form.get('valorEntrada')?.value ?? 0) || 0;
+    const parcelas = Number(this.form.get('quantidadeParcelas')?.value ?? 0) || 0;
+    const taxaPerc = this.form.get('taxaJuros')?.value;
+    const taxa = Number(taxaPerc ?? 0) / 100; // mensal
 
-      this.form.get('valorParcela')?.setValue(valorParcela.toFixed(2));
+    const principal = Math.max(valorVeiculo - entrada, 0);
+
+    // calcula assim que tiver o mínimo: principal >= 0, parcelas > 0, taxa >= 0
+    if (parcelas > 0 && taxa >= 0) {
+      const pmt =
+        taxa === 0
+          ? (principal > 0 ? principal / parcelas : 0)
+          : (principal * taxa * Math.pow(1 + taxa, parcelas)) /
+            (Math.pow(1 + taxa, parcelas) - 1);
+
+      this.form.get('valorParcela')?.setValue(pmt.toFixed(2), { emitEvent: false });
+    } else {
+      this.form.get('valorParcela')?.setValue('', { emitEvent: false });
     }
   }
 
   buscarEndereco(): void {
     const cep = this.form.get('cep')?.value?.replace(/\D/g, '');
-
     if (cep && cep.length === 8) {
       this.http.get(`https://viacep.com.br/ws/${cep}/json/`).subscribe({
         next: (res: any) => {
-          if (res.erro) {
-            console.warn('CEP não encontrado');
-            return;
-          }
-
+          if (res?.erro) return;
           this.form.patchValue({
             rua: res.logradouro,
             bairro: res.bairro,
@@ -120,56 +134,59 @@ export class SimularFinanciamentoComponent implements OnInit {
             estado: res.uf
           });
         },
-        error: () => {
-          console.error('Erro ao buscar endereço');
-        }
+        error: () => console.error('Erro ao buscar endereço')
       });
     }
   }
 
   async simular(): Promise<void> {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.isLoading = true;
 
-    // Mock de simulação com atraso
     setTimeout(async () => {
       this.simulacaoConfirmada = true;
       this.isLoading = false;
 
-      const formData = this.form.value;
+      const formData = this.form.getRawValue();
 
-      // Montar observações com dados da simulação
       const observacaoSimulacao = `
-        Valor Veículo: R$ ${formData.valorVeiculo?.value}
+        Valor Veículo: R$ ${formData.valorVeiculo}
         Entrada: R$ ${formData.valorEntrada}
         Parcelas: ${formData.quantidadeParcelas}x
         Juros: ${formData.taxaJuros}%
-        Parcela Estimada: R$ ${formData.valorParcela?.value}
+        Parcela Estimada: R$ ${formData.valorParcela}
       `.trim();
 
-      const novoLead = {
-        name: formData.nome,
-        email: formData.email,
-        phone: formData.telefone,
-        notes: observacaoSimulacao,
-        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // use seu shopId real
-        // vehicleId: this.placa ?? '', // se estiver usando placa como ID do veículo
-        birthDate: formData.dataNascimento,
+      const novoLead: LeadModel = {
+        name: (formData.nome ?? '').trim(),
+        email: (formData.email ?? '').trim(),
+        phone: (formData.telefone ?? '').trim(),
+        notes: observacaoSimulacao ?? '',
+        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // TODO: substituir pelo ID real da loja logada
+        vehicleId: this.placa || null,
+        status: 'New',
+        hasBeenContacted: false,
+        contactDate: new Date().toISOString(),
+        lastContactDate: null,
+        isActive: true,
+        city: formData.cidade ?? null,
+        comments: []
       };
 
       try {
         await this.leadService.criar(novoLead).toPromise();
         this.leadCapturado = true;
         this.leadData = novoLead;
-
         localStorage.setItem('leadData', JSON.stringify(novoLead));
         this.alert.showSuccess('Informações salvas com sucesso.');
       } catch (error) {
         this.alert.showError('Erro ao salvar o LEAD.');
       }
-
-    }, 1000);
+    }, 800);
   }
 
   imprimir(): void {
@@ -178,12 +195,13 @@ export class SimularFinanciamentoComponent implements OnInit {
 
   voltarInicio(): void {
     this.simulacaoConfirmada = false;
-
-    // Reset preservando valor do veículo e taxa default
-    this.form.reset();
-    this.form.patchValue({
+    this.form.reset({
       valorVeiculo: this.valorVeiculoFixo,
-      taxaJuros: 1.5
+      valorEntrada: 0,
+      quantidadeParcelas: 36,
+      taxaJuros: 2,
+      valorParcela: ''
     });
+    this.calcularParcela();
   }
 }

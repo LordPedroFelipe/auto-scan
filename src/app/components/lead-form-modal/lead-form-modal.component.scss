@@ -1,3 +1,100 @@
-.mdc-dialog__content>:first-child {
-    margin-top: 1rem;
+:host {
+  display: block;
+  max-width: 860px; /* mais largo que o padrão para caber 2 colunas confortáveis */
+}
+
+h2[mat-dialog-title] {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0;
+  padding-bottom: 4px;
+}
+
+mat-dialog-content {
+  padding-top: 8px;
+}
+
+.tab-content {
+  padding: 16px 4px 8px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .full {
+    flex: 1 1 100%;
+  }
+
+  .half {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 260px;
+  }
+
+  .third {
+    flex: 1 1 calc(33.333% - 11px);
+    min-width: 220px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .switch-line {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    min-height: 56px; /* altura do mat-form-field para alinhar */
+  }
+}
+
+mat-dialog-actions {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+
+button[mat-raised-button] {
+  min-width: 160px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  transition: transform .12s ease, box-shadow .12s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.18);
+  }
+}
+
+/* Foco/hover outline refinado */
+.mat-mdc-form-field:hover .mdc-notched-outline__leading,
+.mat-mdc-form-field:hover .mdc-notched-outline__trailing,
+.mat-mdc-form-field:hover .mdc-notched-outline__notch {
+  border-color: #ff9100 !important;
+}
+
+.mat-focused .mdc-notched-outline__leading,
+.mat-focused .mdc-notched-outline__trailing,
+.mat-focused .mdc-notched-outline__notch {
+  border-color: #ff6f00 !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  :host {
+    max-width: 100%;
+  }
+  .row .half, .row .third {
+    flex: 1 1 100%;
+  }
+  mat-dialog-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+
+    button {
+      width: 100%;
+    }
+  }
 }

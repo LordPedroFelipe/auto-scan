@@ -31,6 +31,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+
 // Módulos
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -70,10 +71,12 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { AgendamentoTestDriveComponent } from './pages/agendamento-test-drive/agendamento-test-drive.component';
 import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.component';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxApexchartsModule } from 'ngx-apexcharts';
 import { ContaComponent } from './components/configuracao/conta/conta.component';
+import { MonitoramentoComponent } from './components/configuracao/monitoramento/monitoramento.component';
 import { NotificacoesComponent } from './components/configuracao/notificacoes/notificacoes.component';
 import { PagamentoComponent } from './components/configuracao/pagamento/pagamento.component';
 import { PreferenciasComponent } from './components/configuracao/preferencias/preferencias.component';
@@ -83,13 +86,13 @@ import { QrCodeFormComponent } from './components/qr-code-form/qr-code-form.comp
 import { MY_DATE_FORMATS } from './custom-date-format';
 import { ConfiguracoesComponent } from './pages/configuracoes/configuracoes.component';
 import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component';
 import { RelatoriosComponent } from './pages/relatorios/relatorios.component';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
 import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
 import { PascalCasePipe } from './pipes/pascal-case.pipe';
-import { MonitoramentoComponent } from './components/configuracao/monitoramento/monitoramento.component';
-import { PerfilComponent } from './pages/perfil/perfil.component';
+
 
 
 @NgModule({
@@ -171,6 +174,7 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
     MatButtonToggleModule,
     MatMenuModule,
     MatRadioModule,
+    DragDropModule,
 
     // NGX-MASK
     NgxMaskDirective,

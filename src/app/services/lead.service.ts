@@ -19,7 +19,7 @@ export class LeadService {
   getLeads(): Observable<LeadModelResponse> {
     return this.http.get<LeadModelResponse>(this.apiUrl);
   }
-  
+
   listarPaginado(pageNumber: number = 1, pageSize: number = 10) {
     return this.http.get<any>(this.apiUrl, {
       params: {

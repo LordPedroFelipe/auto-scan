@@ -1,109 +1,157 @@
 <div class="container">
   <h2>Lista de Leads</h2>
 
-  <div class="actions">
-    <!--button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Lead</!--button-->
-    <button mat-stroked-button (click)="alternarModo()" class="btn-modo">
-      {{ modoVisualizacao === 'tabela' ? 'Ver em Cards' : 'Ver em Tabela' }}
-    </button>
-  </div>
+  <mat-tab-group [(selectedIndex)]="abaIndex">
+    <!-- ===================== ABA 1: LISTA (sua aba atual) ===================== -->
+    <mat-tab label="Lista">
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Lead</button>
+        <button mat-stroked-button (click)="alternarModo()" class="btn-modo">
+          {{ modoVisualizacao === 'tabela' ? 'Ver em Cards' : 'Ver em Tabela' }}
+        </button>
+      </div>
 
-  <app-loading [isLoading]="carregando" [text]="'Carregando Leads...'">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Filtros Avançados</mat-panel-title>
-          <mat-panel-description>(opcional)</mat-panel-description>
-        </mat-expansion-panel-header>
+      <app-loading [isLoading]="carregando" [text]="'Carregando Leads...'">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Filtros Avançados</mat-panel-title>
+              <mat-panel-description>(opcional)</mat-panel-description>
+            </mat-expansion-panel-header>
 
-        <form [formGroup]="filtroForm" (ngSubmit)="aplicarFiltros()">
-          <div class="filtros-grid">
-            <mat-form-field appearance="fill">
-              <mat-label>Nome</mat-label>
-              <input matInput formControlName="name" />
-            </mat-form-field>
+            <form [formGroup]="filtroForm" (ngSubmit)="aplicarFiltros()">
+              <div class="filtros-grid">
+                <mat-form-field appearance="fill">
+                  <mat-label>Nome</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
 
-            <mat-form-field appearance="fill">
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email" />
-            </mat-form-field>
+                <mat-form-field appearance="fill">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" />
+                </mat-form-field>
 
-            <mat-form-field appearance="fill">
-              <mat-label>Telefone</mat-label>
-              <input matInput formControlName="phone" />
-            </mat-form-field>
+                <mat-form-field appearance="fill">
+                  <mat-label>Telefone</mat-label>
+                  <input matInput formControlName="phone" />
+                </mat-form-field>
+              </div>
+
+              <div class="filtros-acoes">
+                <button mat-flat-button color="primary" type="submit">Aplicar Filtros</button>
+                <button mat-stroked-button type="button" (click)="limparFiltros()">Limpar</button>
+              </div>
+            </form>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- ===== CARDS ===== -->
+        <div *ngIf="modoVisualizacao === 'cards'" class="cards-container">
+          <mat-card class="card-lead" *ngFor="let lead of leads">
+            <mat-card-content>
+              <h3>{{ lead.name }}</h3>
+              <p><strong>Email:</strong> {{ lead.email }}</p>
+              <p><strong>Telefone:</strong> {{ lead.phone }}</p>
+              <p><strong>Status:</strong> {{ lead.status }}</p>
+              <p><strong>Observações:</strong> {{ lead.notes || '-' }}</p>
+              <p><strong>Loja:</strong> {{ lead.shopId }}</p>
+              <p><strong>Veículo:</strong> {{ lead.vehicleId }}</p>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+              <button mat-raised-button color="primary" (click)="abrirDetalhes(lead)">Detalhes</button>
+              <button mat-raised-button color="accent" (click)="editar(lead)">Editar</button>
+              <button mat-raised-button color="warn" (click)="excluir(lead.id)">Excluir</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <!-- ===== TABELA ===== -->
+        <div *ngIf="modoVisualizacao === 'tabela'" class="tabela-container">
+          <table mat-table [dataSource]="leads" class="mat-elevation-z8">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nome</th>
+              <td mat-cell *matCellDef="let lead">{{ lead.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let lead">{{ lead.email }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef>Telefone</th>
+              <td mat-cell *matCellDef="let lead">{{ lead.phone }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef>Ações</th>
+              <td mat-cell *matCellDef="let lead">
+                <button mat-icon-button color="primary" (click)="abrirDetalhes(lead)" matTooltip="Detalhes">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button color="accent" (click)="editar(lead)" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="excluir(lead.id)" matTooltip="Excluir">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+        <mat-paginator
+          [length]="totalCount"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[5, 10, 20]"
+          (page)="mudarPagina($event)">
+        </mat-paginator>
+      </app-loading>
+    </mat-tab>
+
+    <!-- ===================== ABA 2: KANBAN ===================== -->
+    <mat-tab label="Kanban por Status">
+      <div class="kanban-wrapper" *ngIf="!carregando">
+        <div
+          class="kanban-column"
+          *ngFor="let st of statuses"
+          cdkDropList
+          [cdkDropListData]="kanbanMap[st.key]"
+          (cdkDropListDropped)="onDrop($event, st.key)"
+        >
+          <div class="kanban-column-header">
+            <h3>{{ st.label }}</h3>
+            <span class="count">{{ kanbanMap[st.key]?.length || 0 }}</span>
           </div>
 
-          <div class="filtros-acoes">
-            <button mat-flat-button color="primary" type="submit">Aplicar Filtros</button>
-            <button mat-stroked-button type="button" (click)="limparFiltros()">Limpar</button>
+          <div class="kanban-list">
+            <div class="kanban-card" *ngFor="let lead of kanbanMap[st.key]" cdkDrag>
+              <div class="card-title">{{ lead.name }}</div>
+              <div class="card-line"><strong>Email:</strong> {{ lead.email }}</div>
+              <div class="card-line"><strong>Telefone:</strong> {{ lead.phone }}</div>
+              <div class="card-actions">
+                <button mat-icon-button color="primary" (click)="abrirDetalhes(lead)" matTooltip="Detalhes">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button color="accent" (click)="editar(lead)" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="excluir(lead.id)" matTooltip="Excluir">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
-        </form>
-      </mat-expansion-panel>
-    </mat-accordion>
+        </div>
 
-    <div *ngIf="modoVisualizacao === 'cards'" class="cards-container">
-      <mat-card class="card-lead" *ngFor="let lead of leads">
-        <mat-card-content>
-          <h3>{{ lead.name }}</h3>
-          <p><strong>Email:</strong> {{ lead.email }}</p>
-          <p><strong>Telefone:</strong> {{ lead.phone }}</p>
-          <p><strong>Observações:</strong> {{ lead.notes }}</p>
-          <p><strong>Loja:</strong> {{ lead.shopId }}</p>
-          <p><strong>Veículo:</strong> {{ lead.vehicleId }}</p>
-        </mat-card-content>
+      </div>
 
-        <mat-card-actions align="end">
-          <button mat-raised-button color="primary" (click)="abrirDetalhes(lead)">Detalhes</button>
-          <button mat-raised-button color="accent" (click)="abrirCadastro()">Editar</button>
-          <button mat-raised-button color="warn" (click)="excluir(lead.id)">Excluir</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-
-    <div *ngIf="modoVisualizacao === 'tabela'" class="tabela-container">
-      <table mat-table [dataSource]="leads" class="mat-elevation-z8">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Nome</th>
-          <td mat-cell *matCellDef="let lead">{{ lead.name }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef>Email</th>
-          <td mat-cell *matCellDef="let lead">{{ lead.email }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Telefone</th>
-          <td mat-cell *matCellDef="let lead">{{ lead.phone }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="acoes">
-          <th mat-header-cell *matHeaderCellDef>Ações</th>
-          <td mat-cell *matCellDef="let lead">
-            <button mat-icon-button color="primary" (click)="abrirDetalhes(lead)">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <!--button mat-icon-button color="accent" (click)="abrirCadastro()">
-              <mat-icon>edit</mat-icon>
-            </!--button-->
-            <button mat-icon-button color="warn" (click)="excluir(lead.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
-
-    <mat-paginator
-      [length]="totalCount"
-      [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      [pageSizeOptions]="[5, 10, 20]"
-      (page)="mudarPagina($event)">
-    </mat-paginator>
-  </app-loading>
+      <app-loading [isLoading]="carregando" [text]="'Carregando Leads...'"></app-loading>
+    </mat-tab>
+  </mat-tab-group>
 </div>

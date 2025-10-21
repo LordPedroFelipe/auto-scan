@@ -6,6 +6,7 @@ import { interval, Subscription, switchMap } from 'rxjs';
 import { ImagemModalComponent } from 'src/app/components/imagem-modal/imagem-modal.component';
 import { LeadFormModalComponent } from 'src/app/components/lead-form-modal/lead-form-modal.component';
 import { MicRecordingSnackComponent } from 'src/app/components/mic-recording-snack/mic-recording-snack.component';
+import { LeadModel } from 'src/app/models/lead.model';
 import { SendMessageRequest } from 'src/app/models/send-message.model';
 import { AlertService } from 'src/app/services/alert.service';
 import { ChatService } from 'src/app/services/chat.service';
@@ -139,13 +140,20 @@ export class ChatAtendimentoComponent implements OnInit {
         : null;
 
       // Aqui você prepara o objeto esperado pela API
-      const novoLead = {
-        name: result.nome,
-        email: result.email,
-        phone: result.telefone,
-        notes: (localizacao && `Localização: ${localizacao.latitude}, ${localizacao.longitude}, Cidade: ${cidade}`) || '',
-        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // se você tiver esse ID disponível no contexto
-        // vehicleId: this.placa ?? '' // se a placa for equivalente ao veículoId
+      const novoLead: LeadModel = {
+        name: (result.nome ?? '').trim(),
+        email: (result.email ?? '').trim(),
+        phone: (result.telefone ?? '').trim(),
+        notes: (result.observacoes ?? '').trim(),
+        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // TODO: substitua pelo ID real da loja logada
+        vehicleId: this.placa || null,                  // se a placa for o ID/ref do veículo
+        status: 'New',
+        hasBeenContacted: false,
+        contactDate: new Date().toISOString(),          // registra data do primeiro contato
+        lastContactDate: null,
+        isActive: true,
+        city: result.cidade ?? null,
+        comments: []
       };
 
       try {

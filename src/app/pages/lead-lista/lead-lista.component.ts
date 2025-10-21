@@ -1,12 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { LeadService } from 'src/app/services/lead.service';
-import { LeadModel } from 'src/app/models/lead.model';
+import { PageEvent } from '@angular/material/paginator';
 import { LeadDetalheModalComponent } from 'src/app/components/lead-detalhe-modal/lead-detalhe-modal.component';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { LeadFormModalComponent } from 'src/app/components/lead-form-modal/lead-form-modal.component';
+import { LeadModel } from 'src/app/models/lead.model';
+import { LeadService } from 'src/app/services/lead.service';
+
+// CDK drag-drop
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+
+type KanbanStatus = 'New' | 'InProgress' | 'Contacted' | 'Won' | 'Lost';
 
 @Component({
   selector: 'app-lead-lista',
@@ -14,6 +18,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./lead-lista.component.scss']
 })
 export class LeadListaComponent implements OnInit {
+  // ====== Estado geral/lista ======
   leads: LeadModel[] = [];
   carregando = false;
   filtroForm!: FormGroup;
@@ -23,6 +28,29 @@ export class LeadListaComponent implements OnInit {
   totalCount = 0;
   modoVisualizacao: 'cards' | 'tabela' = 'cards';
   displayedColumns: string[] = ['name', 'email', 'phone', 'acoes'];
+
+  // ====== Abas ======
+  // 0 -> Lista, 1 -> Kanban
+  abaIndex = 0;
+
+  // ====== Kanban ======
+  // Definições de colunas e rótulos
+  statuses: { key: KanbanStatus; label: string }[] = [
+    { key: 'New',         label: 'Novo' },
+    { key: 'InProgress',  label: 'Em andamento' },
+    { key: 'Contacted',   label: 'Contactado' },
+    { key: 'Won',         label: 'Convertido' },
+    { key: 'Lost',        label: 'Perdido' },
+  ];
+
+  // Mapa de colunas -> array de leads
+  kanbanMap: Record<KanbanStatus, LeadModel[]> = {
+    New: [],
+    InProgress: [],
+    Contacted: [],
+    Won: [],
+    Lost: [],
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +68,7 @@ export class LeadListaComponent implements OnInit {
     this.carregarLeads();
   }
 
+  // ====== Dados ======
   carregarLeads(pageIndex: number = 0): void {
     this.carregando = true;
 
@@ -51,14 +80,35 @@ export class LeadListaComponent implements OnInit {
 
     this.leadService.listarPaginadoComFiltro(params).subscribe({
       next: (res) => {
-        this.leads = res.items;
-        this.totalCount = res.totalCount;
+        this.leads = res.items ?? [];
+        this.totalCount = res.totalCount ?? this.leads.length;
+        this.rebuildKanbanFromLeads();
         this.carregando = false;
       },
-      error: () => (this.carregando = false)
+      error: () => {
+        this.carregando = false;
+      }
     });
   }
 
+  private rebuildKanbanFromLeads(): void {
+    // limpa colunas
+    (Object.keys(this.kanbanMap) as KanbanStatus[]).forEach(k => this.kanbanMap[k] = []);
+    // distribui
+    for (const l of this.leads) {
+      const k = (l.status as KanbanStatus) || 'New';
+      if (!this.kanbanMap[k]) this.kanbanMap[k] = [];
+      this.kanbanMap[k].push(l);
+    }
+  }
+
+  private syncLeadStatusInArray(leadId: string | undefined, newStatus: KanbanStatus) {
+    if (!leadId) return;
+    const idx = this.leads.findIndex(l => l.id === leadId);
+    if (idx >= 0) this.leads[idx] = { ...this.leads[idx], status: newStatus };
+  }
+
+  // ====== Filtros/Paginação ======
   mudarPagina(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -75,25 +125,24 @@ export class LeadListaComponent implements OnInit {
     this.aplicarFiltros();
   }
 
+  // ====== Ações ======
   abrirCadastro(): void {
-    /*const dialogRef = this.dialog.open(LeadFormModalComponent, {
+    const dialogRef = this.dialog.open(LeadFormModalComponent, {
       width: '500px'
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.carregarLeads();
-    });*/
+      if (result) this.carregarLeads(this.pageIndex);
+    });
   }
 
   editar(lead: LeadModel): void {
-    /*const dialogRef = this.dialog.open(LeadFormModalComponent, {
+    const dialogRef = this.dialog.open(LeadFormModalComponent, {
       data: lead,
       width: '500px'
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.carregarLeads();
-    });*/
+      if (result) this.carregarLeads(this.pageIndex);
+    });
   }
 
   abrirDetalhes(lead: LeadModel): void {
@@ -104,16 +153,48 @@ export class LeadListaComponent implements OnInit {
   }
 
   excluir(id: string | undefined): void {
+    if (!id) return;
     if (confirm('Deseja realmente excluir este lead?')) {
-      this.leadService.excluir(id).subscribe(() => this.carregarLeads());
+      this.leadService.excluir(id).subscribe(() => this.carregarLeads(this.pageIndex));
     }
   }
 
   alternarModo() {
-    if (this.modoVisualizacao == 'cards') {
-      this.modoVisualizacao = 'tabela';
-    } else {
-      this.modoVisualizacao = 'cards';      
+    this.modoVisualizacao = this.modoVisualizacao === 'cards' ? 'tabela' : 'cards';
+  }
+
+  // ====== Kanban: Drag & Drop ======
+  onDrop(event: CdkDragDrop<LeadModel[]>, novoStatus: KanbanStatus) {
+    // mesmo container -> apenas reordenar
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      return;
     }
+
+    // containers diferentes -> transferir
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    // item movido
+    const moved = event.container.data[event.currentIndex];
+    if (moved) {
+      const id = moved.id;
+      // atualiza status local (kanbanMap)+array base
+      moved.status = novoStatus;
+      this.syncLeadStatusInArray(id, novoStatus);
+
+      // persiste no servidor
+      this.atualizarStatusNoServidor(id, novoStatus);
+    }
+  }
+
+  private atualizarStatusNoServidor(id: string | undefined, status: KanbanStatus) {
+    if (!id) return;
+    // Ajuste conforme sua API: se houver atualizarStatus, use-a.
+    // Aqui uso um update parcial genérico:
   }
 }

@@ -1,15 +1,15 @@
 <div class="agendamento-container">
   <div class="car-highlight-banner">
-        <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
-
-        <div class="highlight-overlay">
-            <div class="highlight-details">
-                <h2 class="car-version">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
-                <div class="car-price">R$ {{ data.price | number: '1.0-0' }}</div>
-                <div class="car-location">{{ data.shopName }} - {{ data.city }}/{{ data.state }}</div>
-            </div>
-        </div>
+    <img [src]="data?.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
+    <div class="highlight-overlay">
+      <div class="highlight-details">
+        <h2 class="car-version">{{ data?.brand }} {{ data?.model }} {{ data?.version }}</h2>
+        <div class="car-price">R$ {{ data?.price | number: '1.0-0' }}</div>
+        <div class="car-location">{{ data?.shopName }} - {{ data?.city }}/{{ data?.state }}</div>
+      </div>
     </div>
+  </div>
+
   <mat-card *ngIf="!simulacaoConfirmada" class="agendamento-card">
     <mat-card-header>
       <mat-card-title>Simule seu Financiamento</mat-card-title>
@@ -71,7 +71,7 @@
               <input matInput type="email" formControlName="email" required />
             </mat-form-field>
 
-            <!-- Telefone -->
+            <!-- Telefone (usa ngx-mask no seu projeto) -->
             <mat-form-field appearance="fill" class="campo">
               <mat-label>Telefone</mat-label>
               <input
@@ -83,68 +83,38 @@
               />
             </mat-form-field>
 
+            <!-- NOVO: CPF (opcional, com máscara e só números no FormControl) -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>CPF (opcional)</mat-label>
+              <input
+                matInput
+                formControlName="cpf"
+                mask="000.000.000-00"
+                [dropSpecialCharacters]="true"
+                inputmode="numeric"
+                placeholder="000.000.000-00"
+                autocomplete="off"
+              />
+              <mat-hint>Somente números</mat-hint>
+              <mat-error *ngIf="form.get('cpf')?.hasError('pattern') && form.get('cpf')?.touched">
+                CPF deve ter 11 dígitos.
+              </mat-error>
+            </mat-form-field>
+
+            <!-- NOVO: Cidade (opcional) -->
+            <mat-form-field appearance="fill" class="campo">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="cidade" placeholder="Ex.: Florianópolis" autocomplete="address-level2" />
+            </mat-form-field>
+
             <!-- Data de nascimento -->
             <mat-form-field appearance="fill" class="campo">
               <mat-label>Data de nascimento</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                formControlName="dataNascimento"
-                required
-              />
+              <input matInput [matDatepicker]="picker" formControlName="dataNascimento" required />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-
           </mat-tab>
-
-          <!-- ABA 2: DADOS DO CLIENTE -->
-          <!--mat-tab label="Dados do Cliente">
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>Nome completo</mat-label>
-              <input matInput formControlName="nomeCompleto" required />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>CPF</mat-label>
-              <input matInput formControlName="cpf" required />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>Telefone</mat-label>
-              <input matInput formControlName="telefone" required />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>CEP</mat-label>
-              <input matInput formControlName="cep" (blur)="buscarEndereco()" required />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>Rua</mat-label>
-              <input matInput formControlName="rua" />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>Número</mat-label>
-              <input matInput formControlName="numero" />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>Bairro</mat-label>
-              <input matInput formControlName="bairro" />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>Cidade</mat-label>
-              <input matInput formControlName="cidade" />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="campo">
-              <mat-label>Estado</mat-label>
-              <input matInput formControlName="estado" />
-            </mat-form-field>
-          </!--mat-tab-->
         </mat-tab-group>
 
         <div class="botoes">
@@ -160,16 +130,18 @@
   <mat-card *ngIf="simulacaoConfirmada" class="agendamento-confirmado">
     <mat-card-header>
       <mat-card-title>Simulação Realizada</mat-card-title>
-      <mat-card-subtitle>{{ form.value.nomeCompleto }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ form.get('nome')?.value }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <p><strong>Veículo:</strong> {{ form.value.valorVeiculo | currency:'BRL' }}</p>
-      <p><strong>Entrada:</strong> {{ form.value.valorEntrada | currency:'BRL' }}</p>
-      <p><strong>Parcelas:</strong> {{ form.value.quantidadeParcelas }}x</p>
-      <p><strong>Taxa de Juros:</strong> {{ form.value.taxaJuros }}% ao mês</p>
-      <p><strong>Valor estimado da parcela:</strong> {{ form.value.valorParcela | currency:'BRL' }}</p>
-      <p><strong>Telefone:</strong> {{ form.value.telefone }}</p>
+      <p><strong>Veículo:</strong> {{ form.get('valorVeiculo')?.value | currency:'BRL' }}</p>
+      <p><strong>Entrada:</strong> {{ form.get('valorEntrada')?.value | currency:'BRL' }}</p>
+      <p><strong>Parcelas:</strong> {{ form.get('quantidadeParcelas')?.value }}x</p>
+      <p><strong>Taxa de Juros:</strong> {{ form.get('taxaJuros')?.value }}% ao mês</p>
+      <p><strong>Valor estimado da parcela:</strong> {{ form.get('valorParcela')?.value | currency:'BRL' }}</p>
+      <p><strong>Telefone:</strong> {{ form.get('telefone')?.value }}</p>
+      <p><strong>CPF:</strong> {{ form.get('cpf')?.value }}</p>
+      <p><strong>Cidade:</strong> {{ form.get('cidade')?.value }}</p>
     </mat-card-content>
 
     <mat-card-actions class="acoes">
