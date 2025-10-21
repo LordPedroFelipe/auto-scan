@@ -43,13 +43,15 @@ export class SimularFinanciamentoComponent implements OnInit {
 
     this.valorVeiculoFixo = '85000';
     this.vehicleId = this.route.snapshot.paramMap.get('vehicleId')!;
+          this.buildForm();
 
     if (this.vehicleId) {
       this.veiculoService.getVeiculoById(this.vehicleId).subscribe({
         next: (res: any) => {
           this.data = res;
           this.valorVeiculoFixo = String(this.data?.price ?? '85000');
-          this.buildForm();
+          const preco = this.normalizePreco(this.valorVeiculoFixo);
+          this.form.patchValue({ valorVeiculo: preco });
           this.attachCalcListeners();
           this.calcularParcela(); // garante cálculo após carregar veículo
         },
@@ -69,9 +71,10 @@ export class SimularFinanciamentoComponent implements OnInit {
 
   /** Monta o form (sem listeners). */
   private buildForm(): void {
+    console.log('Valor do veículo fixo:', this.valorVeiculoFixo);
     this.form = this.fb.group({
       // Valores e condições
-      valorVeiculo: [{ value: this.valorVeiculoFixo, disabled: true }],
+      valorVeiculo: [null, Validators.required],
       // entrada opcional: vazio => 0
       valorEntrada: [0, [Validators.min(0)]],
       quantidadeParcelas: [36, Validators.required],
@@ -90,6 +93,7 @@ export class SimularFinanciamentoComponent implements OnInit {
 
   /** Registra os listeners de cálculo e já calcula na montagem. */
   private attachCalcListeners(): void {
+    this.form.get('valorVeiculo')?.valueChanges.subscribe(() => this.calcularParcela());
     this.form.get('valorEntrada')?.valueChanges.subscribe(() => this.calcularParcela());
     this.form.get('quantidadeParcelas')?.valueChanges.subscribe(() => this.calcularParcela());
     this.form.get('taxaJuros')?.valueChanges.subscribe(() => this.calcularParcela());
@@ -99,7 +103,7 @@ export class SimularFinanciamentoComponent implements OnInit {
   calcularParcela(): void {
     if (!this.form) return;
 
-    const valorVeiculo = Number(this.valorVeiculoFixo) || 0;
+    const valorVeiculo = Number(this.form.get('valorVeiculo')?.value) || 0;
     const entrada = Number(this.form.get('valorEntrada')?.value ?? 0) || 0;
     const parcelas = Number(this.form.get('quantidadeParcelas')?.value ?? 0) || 0;
     const taxaPerc = this.form.get('taxaJuros')?.value;
@@ -203,5 +207,20 @@ export class SimularFinanciamentoComponent implements OnInit {
       valorParcela: ''
     });
     this.calcularParcela();
+  }
+
+  private normalizePreco(v: string | number | null | undefined): number {
+    if (v == null) return 0;
+    if (typeof v === 'number') return v;
+
+    // remove símbolos, espaços e converte pt-BR -> ponto decimal
+    const clean = v
+      .toString()
+      .replace(/[^\d.,-]/g, '')   // mantém dígitos, vírgula, ponto e sinal
+      .replace(/\./g, '')         // tira milhares
+      .replace(',', '.');         // vírgula -> ponto
+
+    const n = Number(clean);
+    return Number.isFinite(n) ? n : 0;
   }
 }
