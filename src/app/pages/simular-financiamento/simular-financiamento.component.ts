@@ -25,6 +25,8 @@ export class SimularFinanciamentoComponent implements OnInit {
   leadCapturado: boolean = false;
   vehicleId!: string;
   data?: any;
+  shopId: string | null = null;
+  shopName: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -50,6 +52,8 @@ export class SimularFinanciamentoComponent implements OnInit {
         next: (res: any) => {
           this.data = res;
           this.valorVeiculoFixo = String(this.data?.price ?? '85000');
+          this.shopId = this.data.shopId;
+          this.shopName = this.data.shopName;
           const preco = this.normalizePreco(this.valorVeiculoFixo);
           this.form.patchValue({ valorVeiculo: preco });
           this.attachCalcListeners();
@@ -163,6 +167,7 @@ export class SimularFinanciamentoComponent implements OnInit {
         Parcelas: ${formData.quantidadeParcelas}x
         Juros: ${formData.taxaJuros}%
         Parcela Estimada: R$ ${formData.valorParcela}
+        Nome da Loja: ${this.shopName}
       `.trim();
 
       const novoLead: LeadModel = {
@@ -170,7 +175,7 @@ export class SimularFinanciamentoComponent implements OnInit {
         email: (formData.email ?? '').trim(),
         phone: (formData.telefone ?? '').trim(),
         notes: observacaoSimulacao ?? '',
-        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // TODO: substituir pelo ID real da loja logada
+        shopId: this.shopId,
         vehicleId: this.placa || null,
         status: 'New',
         hasBeenContacted: false,

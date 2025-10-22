@@ -1,137 +1,187 @@
-  <h2 mat-dialog-title>{{ data ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
+<h2 mat-dialog-title>{{ data ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
 
-  <mat-tab-group>
-    <!-- Aba 1: Dados Pessoais -->
-    <mat-tab label="Dados Pessoais">
-      <form [formGroup]="form" (ngSubmit)="salvar()" class="form-container">
+<mat-tab-group>
+  <!-- ===================== Aba 1: Dados Pessoais ===================== -->
+  <mat-tab label="Dados Pessoais">
+    <form [formGroup]="form" (ngSubmit)="salvar()" class="form-container">
+      <!-- Campos editáveis -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="userName" required>
+        <mat-error *ngIf="form.get('userName')?.hasError('required')">
+          Nome é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required>
+        <mat-error *ngIf="form.get('email')?.hasError('required')">Email é obrigatório</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Telefone</mat-label>
+        <input matInput formControlName="phoneNumber">
+      </mat-form-field>
+
+      <!-- Só no modo criação exibe Senha -->
+      <ng-container *ngIf="!data">
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Nome</mat-label>
-          <input matInput formControlName="userName" required>
-          <mat-error *ngIf="form.get('userName')?.hasError('required')">
-            Nome é obrigatório
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            A senha deve ter no mínimo 6 caracteres
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" required>
-          <mat-error *ngIf="form.get('email')?.hasError('required')">Email é obrigatório</mat-error>
-          <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
+          <mat-label>Confirmar Senha</mat-label>
+          <input matInput type="password" formControlName="confirmPassword">
+          <mat-error *ngIf="form.hasError('passwordMismatch')">
+            As senhas não coincidem
+          </mat-error>
+        </mat-form-field>
+      </ng-container>
+
+      <!-- Campos somente leitura quando EDITAR (mostra o que não é exibido hoje) -->
+      <div class="readonly-grid" *ngIf="data">
+        <mat-form-field appearance="fill">
+          <mat-label>ID</mat-label>
+          <input matInput [value]="data?.id" disabled>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Telefone</mat-label>
-          <input matInput formControlName="phoneNumber">
+        <!--mat-form-field appearance="fill">
+          <mat-label>Criado em</mat-label>
+          <input matInput [value]="data?.createdAt | date:'short'" disabled>
+        </!--mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Último acesso</mat-label>
+          <input matInput [value]="data?.lastLoginAt | date:'short'" disabled>
+        </!--mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Email confirmado</mat-label>
+          <input matInput [value]="data?.emailConfirmed ? 'Sim' : 'Não'" disabled>
         </mat-form-field>
 
-        <ng-container *ngIf="!data">
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Senha</mat-label>
-            <input matInput type="password" formControlName="password">
-            <mat-error *ngIf="form.get('password')?.hasError('minlength')">
-              A senha deve ter no mínimo 6 caracteres
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Lockout</mat-label>
+          <input matInput [value]="data?.lockoutEnabled ? 'Habilitado' : 'Desabilitado'" disabled>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Confirmar Senha</mat-label>
-            <input matInput type="password" formControlName="confirmPassword">
-            <mat-error *ngIf="form.hasError('passwordMismatch')">
-              As senhas não coincidem
-            </mat-error>
-          </mat-form-field>
-        </ng-container>
-      </form>
-    </mat-tab>
+        <mat-form-field-- appearance="fill">
+          <mat-label>Tentativas falhas</mat-label>
+          <input matInput [value]="data?.accessFailedCount ?? 0" disabled>
+        </mat-form-field-->
+      </div>
+    </form>
+  </mat-tab>
 
-    <!-- Aba 2: Papéis e Módulos -->
-    <mat-tab label="Papéis">
-      <div class="permissoes-container">
+  <!-- ===================== Aba 2: Papéis ===================== -->
+  <mat-tab label="Papéis">
+    <div class="permissoes-container">
+      <div class="row-inline">
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Papel (Role)</mat-label>
-          <mat-select [(value)]="papelSelecionado">
+          <!-- papeis: {id, description} -->
+          <mat-select [(ngModel)]="papelSelecionadoId" name="papelSelecionadoId">
             <mat-option *ngFor="let papel of papeis" [value]="papel">
               {{ papel }}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <button mat-flat-button color="primary" (click)="adicionarPapel()">
+        <button mat-flat-button color="primary" (click)="adicionarPapel()" [disabled]="!papelSelecionadoId || !userId">
+          <mat-icon *ngIf="isSavingRole" class="spin">autorenew</mat-icon>
           Adicionar Papel
         </button>
-
-        <ng-container *ngIf="isLoadingClaims">
-          <mat-spinner diameter="30"></mat-spinner>
-        </ng-container>
-
-        <ng-container *ngIf="!isLoadingClaims && userPermissions.length > 0">
-          <mat-card class="card-qrcode" *ngFor="let permission of userPermissions">
-            <mat-card-content>
-              <h3><strong>{{ permission }}</strong></h3>
-            </mat-card-content>
-            <!--mat-card-actions align="end">
-              <button mat-raised-button color="primary" target="_blank">
-                Acessar Link
-              </button>
-            </!--mat-card-actions-->
-          </mat-card>
-        </ng-container>
-
-        <ng-container *ngIf="!isLoadingClaims && userPermissions.length === 0">
-          <p>Nenhum Papel atribuído a este usuário.</p>
-        </ng-container>
       </div>
-    </mat-tab>
 
-    <!-- Aba 3: Permissões do Usuário -->
-    <mat-tab label="Módulos e Permissões">
-      <div class="permissoes-container">
+      <!-- Roles atuais do usuário -->
+      <section class="chips-wrap" *ngIf="userRoles?.length">
+        <h3 class="section-title">Papéis do usuário</h3>
+        <mat-chip-set>
+          <mat-chip *ngFor="let r of userRoles" [removable]="true" (removed)="removerPapel(r)">
+            {{ r.description || r.name || r }}
+            <button matChipRemove aria-label="Remover papel">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-chip>
+        </mat-chip-set>
+      </section>
+
+      <!-- Permissões herdadas por Papéis (se sua API expõe) -->
+      <ng-container *ngIf="isLoadingPermissionsByRole">
+        <mat-spinner diameter="30"></mat-spinner>
+      </ng-container>
+
+      <ng-container *ngIf="!isLoadingPermissionsByRole">
+      <!--mat-card class="card-qrcode" *ngFor="let permission of userPermissions">
+          <mat-card-content>
+            <h3><strong>{{ permission }}</strong></h3>
+          </mat-card-content>
+        </-mat-card-->
+
+        <p *ngIf="userPermissions.length === 0" class="muted">Nenhuma permissão herdada por papel.</p>
+      </ng-container>
+    </div>
+  </mat-tab>
+
+  <!-- ===================== Aba 3: Módulos e Permissões ===================== -->
+  <mat-tab label="Módulos e Permissões">
+    <div class="permissoes-container">
+      <div class="row-inline">
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Módulo</mat-label>
-          <mat-select [(value)]="moduloSelecionado" (selectionChange)="filtrarPermissoesPorModulo()">
+          <mat-select [(ngModel)]="moduloSelecionado" name="moduloSelecionado" (selectionChange)="filtrarPermissoesPorModulo()">
             <mat-option *ngFor="let modulo of modulos" [value]="modulo">{{ modulo }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Permissão</mat-label>
-          <mat-select [(value)]="permissaoSelecionada">
+          <mat-select [(ngModel)]="permissaoSelecionada" name="permissaoSelecionada">
             <mat-option *ngFor="let perm of permissoesFiltradas" [value]="perm">
               {{ perm }}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <button mat-flat-button color="primary" (click)="adicionarClaim()">
+        <button mat-flat-button color="primary" (click)="adicionarClaim()" [disabled]="!userId || !permissaoSelecionada || isSavingClaim">
+          <mat-icon *ngIf="isSavingClaim" class="spin">autorenew</mat-icon>
           Adicionar Permissão
         </button>
-
-        <ng-container *ngIf="isLoadingClaims">
-          <mat-spinner diameter="30"></mat-spinner>
-        </ng-container>
-
-        <ng-container *ngIf="!isLoadingClaims && userClaims.length > 0">
-          <mat-card class="card-qrcode" *ngFor="let claim of userClaims">
-            <mat-card-content>
-              <p><strong> {{ claim }}</strong></p>
-            </mat-card-content>
-            <!--mat-card-actions align="end">
-              <button mat-raised-button color="primary" target="_blank">
-                Acessar Link
-              </button>
-            </mat-card-actions-->
-          </mat-card>
-        </ng-container>
-
-        <ng-container *ngIf="!isLoadingClaims && userClaims.length === 0">
-          <p>Nenhuma permissão atribuída a este usuário.</p>
-        </ng-container>
       </div>
-    </mat-tab>
-  </mat-tab-group>
 
-  <!-- Botões -->
-  <div mat-dialog-actions align="end">
-    <button mat-button (click)="fechar()">Cancelar</button>
-    <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">Salvar</button>
-  </div>
+      <!-- Claims atuais (diretas) -->
+      <ng-container *ngIf="isLoadingClaims">
+        <mat-spinner diameter="30"></mat-spinner>
+      </ng-container>
+
+      <section class="chips-wrap" *ngIf="!isLoadingClaims">
+        <h3 class="section-title">Permissões do usuário</h3>
+        <mat-chip-set>
+          <mat-chip *ngFor="let claim of userClaims" [removable]="true" (removed)="removerClaim(claim)">
+            {{ claim }}
+            <button matChipRemove aria-label="Remover permissão">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-chip>
+        </mat-chip-set>
+
+        <p *ngIf="userClaims.length === 0" class="muted">Nenhuma permissão direta atribuída.</p>
+      </section>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+<!-- Botões -->
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="salvar()">
+    <mat-icon *ngIf="isSavingUser" class="spin">autorenew</mat-icon>
+    Salvar
+  </button>
+</div>

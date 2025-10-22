@@ -74,6 +74,7 @@ import { TestDriveListComponent } from './pages/test-drive-list/test-drive-list.
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxApexchartsModule } from 'ngx-apexcharts';
 import { ContaComponent } from './components/configuracao/conta/conta.component';
 import { MonitoramentoComponent } from './components/configuracao/monitoramento/monitoramento.component';
@@ -84,6 +85,7 @@ import { SegurancaComponent } from './components/configuracao/seguranca/seguranc
 import { GraficoPalavrasComponent } from './components/grafico-palavras/grafico-palavras.component';
 import { QrCodeFormComponent } from './components/qr-code-form/qr-code-form.component';
 import { MY_DATE_FORMATS } from './custom-date-format';
+import { ShopIdInterceptor } from './interceptors/shop-id.interceptor';
 import { ConfiguracoesComponent } from './pages/configuracoes/configuracoes.component';
 import { LojaDetalhesComponent } from './pages/loja-detalhes/loja-detalhes.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
@@ -174,6 +176,7 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
     MatButtonToggleModule,
     MatMenuModule,
     MatRadioModule,
+    MatTooltipModule,
     DragDropModule,
 
     // NGX-MASK
@@ -192,6 +195,11 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ShopIdInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
   exports: [PascalCasePipe]

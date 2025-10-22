@@ -9,6 +9,7 @@ import { MicRecordingSnackComponent } from 'src/app/components/mic-recording-sna
 import { LeadModel } from 'src/app/models/lead.model';
 import { SendMessageRequest } from 'src/app/models/send-message.model';
 import { AlertService } from 'src/app/services/alert.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { IaChatService } from 'src/app/services/ia-chat.service';
 import { LeadService } from 'src/app/services/lead.service';
@@ -98,6 +99,7 @@ export class ChatAtendimentoComponent implements OnInit {
     private leadService: LeadService,
     private localizacaoService: LocationService,
     private veiculoService: VeiculoService,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -145,7 +147,7 @@ export class ChatAtendimentoComponent implements OnInit {
         email: (result.email ?? '').trim(),
         phone: (result.telefone ?? '').trim(),
         notes: (result.observacoes ?? '').trim(),
-        shopId: '1ae44908-6f2e-49f9-a3e8-34be6f882084', // TODO: substitua pelo ID real da loja logada
+        shopId: this.authService.getShopId(),
         vehicleId: this.placa || null,                  // se a placa for o ID/ref do veículo
         status: 'New',
         hasBeenContacted: false,

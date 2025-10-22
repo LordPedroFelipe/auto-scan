@@ -1,118 +1,359 @@
 <div class="container">
-    <h2>Estoque da Loja</h2>
+  <h2>Estoque</h2>
 
-    <div class="actions">
-        <button
-            mat-flat-button color="primary"
-            (click)="abrirCadastro()"
-            disabled="true">
-                Cadastrar Veículo
-            </button>
-    </div>
+  <div class="actions">
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="abrirCadastro()"
+      [disabled]="true">
+      Cadastrar Veículo
+    </button>
+  </div>
 
-    <app-loading [isLoading]="carregando" [text]="'Carregando...'">
-        <mat-accordion>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                <mat-panel-title>
-                    Filtros Avançados
-                </mat-panel-title>
-                <mat-panel-description>
-                    (opcional)
-                </mat-panel-description>
-                </mat-expansion-panel-header>
+  <app-loading [isLoading]="carregando" [text]="'Carregando...'">
+    <!-- =================== FILTROS =================== -->
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Filtros</mat-panel-title>
+        </mat-expansion-panel-header>
 
-                <form [formGroup]="filtroForm" (ngSubmit)="aplicarFiltros()">
-                <div class="filtros-grid">
+        <form [formGroup]="filtroForm" (ngSubmit)="aplicarFiltros()">
+          <div class="filtros-grid">
+            <!-- Se NÃO tiver shopId global, exibe o filtro de loja -->
+            <mat-form-field appearance="fill" *ngIf="!hasShopId">
+              <mat-label>Loja</mat-label>
+              <mat-select formControlName="shopId">
+                <mat-option [value]="''">Todas</mat-option>
+                <mat-option *ngFor="let s of shops$ | async" [value]="s.id">
+                  {{ s.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                    <mat-label>Marca</mat-label>
-                    <input matInput formControlName="brand" />
-                    </mat-form-field>
+            <mat-form-field appearance="fill" class="busca-livre">
+              <mat-label>Buscar (marca, modelo, versão, placa...)</mat-label>
+              <input matInput formControlName="q" />
+              <button *ngIf="filtroForm.value.q" matSuffix mat-icon-button aria-label="Limpar" (click)="filtroForm.patchValue({q:''})">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                    <mat-label>Modelo</mat-label>
-                    <input matInput formControlName="model" />
-                    </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Marca</mat-label>
+              <input matInput formControlName="brand" />
+            </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                    <mat-label>Ano</mat-label>
-                    <input matInput type="number" formControlName="year" />
-                    </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Modelo</mat-label>
+              <input matInput formControlName="model" />
+            </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                    <mat-label>Cor</mat-label>
-                    <input matInput formControlName="color" />
-                    </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Versão</mat-label>
+              <input matInput formControlName="version" />
+            </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                    <mat-label>Câmbio</mat-label>
-                    <mat-select formControlName="transmission">
-                        <mat-option value="">Todos</mat-option>
-                        <mat-option value="Automático">Automático</mat-option>
-                        <mat-option value="Manual">Manual</mat-option>
-                    </mat-select>
-                    </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Câmbio</mat-label>
+              <mat-select formControlName="transmission">
+                <mat-option value="">Todos</mat-option>
+                <mat-option value="Automático">Automático</mat-option>
+                <mat-option value="Manual">Manual</mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                    <mat-label>Combustível</mat-label>
-                    <mat-select formControlName="fuelType">
-                        <mat-option value="">Todos</mat-option>
-                        <mat-option value="Gasolina">Gasolina</mat-option>
-                        <mat-option value="Flex">Flex</mat-option>
-                        <mat-option value="Diesel">Diesel</mat-option>
-                        <mat-option value="Elétrico">Elétrico</mat-option>
-                    </mat-select>
-                    </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Combustível</mat-label>
+              <mat-select formControlName="fuelType">
+                <mat-option value="">Todos</mat-option>
+                <mat-option value="Gasolina">Gasolina</mat-option>
+                <mat-option value="Flex">Flex</mat-option>
+                <mat-option value="Diesel">Diesel</mat-option>
+                <mat-option value="Elétrico">Elétrico</mat-option>
+                <mat-option value="Híbrido">Híbrido</mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                    <mat-checkbox formControlName="hasAuction">Leilão</mat-checkbox>
-                    <mat-checkbox formControlName="hasAccident">Sinistro</mat-checkbox>
-                    <mat-checkbox formControlName="isFirstOwner">1º dono</mat-checkbox>
-                    <mat-checkbox formControlName="isOnOffer">Em oferta</mat-checkbox>
+            <mat-form-field appearance="fill">
+              <mat-label>Condição</mat-label>
+              <mat-select formControlName="condition">
+                <mat-option value="">Todas</mat-option>
+                <mat-option value="Novo">Novo</mat-option>
+                <mat-option value="Usado">Usado</mat-option>
+                <mat-option value="Seminovo">Seminovo</mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                </div>
+            <mat-form-field appearance="fill">
+              <mat-label>Categoria</mat-label>
+              <mat-select formControlName="categoryType">
+                <mat-option value="">Todas</mat-option>
+                <mat-option value="Hatch">Hatch</mat-option>
+                <mat-option value="Sedan">Sedan</mat-option>
+                <mat-option value="SUV">SUV</mat-option>
+                <mat-option value="Picape">Picape</mat-option>
+                <mat-option value="Utilitário">Utilitário</mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                <div class="filtros-acoes">
-                    <button mat-flat-button color="primary" type="submit">Aplicar Filtros</button>
-                    <button mat-stroked-button type="button" (click)="limparFiltros()">Limpar</button>
-                </div>
-                </form>
-            </mat-expansion-panel>
-        </mat-accordion>
+            <mat-form-field appearance="fill">
+              <mat-label>Cor</mat-label>
+              <input matInput formControlName="color" />
+            </mat-form-field>
 
+            <mat-form-field appearance="fill">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="city" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>UF</mat-label>
+              <input matInput maxlength="2" formControlName="state" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Ano mín.</mat-label>
+              <input type="number" matInput formControlName="minYear" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Ano máx.</mat-label>
+              <input type="number" matInput formControlName="maxYear" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>KM mín.</mat-label>
+              <input type="number" matInput formControlName="minMileage" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>KM máx.</mat-label>
+              <input type="number" matInput formControlName="maxMileage" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Preço mín.</mat-label>
+              <input type="number" matInput formControlName="minPrice" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Preço máx.</mat-label>
+              <input type="number" matInput formControlName="maxPrice" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Mín. de donos</mat-label>
+              <input type="number" matInput formControlName="ownersCountMin" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Máx. de donos</mat-label>
+              <input type="number" matInput formControlName="ownersCountMax" />
+            </mat-form-field>
+
+            <mat-checkbox formControlName="hasAuction">Leilão</mat-checkbox>
+            <mat-checkbox formControlName="hasAccident">Sinistro</mat-checkbox>
+            <mat-checkbox formControlName="isFirstOwner">1º dono</mat-checkbox>
+            <mat-checkbox formControlName="isOnOffer">Em oferta</mat-checkbox>
+            <mat-checkbox formControlName="isHighlighted">Destaque</mat-checkbox>
+            <mat-checkbox formControlName="isSold">Vendido</mat-checkbox>
+          </div>
+
+          <div class="filtros-acoes">
+            <button mat-flat-button color="primary" type="submit">Aplicar</button>
+            <button mat-stroked-button type="button" (click)="limparFiltros()">Limpar</button>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <!-- =================== ABAS DE VISUALIZAÇÃO =================== -->
+    <mat-tab-group [(selectedIndex)]="selectedTab" animationDuration="200ms">
+      <!-- -------- Aba 1: Vitrine (Cards) -------- -->
+      <mat-tab label="Vitrine">
         <div class="cards-container">
-            <mat-card class="card-veiculo" *ngFor="let v of veiculos">
-                <div class="card-topo">
-                    <ng-container *ngIf="v.mainPhotoUrl; else semImagem">
-                        <img [src]="v.mainPhotoUrl" [alt]="v.brand + ' ' + v.model" />
-                    </ng-container>
-                    <ng-template #semImagem>
-                        <div class="sem-imagem">
-                        <span>Sem Foto</span>
-                        </div>
-                    </ng-template>
-                </div>
+          <mat-card class="card-veiculo" *ngFor="let v of veiculos">
+            <div class="card-topo">
+              <ng-container *ngIf="v.mainPhotoUrl; else semImagem">
+                <img [src]="v.mainPhotoUrl" [alt]="v.brand + ' ' + v.model" />
+              </ng-container>
+              <ng-template #semImagem>
+                <div class="sem-imagem"><span>Sem Foto</span></div>
+              </ng-template>
+            </div>
 
-                <mat-card-content>
-                    <h3>{{ v.brand }} {{ v.model }} {{ v.year }}</h3>
-                    <p><strong>Cor:</strong> {{ v.color }}</p>
-                    <p><strong>KM:</strong> {{ v.mileage | number }} km</p>
-                    <p><strong>Preço:</strong> R$ {{ v.price | number: '1.0-0' }}</p>
-                </mat-card-content>
+            <mat-card-content>
+              <h3 *ngIf="!hasShopId && v.shopName">{{ v.shopName }}</h3>
+              <h3>{{ v.brand }} {{ v.model }} {{ v.version || '' }} {{ v.year }}</h3>
+              <p><strong>Cor:</strong> {{ v.color }}</p>
+              <p><strong>KM:</strong> {{ v.mileage | number }} km</p>
+              <p><strong>Preço:</strong> R$ {{ v.price | number: '1.0-0' }}</p>
+              <p *ngIf="v.city || v.state"><strong>Local:</strong> {{ v.city }}<ng-container *ngIf="v.state">/{{ v.state }}</ng-container></p>
+            </mat-card-content>
 
-                <mat-card-actions align="end">
-                    <button mat-raised-button color="primary"  (click)="abrirDetalhes(v)">Detalhes</button>
-                </mat-card-actions>
-            </mat-card>
+            <mat-card-actions align="end">
+              <button mat-raised-button color="primary" (click)="abrirDetalhes(v)">Detalhes</button>
+            </mat-card-actions>
+          </mat-card>
         </div>
+      </mat-tab>
 
-        <!-- Paginação -->
-        <mat-paginator
-            [length]="totalCount"
-            [pageSize]="pageSize"
-            [pageIndex]="pageIndex"
-            [pageSizeOptions]="[5, 10, 20]"
-            (page)="mudarPagina($event)">
-        </mat-paginator>
-    </app-loading>
+      <!-- -------- Aba 2: Tabela -------- -->
+      <mat-tab label="Tabela">
+        <div class="tabela-wrapper">
+          <table mat-table [dataSource]="veiculos" class="mat-elevation-z1">
+            <!-- Foto -->
+            <ng-container matColumnDef="foto">
+              <th mat-header-cell *matHeaderCellDef> Foto </th>
+              <td mat-cell *matCellDef="let v">
+                <img class="thumb-carro" [src]="v.mainPhotoUrl || ''" [alt]="v.brand + ' ' + v.model" />
+              </td>
+            </ng-container>
+
+            <!-- Veículo -->
+            <ng-container matColumnDef="veiculo">
+              <th mat-header-cell *matHeaderCellDef> Veículo </th>
+              <td mat-cell *matCellDef="let v">
+                <div class="cell-title">{{ v.brand }} {{ v.model }} {{ v.version || '' }}</div>
+                <div class="cell-sub">{{ v.year }} • {{ v.color }}</div>
+              </td>
+            </ng-container>
+
+            <!-- Loja -->
+            <ng-container matColumnDef="loja" *ngIf="!hasShopId">
+              <th mat-header-cell *matHeaderCellDef> Loja </th>
+              <td mat-cell *matCellDef="let v">{{ v.shopName || '—' }}</td>
+            </ng-container>
+
+            <!-- Local -->
+            <ng-container matColumnDef="local">
+              <th mat-header-cell *matHeaderCellDef> Local </th>
+              <td mat-cell *matCellDef="let v">{{ v.city }}<ng-container *ngIf="v.state">/{{ v.state }}</ng-container></td>
+            </ng-container>
+
+            <!-- KM -->
+            <ng-container matColumnDef="km">
+              <th mat-header-cell *matHeaderCellDef> KM </th>
+              <td mat-cell *matCellDef="let v">{{ v.mileage | number }}</td>
+            </ng-container>
+
+            <!-- Preço -->
+            <ng-container matColumnDef="preco">
+              <th mat-header-cell *matHeaderCellDef> Preço </th>
+              <td mat-cell *matCellDef="let v">R$ {{ v.price | number:'1.0-0' }}</td>
+            </ng-container>
+
+            <!-- Ações -->
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef class="col-acoes"> Ações </th>
+              <td mat-cell *matCellDef="let v" class="col-acoes">
+                <button mat-stroked-button color="primary" (click)="abrirDetalhes(v)">Detalhes</button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsTable"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsTable;"></tr>
+          </table>
+        </div>
+      </mat-tab>
+
+      <!-- -------- Aba 3: Análises -------- -->
+      <mat-tab label="Análises">
+        <div class="analytics">
+          <div class="kpi-cards">
+            <mat-card>
+              <mat-card-title>Total de veículos</mat-card-title>
+              <mat-card-content class="kpi">{{ totalCount | number }}</mat-card-content>
+            </mat-card>
+            <mat-card>
+              <mat-card-title>Preço médio</mat-card-title>
+              <mat-card-content class="kpi">R$ {{ analytics.avgPrice | number:'1.0-0' }}</mat-card-content>
+            </mat-card>
+            <mat-card>
+              <mat-card-title>KM médio</mat-card-title>
+              <mat-card-content class="kpi">{{ analytics.avgKm | number }}</mat-card-content>
+            </mat-card>
+            <mat-card>
+              <mat-card-title>Idade média (anos)</mat-card-title>
+              <mat-card-content class="kpi">{{ analytics.avgAge | number:'1.0-0' }}</mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="analytics-grids">
+            <mat-card>
+              <mat-card-title>Por categoria</mat-card-title>
+              <mat-card-content>
+                <div class="list-grid">
+                  <div class="row" *ngFor="let c of analytics.byCategory">
+                    <div class="label">{{ c.key || '—' }}</div>
+                    <div class="value">{{ c.count }}</div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card>
+              <mat-card-title>Por loja</mat-card-title>
+              <mat-card-content>
+                <div class="list-grid">
+                  <div class="row" *ngFor="let s of analytics.byShop">
+                    <div class="label">{{ s.key || '—' }}</div>
+                    <div class="value">{{ s.count }}</div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card>
+              <mat-card-title>Cidades com mais estoque</mat-card-title>
+              <mat-card-content>
+                <div class="list-grid">
+                  <div class="row" *ngFor="let c of analytics.topCities">
+                    <div class="label">{{ c.key || '—' }}</div>
+                    <div class="value">{{ c.count }}</div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- -------- Aba 4: Mapa (MVP) -------- -->
+      <mat-tab label="Mapa">
+        <div class="mapa-wrapper">
+          <div class="mapa-legend">
+            <span class="dot dot-sm"></span> baixo &nbsp;
+            <span class="dot dot-md"></span> médio &nbsp;
+            <span class="dot dot-lg"></span> alto
+          </div>
+
+          <div class="mapa-grid">
+            <!-- MVP: bolhas proporcionais por cidade/UF (sem SDK externo) -->
+            <div class="bubble" *ngFor="let g of analytics.byCityState"
+                 [ngClass]="bubbleSizeClass(g.count)"
+                 matTooltip="{{ g.key }} — {{ g.count }} veíc.">
+              <div class="bubble-label">{{ g.count }}</div>
+              <div class="bubble-city">{{ g.key }}</div>
+            </div>
+          </div>
+
+          <div class="mapa-note">
+            * Integração com mapa interativo ainda em desenvolvimento.
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <!-- Paginação global -->
+    <mat-paginator
+      [length]="totalCount"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 20, 50]"
+      (page)="mudarPagina($event)">
+    </mat-paginator>
+  </app-loading>
 </div>

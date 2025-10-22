@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { QrCodeFormComponent } from 'src/app/components/qr-code-form/qr-code-form.component';
+import { AuthService } from 'src/app/services/auth.service';
 import { QrCodeService } from 'src/app/services/qr-code.service';
 
 export interface QrCodeModel {
@@ -29,15 +30,17 @@ export class QrCodeListComponent {
   totalCount = 0;
   pageSize = 10;
   pageIndex = 0;
-  shopId = '';
+  shopId: string | null = null;
 
   constructor(
     private qrCodeService: QrCodeService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.shopId = this.authService.getShopId();
     this.buscar();
   }
 
@@ -103,7 +106,7 @@ export class QrCodeListComponent {
       if (result) this.carregarLeads();
     });*/
   }
-  
+
   abrirDetalhes(lead: any): void {
     /*this.dialog.open(LeadDetalheModalComponent, {
       data: lead,
@@ -116,7 +119,7 @@ export class QrCodeListComponent {
       // this.leadService.excluir(id).subscribe(() => this.carregarLeads());
     }
   }
-  
+
   visualizarQRCode(id: string): void {
     this.qrCodeService.visualizarQRCode(id);
   }

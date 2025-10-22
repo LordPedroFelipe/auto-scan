@@ -14,6 +14,7 @@ import { Indicador } from '../../models/indicador.model';
 export class DashboardComponent implements OnInit {
   indicadores: Indicador[] = [];
   nomeLoja: string | null = null;
+  shopId: string | null = null;
   // palavrasMaisBuscadas: { palavra: string; quantidade: number }[] = [];
   displayedColumns: string[] = ['palavra', 'quantidade'];
   palavrasMaisBuscadas = new MatTableDataSource<any>();
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
 
     this.carregarPalavras();
     this.nomeLoja = this.authService.getShopName();
+    this.shopId = this.authService.getShopId();
 
     /* this.palavrasMaisBuscadas = [
       { "palavra": "Onix", "quantidade": 12 },

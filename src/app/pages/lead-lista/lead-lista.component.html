@@ -1,17 +1,5 @@
 <div class="container">
   <h2>Lista de Leads</h2>
-
-  <mat-tab-group [(selectedIndex)]="abaIndex">
-    <!-- ===================== ABA 1: LISTA (sua aba atual) ===================== -->
-    <mat-tab label="Lista">
-      <div class="actions">
-        <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Lead</button>
-        <button mat-stroked-button (click)="alternarModo()" class="btn-modo">
-          {{ modoVisualizacao === 'tabela' ? 'Ver em Cards' : 'Ver em Tabela' }}
-        </button>
-      </div>
-
-      <app-loading [isLoading]="carregando" [text]="'Carregando Leads...'">
         <mat-accordion>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -44,6 +32,18 @@
             </form>
           </mat-expansion-panel>
         </mat-accordion>
+
+  <mat-tab-group [(selectedIndex)]="abaIndex">
+    <!-- ===================== ABA 1: LISTA (sua aba atual) ===================== -->
+    <mat-tab label="Lista">
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="abrirCadastro()">Cadastrar Lead</button>
+        <button mat-stroked-button (click)="alternarModo()" class="btn-modo">
+          {{ modoVisualizacao === 'tabela' ? 'Ver em Cards' : 'Ver em Tabela' }}
+        </button>
+      </div>
+
+      <app-loading [isLoading]="carregando" [text]="'Carregando Leads...'">
 
         <!-- ===== CARDS ===== -->
         <div *ngIf="modoVisualizacao === 'cards'" class="cards-container">

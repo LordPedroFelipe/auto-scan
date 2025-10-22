@@ -45,13 +45,34 @@ export interface VeiculoResumoModel {
   id: string;
   brand: string;
   model: string;
+  version?: string;
   year: number;
   mileage: number;
   color: string;
   price: number;
-  mainPhotoUrl: string;
-  shopName: string;
+  mainPhotoUrl?: string;
+  photoUrls?: string[];
+  shopId?: string;
+  shopName?: string;
+  transmission?: string;
+  fuelType?: string;
+  hasAuction?: boolean;
+  hasAccident?: boolean;
+  isFirstOwner?: boolean;
+  ownersCount?: number;
+  category?: string;
+  categoryType?: string;
+  engine?: string;
+  condition?: string;
+  isHighlighted?: boolean;
+  isOnOffer?: boolean;
+  isSold?: boolean;
+  city?: string;
+  state?: string;
+  licensePlate?: string;
 }
+
 export interface VeiculoResponse {
-  items: any;
+  items: VeiculoResumoModel[];
+  totalCount: number;
 }

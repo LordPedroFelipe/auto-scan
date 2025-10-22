@@ -49,8 +49,8 @@ export class UsuarioService {
     return this.http.get<string[]>(`${this.apiUrlBase}/Permissions/available-claims`);
   }
 
-  buscarPermissoesDoUsuario(userId: string): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrlBase}/Permissions/user/${userId}/roles`);
+  buscarPermissoesDoUsuario(userId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlBase}/Permissions/user/${userId}/roles`);
   }
 
   adicionarPermissao(userId: string, role: string[]): Observable<void> {

@@ -1,16 +1,33 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { VeiculoResponse, VeiculoResumoModel } from '../models/veiculo.model';
 import { environment } from '../../environments/environment';
+import { VeiculoResponse, VeiculoResumoModel } from '../models/veiculo.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class EstoqueService {
   private readonly apiUrl = `${environment.apiUrl}/Vehicles`;
 
   constructor(private http: HttpClient) {}
+
+  listarPaginado(pageNumber: number = 1, pageSize: number = 10): Observable<VeiculoResponse> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<VeiculoResponse>(this.apiUrl, { params });
+  }
+
+  listarPaginadoComFiltro(filtros: any): Observable<VeiculoResponse> {
+    let params = new HttpParams();
+    Object.entries(filtros).forEach(([key, value]) => {
+      if (typeof value === 'boolean') {
+        if (value) params = params.set(key, 'true');
+      } else if (value !== null && value !== undefined && value !== '') {
+        params = params.set(key, String(value));
+      }
+    });
+    return this.http.get<VeiculoResponse>(this.apiUrl, { params });
+  }
 
   listarAtivos(): Observable<VeiculoResponse> {
     return this.http.get<VeiculoResponse>(this.apiUrl);
@@ -18,26 +35,6 @@ export class EstoqueService {
 
   listarAtivosSimples(): Observable<VeiculoResponse> {
     return this.http.get<VeiculoResponse>(`${this.apiUrl}/list-items`);
-  }
-
-  listarPaginado(pageNumber: number = 1, pageSize: number = 10) {
-    return this.http.get<any>(this.apiUrl, {
-      params: {
-        pageNumber,
-        pageSize
-      }
-    });
-  }
-
-  listarPaginadoComFiltro(filtros: any) {
-    let params = new HttpParams();
-    Object.entries(filtros).forEach(([key, value]) => {
-      if (value !== null && value !== undefined && value !== '') {
-        params = params.set(key, String(value));
-      }
-    });
-
-    return this.http.get<any>(this.apiUrl, { params });
   }
 
 
