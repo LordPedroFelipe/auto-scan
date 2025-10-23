@@ -1,7 +1,19 @@
-<div class="imagem-modal-container">
-  <button class="nav-button left" (click)="imagemAnterior()" [disabled]="indiceAtual === 0">⟨</button>
+<div class="imagem-modal-container" *ngIf="imagens?.length">
+  <img class="imagem" [src]="imagens[indiceAtual]" [alt]="altAtual()" />
 
-  <img [src]="imagemAtual()" alt="Imagem ampliada" />
+  <!-- Botão/esquerda -->
+  <button
+    class="nav-button left"
+    (click)="voltar()"
+    [disabled]="!loop && indiceAtual <= 0 || imagens.length <= 1"
+    aria-label="Imagem anterior"
+  >⟨</button>
 
-  <button class="nav-button right" (click)="proximaImagem()" [disabled]="indiceAtual === imagens.length - 1">⟩</button>
+  <!-- Botão/direita -->
+  <button
+    class="nav-button right"
+    (click)="avancar()"
+    [disabled]="!loop && indiceAtual >= imagens.length - 1 || imagens.length <= 1"
+    aria-label="Próxima imagem"
+  >⟩</button>
 </div>

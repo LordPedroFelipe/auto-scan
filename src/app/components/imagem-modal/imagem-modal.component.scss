@@ -1,50 +1,67 @@
 .imagem-modal-container {
   position: relative;
-  background-color: #000;
-  height: 100vh;
-  width: 100vw;
+  background: #000;
+  //height: 90%;
+  //width: 90%;
   overflow: hidden;
+
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  position: relative;
-  z-index: 1;
-}
-
-.nav-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 3rem;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.4);
-  border: none;
-  padding: 12px 16px;
-  cursor: pointer;
-  z-index: 2;
-  border-radius: 50%;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
+  .imagem {
+    max-width: 92%;
+    max-height: 92%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none; // não intercepta os cliques dos botões
+    z-index: 1;
   }
 
-  &.left {
-    left: 16px;
-  }
+  .nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
 
-  &.right {
-    right: 16px;
-  }
+    width: 64px;
+    height: 64px;
+    border: none;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
 
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
+    font-size: 3rem;
+    line-height: 1;
+    color: #fff;
+    background: rgba(0,0,0,0.45);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease, opacity .2s ease;
+
+    &.left  { left: 12px; }
+    &.right { left: 85%; }
+
+    &:hover { transform: translateY(-50%) scale(1.05); background: rgba(255,255,255,0.18); }
+
+    &:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    /* Área clicável ampla (25% da largura) sem “empurrar” a imagem */
+    &::before {
+      content: '';
+      position: absolute;
+      top: -25vh;           // alto para pegar toques/gestos
+      bottom: -25vh;
+      width: 25vw;          // área larga
+      z-index: -1;          // fica atrás do botão, mas recebe o clique
+    }
+    &.left::before  { left: -12px;  }
+    &.right::before { right: -12px; }
   }
 }

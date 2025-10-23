@@ -7,104 +7,89 @@
     <p>Seu assistente inteligente para compra de veículos</p>
   </div>
 
-  <div class="car-highlight-banner" *ngIf="data && data?.mainPhotoUrl">
-      <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" />
-
-      <div class="highlight-overlay">
-          <div class="highlight-details">
-              <h2 class="car-version">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
-              <div class="car-price">R$ {{ data.price | number: '1.0-0' }}</div>
-              <div class="car-location">{{ data.shopName }} - {{ data.city }}/{{ data.state }}</div>
-          </div>
+  <div class="car-highlight-banner" *ngIf="data?.mainPhotoUrl">
+    <img [src]="data.mainPhotoUrl" alt="Foto principal do veículo" class="highlight-image" (error)="onImageError($event)" />
+    <div class="highlight-overlay">
+      <div class="highlight-details">
+        <h2 class="car-version">{{ data.brand }} {{ data.model }} {{ data.version }}</h2>
+        <div class="car-price">R$ {{ data.price | number:'1.0-0' }}</div>
+        <div class="car-location">{{ data.shopName }} - {{ data.city }}/{{ data.state }}</div>
       </div>
+    </div>
   </div>
 
   <!-- Mensagens do chat -->
   <div class="mensagens" #mensagensDiv>
     <div
-      *ngFor="let msg of mensagens"
+      *ngFor="let msg of mensagens; trackBy: trackByMsg"
       [ngClass]="{ 'cliente': msg.autor === 'Cliente', 'ia': msg.autor === 'IA' }"
       class="mensagem-bolha"
     >
       <strong>{{ msg.autor }}:</strong>
 
-
       <!-- Mostrar spinner se for loading -->
       <ng-container *ngIf="msg.isLoading; else textoMensagem">
-        <mat-progress-spinner
-          diameter="20"
-          mode="indeterminate"
-          color="primary"
-        ></mat-progress-spinner>
+        <mat-progress-spinner diameter="20" mode="indeterminate" color="primary"></mat-progress-spinner>
         {{ msg.texto }}
       </ng-container>
 
       <ng-template #textoMensagem>
-        <span [innerHTML]="formatarTexto(msg.texto)"></span>
+        &nbsp;<span [innerHTML]="formatarTexto(msg.texto)"></span>
       </ng-template>
 
-      <div class="botoes-sugestoes" *ngIf="msg.testdriveUrl">
-        <a
-          *ngIf="msg.testdriveUrl"
-          mat-stroked-button
-          color="accent"
-          [href]="msg.testdriveUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      <div class="botoes-sugestoes" *ngIf="msg.testdriveUrl || msg.financingUrl">
+        <a *ngIf="msg.testdriveUrl"
+            style="margin: 12px;"
+           mat-stroked-button color="accent"
+           [href]="msg.testdriveUrl" target="_blank" rel="noopener noreferrer">
           Agendar Test Drive
         </a>
-      </div>
-      <div class="botoes-sugestoes" *ngIf="msg.financingUrl">
-        <a
-          *ngIf="msg.financingUrl"
-          mat-stroked-button
-          color="accent"
-          [href]="msg.financingUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a *ngIf="msg.financingUrl"
+            style="margin: 12px;"
+           mat-stroked-button color="accent"
+           [href]="msg.financingUrl" target="_blank" rel="noopener noreferrer">
           Simular Financiamento
         </a>
       </div>
 
-      <!-- Se a mensagem for do tipo com opções -->
-      <div *ngIf="msg.opcoes">
+      <!-- Opções -->
+      <div *ngIf="msg.opcoes?.length">
         <div class="botoes-sugestoes">
           <button
             mat-stroked-button
             color="primary"
             *ngFor="let op of msg.opcoes"
-            (click)="clicarOpcao(op)"
-          >
-            {{ op.label || op }}
+            (click)="clicarOpcao(op)">
+            {{ op }}
           </button>
         </div>
       </div>
 
-      <!-- Carrossel de imagens -->
-      <div class="carrossel-veiculo" *ngIf="msg.fotos && msg.fotos.length > 0">
+      <!-- Carrossel de imagens da resposta -->
+      <div class="carrossel-veiculo" *ngIf="msg.fotos?.length">
         <h3>Fotos do veículo</h3>
         <div class="carousel-wrapper">
           <img
-            *ngFor="let img of msg.fotos"
+            *ngFor="let img of msg.fotos; trackBy: trackByFoto"
             [src]="img"
             alt="Imagem do veículo"
             (click)="abrirImagem(img)"
+            (error)="onImageError($event)"
           />
         </div>
       </div>
 
-      <div class="photo-gallery-container" *ngIf="data && data.photoUrls && data.photoUrls.length > 0">
-          <div class="photo-grid">
+      <!-- Galeria do veículo (data.photoUrls) -->
+      <div class="photo-gallery-container" *ngIf="data?.photoUrls?.length">
+        <div class="photo-grid">
           <img
-              *ngFor="let foto of data.photoUrls; let i = index"
-              [src]="foto"
-              class="photo-thumbnail"
-              (click)="abrirFotoFullscreen(i)"
-              alt="Foto {{ i + 1 }}"
-          />
-          </div>
+            *ngFor="let foto of data.photoUrls; let i = index; trackBy: trackByIndex"
+            [src]="foto"
+            class="photo-thumbnail"
+            (click)="abrirFotoFullscreen(i)"
+            (error)="onImageError($event)"
+            [alt]="'Foto ' + (i + 1)" />
+        </div>
       </div>
     </div>
   </div>
@@ -119,68 +104,34 @@
       [disabled]="isLoading"
     />
 
-    <button
-      mat-icon-button
-      (click)="alternarGravacao()"
-      [color]="isRecording ? 'warn' : 'accent'"
-      matTooltip="Fale com o assistente"
-    >
+    <button mat-icon-button (click)="alternarGravacao()" [color]="isRecording ? 'warn' : 'accent'" matTooltip="Fale com o assistente">
       <mat-icon *ngIf="!isLoading">{{ isRecording ? 'stop' : 'mic' }}</mat-icon>
-      <mat-progress-spinner
-        *ngIf="isLoading"
-        diameter="20"
-        mode="indeterminate"
-        color="primary"
-      ></mat-progress-spinner>
+      <mat-progress-spinner *ngIf="isLoading" diameter="20" mode="indeterminate" color="primary"></mat-progress-spinner>
     </button>
 
-    <button (click)="enviar()" [disabled]="!novaMensagem.trim() || isLoading">
+    <button (click)="enviar()" [disabled]="!novaMensagem?.trim() || isLoading">
       <mat-icon *ngIf="!isLoading">send</mat-icon>
-      <mat-progress-spinner
-        *ngIf="isLoading"
-        diameter="20"
-        mode="indeterminate"
-        color="primary"
-      ></mat-progress-spinner>
+      <mat-progress-spinner *ngIf="isLoading" diameter="20" mode="indeterminate" color="primary"></mat-progress-spinner>
     </button>
   </div>
+
   <!-- Fullscreen Modal -->
   <div class="fullscreen-overlay" *ngIf="fotoSelecionadaIndex !== null">
-      <div class="fullscreen-view">
+    <div class="fullscreen-view">
       <button mat-icon-button class="close-btn" (click)="fecharFullscreen()">
-          <mat-icon>close</mat-icon>
+        <mat-icon>close</mat-icon>
       </button>
 
-      <button
-          mat-icon-button
-          class="nav-btn prev-btn"
-          (click)="fotoAnterior()"
-          [disabled]="fotoSelecionadaIndex === 0"
-      >
-          <mat-icon>chevron_left</mat-icon>
+      <button mat-icon-button class="nav-btn prev-btn" (click)="fotoAnterior()" [disabled]="fotoSelecionadaIndex === 0">
+        <mat-icon>chevron_left</mat-icon>
       </button>
 
-      <img [src]="data.photoUrls[fotoSelecionadaIndex]" class="fullscreen-image" />
+      <img [src]="data.photoUrls[fotoSelecionadaIndex!]" class="fullscreen-image" (error)="onImageError($event)" />
 
-      <button
-          mat-icon-button
-          class="nav-btn next-btn"
-          (click)="proximaFoto()"
-          [disabled]="fotoSelecionadaIndex === data.photoUrls.length - 1"
-      >
-          <mat-icon>chevron_right</mat-icon>
-      </button>
-      </div>
-  </div>
-
-  <!-- Sugestões rápidas de busca -->
-  <!--div class="sugestoes-chat" *ngIf="sugestoesVisiveis.length">
-    <h4>Buscas populares:</h4>
-    <div class="botoes-sugestoes">
-      <button mat-stroked-button color="accent" *ngFor="let sugestao of sugestoesVisiveis" (click)="novaMensagem = sugestao; enviar()">
-        {{ sugestao }}
+      <button mat-icon-button class="nav-btn next-btn" (click)="proximaFoto()" [disabled]="fotoSelecionadaIndex === data.photoUrls.length - 1">
+        <mat-icon>chevron_right</mat-icon>
       </button>
     </div>
-  </div-->
+  </div>
 
 </div>

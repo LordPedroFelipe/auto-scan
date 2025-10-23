@@ -93,6 +93,7 @@ import { QrCodeListComponent } from './pages/qr-code-list/qr-code-list.component
 import { RelatoriosComponent } from './pages/relatorios/relatorios.component';
 import { SimularFinanciamentoComponent } from './pages/simular-financiamento/simular-financiamento.component'; // ajuste o caminho se necessário
 import { VeiculoDetalhesComponent } from './pages/veiculo-detalhes/veiculo-detalhes.component';
+import { LinkifyPipe } from './pipes/linkify.pipe';
 import { PascalCasePipe } from './pipes/pascal-case.pipe';
 
 
@@ -141,6 +142,7 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
     SegurancaComponent,
     MonitoramentoComponent,
     PerfilComponent,
+    LinkifyPipe,
   ],
   imports: [
     BrowserModule,
@@ -202,7 +204,7 @@ import { PascalCasePipe } from './pipes/pascal-case.pipe';
     }
   ],
   bootstrap: [AppComponent],
-  exports: [PascalCasePipe]
+  exports: [PascalCasePipe, LinkifyPipe]
 })
 export class AppModule {
   constructor(
