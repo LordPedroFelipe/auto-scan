@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LojaModel } from '../models/loja.model';
-import { LojaCreateDto } from '../models/loja-create.dto';
 import { environment } from '../../environments/environment';
+import { LojaCreateDto } from '../models/loja-create.dto';
+import { LojaModel } from '../models/loja.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class LojaService {
     return this.http.get<LojaModel[]>(this.apiUrl);
   }
 
-  buscarPorId(id: number): Observable<LojaModel> {
+  buscarPorId(id: any): Observable<LojaModel> {
     return this.http.get<LojaModel>(`${this.apiUrl}/${id}`);
   }
 

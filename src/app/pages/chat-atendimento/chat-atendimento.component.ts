@@ -61,6 +61,7 @@ export class ChatAtendimentoComponent implements OnInit, OnDestroy {
   leadData: any = null;
 
   humor: string | null = 'happy';
+  shopId!: string;
   vehicleId?: string;
   data?: any;
 
@@ -100,7 +101,8 @@ export class ChatAtendimentoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.placa = this.route.snapshot.paramMap.get('placa');
-    this.vehicleId = this.placa ?? '';
+    this.shopId = this.route.snapshot.paramMap.get('shopId') || '';
+    this.vehicleId = this.route.snapshot.paramMap.get('vehicleId') || '';
 
     // Lead salvo
     const leadStorage = localStorage.getItem('leadData');
@@ -150,7 +152,7 @@ export class ChatAtendimentoComponent implements OnInit, OnDestroy {
         phone: (result.telefone ?? '').trim(),
         notes: (result.observacoes ?? '').trim(),
         shopId: this.authService.getShopId(),
-        vehicleId: this.placa ?? null,
+        vehicleId: this.vehicleId ?? this.placa ?? null,
         status: 'New',
         hasBeenContacted: false,
         contactDate: new Date().toISOString(),

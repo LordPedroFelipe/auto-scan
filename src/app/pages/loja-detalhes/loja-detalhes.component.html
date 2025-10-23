@@ -1,1 +1,131 @@
-<p>loja-detalhes works!</p>
+<div class="loja-detalhes" *ngIf="vm$ | async as vm">
+  <!-- Header Loja -->
+  <mat-card class="loja-header" appearance="outlined">
+    <div class="loja-header__left">
+      <img *ngIf="vm.loja?.logoUrl" [src]="vm.loja!.logoUrl" alt="{{ vm.loja?.name }}" />
+      <div class="info">
+        <h1>{{ vm.loja?.name }}</h1>
+        <div class="meta">
+          <span *ngIf="vm.loja?.rating">★ {{ vm.loja?.rating | number:'1.1-1' }}</span>
+          <span *ngIf="vm.loja?.city">{{ vm.loja?.city }}/{{ vm.loja?.state }}</span>
+        </div>
+        <p class="descricao" *ngIf="vm.loja?.description">{{ vm.loja!.description }}</p>
+        <div class="contatos">
+          <a *ngIf="vm.loja?.phone" [href]="'tel:' + vm.loja!.phone" mat-stroked-button>
+            Ligar
+          </a>
+          <a *ngIf="vm.loja?.whatsapp" [href]="'https://wa.me/' + vm.loja!.whatsapp" target="_blank" rel="noopener" mat-stroked-button>
+            WhatsApp
+          </a>
+          <a *ngIf="vm.loja?.email" [href]="'mailto:' + vm.loja!.email" mat-stroked-button>
+            E-mail
+          </a>
+          <a *ngIf="vm.loja?.address" [href]="'https://www.google.com/maps/search/?api=1&query=' + (vm.loja!.address)" target="_blank" rel="noopener" mat-stroked-button>
+            Como chegar
+          </a>
+          <button mat-flat-button color="primary" (click)="falarComChatIA()">Falar com Chat IA</button>
+        </div>
+        <div class="horario" *ngIf="vm.loja?.openingHours">
+          <mat-icon>schedule</mat-icon>
+          <span>{{ vm.loja?.openingHours }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="loja-header__right">
+      <mat-form-field class="busca" appearance="outline">
+        <mat-label>Buscar no estoque</mat-label>
+        <input matInput (keyup)="onSearchChange($event.target)" placeholder="Modelo, versão, cor..." />
+        <button mat-icon-button matSuffix aria-label="Atualizar" (click)="refreshEstoque()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="ordenacao" appearance="outline">
+        <mat-label>Ordenar por</mat-label>
+        <mat-select [value]="vm.sort" (selectionChange)="onSortChange($event.value)">
+          <mat-option value="recentes">Mais recentes</mat-option>
+          <mat-option value="menor-preco">Menor preço</mat-option>
+          <mat-option value="maior-preco">Maior preço</mat-option>
+          <mat-option value="menor-km">Menor KM</mat-option>
+          <mat-option value="maior-ano">Ano mais novo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <!-- Estado vazio / erro -->
+  <div class="estado" *ngIf="vm.total === 0">
+    <mat-icon>directions_car</mat-icon>
+    <p>Nenhum veículo encontrado para esta loja.</p>
+  </div>
+
+  <!-- Grade de cards -->
+  <div class="grid-cards" *ngIf="vm.total > 0">
+    <mat-card
+      class="car-card"
+      appearance="outlined"
+      *ngFor="let v of vm.estoque; trackBy: trackByVeiculo"
+      (click)="abrirDetalheVeiculo(v)"
+      tabindex="0"
+      (keyup.enter)="abrirDetalheVeiculo(v)"
+    >
+      <div class="image-wrapper">
+        <img [src]="v.mainPhotoUrl || 'assets/img/placeholder-car.png'" alt="{{ v.brand }} {{ v.model }}" loading="lazy" />
+      </div>
+
+      <div class="car-info">
+        <h3 class="title">{{ v.brand }} {{ v.model }} <span *ngIf="v.version">• {{ v.version }}</span></h3>
+        <div class="specs">
+          <span>{{ v.year }}</span>
+          <span>•</span>
+          <span>{{ v.mileage | number:'1.0-0' }} km</span>
+          <span *ngIf="v.color">• {{ v.color }}</span>
+        </div>
+        <div class="price">R$ {{ v.price | number:'1.0-0' }}</div>
+      </div>
+
+      <div class="actions" (click)="$event.stopPropagation()">
+        <button mat-stroked-button (click)="simularFinanciamento(v)">
+          Simular financiamento
+        </button>
+        <button mat-stroked-button (click)="agendarTestDrive(v)">
+          Agendar test drive
+        </button>
+        <button mat-flat-button color="primary" (click)="falarComChatIA(v)">
+          Chat IA
+        </button>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Paginação -->
+  <div class="paginacao" *ngIf="vm.total > vm.pageSize">
+    <mat-paginator
+      [length]="vm.total"
+      [pageIndex]="vm.pageIndex"
+      [pageSize]="vm.pageSize"
+      [pageSizeOptions]="[12, 24, 48]"
+      (page)="onPageChange($event)"
+      aria-label="Paginação do estoque"
+    ></mat-paginator>
+  </div>
+</div>
+
+<!-- Skeleton rápido (opcional) -->
+<ng-template #loadingTpl>
+  <div class="grid-cards">
+    <mat-card class="car-card skeleton" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10,11]">
+      <div class="image-wrapper shimmer"></div>
+      <div class="car-info">
+        <div class="line shimmer w-70"></div>
+        <div class="line shimmer w-40"></div>
+        <div class="line shimmer w-50"></div>
+      </div>
+      <div class="actions">
+        <div class="btn shimmer"></div>
+        <div class="btn shimmer"></div>
+        <div class="btn shimmer"></div>
+      </div>
+    </mat-card>
+  </div>
+</ng-template>
